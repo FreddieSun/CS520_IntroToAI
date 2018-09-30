@@ -18,3 +18,5 @@ def createmaze(n,p):
     maze[n-1][n-1]=0
     return maze
 
+
+
