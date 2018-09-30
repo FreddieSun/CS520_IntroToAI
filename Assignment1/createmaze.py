@@ -1,6 +1,5 @@
-
 import random
-
+import numpy as np
 def createmaze(n,p):
     valuelist=[]
     for i in range(n*n):
@@ -10,7 +9,7 @@ def createmaze(n,p):
         else:
             valuelist.append(0)
     k=0
-    maze = [([0] * n) for p in range(n)]
+    maze=np.zeros([n,n])
     for i in range(n):
         for j in range(n):
             maze[i][j] = valuelist[k]
@@ -19,4 +18,3 @@ def createmaze(n,p):
     maze[n-1][n-1]=0
     return maze
 
-   
