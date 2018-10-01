@@ -1,14 +1,19 @@
 import numpy as np
+from queue import PriorityQueue as PQueue
 
 
 a = np.array([[1,2,3],[4,5,6]])
 
+pq = PQueue()
 
-print(a)
+pq.put(12,'12')
+pq.put(13,'13')
+pq.put(14,'14')
+pq.put(1,'1')
 
-print (len(a))
-print(len(a[1]))
+print(pq.queue)
 
-print('a[0][1]', a[0][1])
-print('a[1][0]', a[1][0])
+print(pq.get(0))
+print(pq.get(0))
+
 

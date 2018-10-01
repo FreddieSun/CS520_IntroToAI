@@ -45,7 +45,7 @@ def dfs(x, y, maze):
 
 def main():
     # Generate the maze with size N*N and p
-    maze=createMaze(5, 0.2)
+    maze=createMaze(5, 0.1)
     print(maze)
 
     dfs(0,0,maze)
