@@ -61,11 +61,11 @@ def getpath(x,y,path):
         pathy.append(path[x][y].y)
 
 def main():
-    maze=createMaze(4, 0.2)
+    maze=createMaze(6, 0.2)
     n=len(maze)
     print(maze)
     path=bfsmaze(maze)
-    getpath(3,3,path)
+    getpath(n-1,n-1,path)
 
     finalpath=list(zip(pathx,pathy))
     finalpath.append((n-1,n-1))
