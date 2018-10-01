@@ -1,6 +1,7 @@
 from mazeCreator import createMaze
 import numpy as np
 import sys
+sys.setrecursionlimit(15000)
 
 
 class parent:
@@ -61,7 +62,7 @@ def getpath(x,y,path):
         pathy.append(path[x][y].y)
 
 def main():
-    maze=createMaze(6, 0.2)
+    maze=createMaze(5000, 0.2)
     n=len(maze)
     print(maze)
     path=bfsmaze(maze)
