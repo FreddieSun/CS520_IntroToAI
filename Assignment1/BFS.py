@@ -2,9 +2,20 @@ from mazeCreator import createMaze
 import numpy as np
 import sys
 
+
+class parent:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+
 def bfsmaze(maze):
     n = len(maze)
     color= np.zeros([n, n])
+    path = []
+    for i in range(n):
+        path += [[]]
+        for j in range(n):
+            path[i] += [parent()]
     x=[0]
     y=[0]
     front=0
@@ -15,27 +26,52 @@ def bfsmaze(maze):
         for i in range(4):
             x_next=x[front]+next[i][0]
             y_next=y[front]+next[i][1]
+            #next=node(x=x_next,y=y_next)
+            #next.x=x_next
+            #next.y=y_next
             if 0<=x_next<=n-1 and 0<=y_next<=n-1 and color[x_next][y_next]==0 and maze[x_next][y_next]==0:
                 color[x_next][y_next]=1
                 end+=1
                 x.append(x_next)
                 y.append(y_next)
+                path[x_next][y_next].x=x[front]
+                path[x_next][y_next].y=y[front]
+
         front+=1
+
         if x_next==n-1 and y_next==n-1:
             x.append(x_next)
             y.append(y_next)
             break
-
-    if x[len(x)-1] != n-1 or y[len(y)-1] != n-1:
+    z = list(zip(x, y))
+    if (n-1,n-1) not in z:
         print('No path')
         sys.exit(0)
-    z = list(zip(x, y))
-    print(z)
+
+    return path
+pathx=[]
+pathy=[]
+def getpath(x,y,path):
+
+    if x == 0 and y == 0:
+        return
+    else:
+        getpath(path[x][y].x, path[x][y].y,path)
+        pathx.append(path[x][y].x)
+        pathy.append(path[x][y].y)
 
 def main():
-    maze=createMaze(6, 0.3)
+    maze=createMaze(4, 0.2)
+    n=len(maze)
     print(maze)
-    bfsmaze(maze)
+    path=bfsmaze(maze)
+    getpath(3,3,path)
+
+    finalpath=list(zip(pathx,pathy))
+    finalpath.append((n-1,n-1))
+    print('The final path is',finalpath)
+    print('The length of minimum path is',len(finalpath)-1)
+
 
 if __name__ == "__main__":
     main()
