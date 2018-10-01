@@ -1,6 +1,7 @@
 from mazeCreator import createMaze
 import numpy as np
 import sys
+import time
 sys.setrecursionlimit(15000)
 
 
@@ -62,7 +63,8 @@ def getpath(x,y,path):
         pathy.append(path[x][y].y)
 
 def main():
-    maze=createMaze(5000, 0.2)
+    start=time.time()
+    maze=createMaze(3300, 0.2)
     n=len(maze)
     print(maze)
     path=bfsmaze(maze)
@@ -72,7 +74,8 @@ def main():
     finalpath.append((n-1,n-1))
     print('The final path is',finalpath)
     print('The length of minimum path is',len(finalpath)-1)
-
+    end=time.time()
+    print(end-start)
 
 if __name__ == "__main__":
     main()
