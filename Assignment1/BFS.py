@@ -29,8 +29,8 @@ def bfsmaze(maze):
     if x[len(x)-1] != n-1 or y[len(y)-1] != n-1:
         print('No path')
         sys.exit(0)
-    print(x)
-    print(y)
+    z = list(zip(x, y))
+    print(z)
 
 def main():
     maze=createMaze(6, 0.3)
