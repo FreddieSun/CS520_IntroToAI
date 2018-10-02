@@ -1,5 +1,5 @@
 class Cell:
-    def __init__(self, x, y, isWall, g, h, f,parent):
+    def __init__(self, x, y, isWall, parent, g, h, f):
         self.x = x
         self.y = y
         self.isWall = isWall
