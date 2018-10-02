@@ -11,6 +11,8 @@ class AStarEuclidean:
         self.grid = []
         self.N = N
         self.p = p
+        heapq.heapify(self.openList)
+
 
         # generate the maze
         for i in range(N):
@@ -57,11 +59,10 @@ class AStarEuclidean:
             curr = curr.parent
 
     def AStarEuclidean(self):
-        heapq.heapify(self.openList)
-        heapq.heappush(self.openList, ((0 + self.N - 2, self.start)))
+        heapq.heappush(self.openList, (0 + self.N - 2, self.start))
 
         while len(self.openList) != 0:
-            current = heapq.heappop(self.openlist)[1]
+            current = heapq.heappop(self.openList)[1]
             if current == self.destination:
                 print('find the path')
                 self.showPath(current)
