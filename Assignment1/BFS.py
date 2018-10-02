@@ -2,8 +2,7 @@ from mazeCreator import createMaze
 import numpy as np
 import sys
 import time
-sys.setrecursionlimit(15000)
-
+sys.setrecursionlimit(150000)
 
 class parent:
     def __init__(self, x=0, y=0):
@@ -46,6 +45,8 @@ def bfsmaze(maze):
             y.append(y_next)
             break
     z = list(zip(x, y))
+    print('Number of nodes expanded in total:',len(z))
+    print('Nodes expanded:',z)
     if (n-1,n-1) not in z:
         print('No path')
         sys.exit(0)
@@ -64,18 +65,17 @@ def getpath(x,y,path):
 
 def main():
     start=time.time()
-    maze=createMaze(3300, 0.2)
+    maze=createMaze(4, 0.2)
     n=len(maze)
-    print(maze)
+    print('The maze is:','\n',maze)
     path=bfsmaze(maze)
     getpath(n-1,n-1,path)
-
     finalpath=list(zip(pathx,pathy))
     finalpath.append((n-1,n-1))
     print('The final path is',finalpath)
     print('The length of minimum path is',len(finalpath)-1)
     end=time.time()
-    print(end-start)
+    print('Running time is:',end-start,'s')
 
 if __name__ == "__main__":
     main()
