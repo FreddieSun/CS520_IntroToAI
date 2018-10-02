@@ -6,14 +6,12 @@ a = np.array([[1,2,3],[4,5,6]])
 
 pq = PQueue()
 
-pq.put(12,'12')
-pq.put(13,'13')
-pq.put(14,'14')
-pq.put(1,'1')
+pq.put((12,'十二'))
+pq.put((13,'十三'))
+pq.put((14,'十四'))
+pq.put((1,'一'))
 
-print(pq.queue)
+print(pq.qsize())
 
-print(pq.get(0))
-print(pq.get(0))
-
-
+for i in range(pq.qsize()):
+    print(pq[i])
