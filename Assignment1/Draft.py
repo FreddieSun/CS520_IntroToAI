@@ -1,19 +1,21 @@
 import numpy as np
 from queue import PriorityQueue as PQueue
+from Cell import *
+import heapq
 
+cells=[]
 
-a = np.array([[1,2,3],[4,5,6]])
+A=Cell(17,2,True)
+B=Cell(2,3,True)
+C=Cell(3,4,False)
+D=Cell(4,5,False)
 
-pq = PQueue()
+heapq.heapify(cells)
 
-pq.put(12,'12')
-pq.put(13,'13')
-pq.put(14,'14')
-pq.put(1,'1')
+heapq.heappush(cells,(4,D))
+heapq.heappush(cells,(1,A))
+heapq.heappush(cells,(2,B))
+heapq.heappush(cells,(3,C))
 
-print(pq.queue)
-
-print(pq.get(0))
-print(pq.get(0))
-
-
+print(heapq.heappop(cells)[1].x)
+print(heapq.heappop(cells)[1].x)
