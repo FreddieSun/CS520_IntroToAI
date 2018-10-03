@@ -57,6 +57,8 @@ class AStarEuclidean:
         while curr.parent != self.start:
             print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--')
             curr = curr.parent
+        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--')
+        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')' + '--')
 
     def AStarEuclidean(self):
         heapq.heappush(self.openList, (0 + self.N - 2, self.start))
