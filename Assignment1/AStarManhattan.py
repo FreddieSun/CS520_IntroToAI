@@ -22,6 +22,9 @@ class AStarEuclidean:
                     self.grid.append(Cell(i, j, True))
                 else:
                     self.grid.append(Cell(i, j, False))
+                print (1 if b <= p else 0, end=""),
+                if j % N == N - 1:
+                    print('')
 
         self.start = self.getCell(0, 0)
         self.start.__setattr__('isWall', False)
@@ -55,10 +58,10 @@ class AStarEuclidean:
     def showPath(self, destination):
         curr = destination
         while curr.parent != self.start:
-            print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--')
+            print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--',end='')
             curr = curr.parent
-        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--')
-        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')' + '--')
+        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--',end='')
+        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')' ,end='')
 
     def AStarEuclidean(self):
         heapq.heappush(self.openList, (0 + self.N - 2, self.start))
@@ -90,7 +93,7 @@ class AStarEuclidean:
             print('No Path Found')
 
 def main():
-    aStar = AStarEuclidean(5, 0.2)
+    aStar = AStarEuclidean(5, 0.3)
     aStar.AStarEuclidean()
 
 
