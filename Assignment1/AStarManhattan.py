@@ -13,7 +13,6 @@ class AStarEuclidean:
         self.p = p
         heapq.heapify(self.openList)
 
-
         # generate the maze
         for i in range(N):
             for j in range(N):
@@ -22,14 +21,19 @@ class AStarEuclidean:
                     self.grid.append(Cell(i, j, True))
                 else:
                     self.grid.append(Cell(i, j, False))
-                print (1 if b <= p else 0, end=""),
-                if j % N == N - 1:
-                    print('')
 
         self.start = self.getCell(0, 0)
         self.start.__setattr__('isWall', False)
         self.destination = self.getCell(N - 1, N - 1)
         self.destination.__setattr__('isWall', False)
+
+        # print the maze
+        for i in range(N):
+            for j in range(N):
+                print(1 if self.grid[i * self.N + j].isWall else 0, end=""),
+                print(' ', end='')
+                if j % N == N - 1:
+                    print('')
 
     # return the cell according to the x and y
     def getCell(self, x, y):
@@ -37,13 +41,13 @@ class AStarEuclidean:
 
     def getAdj(self, cell):
         adjs = []
-        if cell.x < self.N - 1:
+        if cell.x < self.N - 1 and not self.getCell(cell.x + 1, cell.y).isWall:
             adjs.append(self.getCell(cell.x + 1, cell.y))
-        if cell.x > 0:
+        if cell.x > 0 and not self.getCell(cell.x - 1, cell.y).isWall:
             adjs.append(self.getCell(cell.x - 1, cell.y))
-        if cell.y < self.N - 1:
+        if cell.y < self.N - 1 and not self.getCell(cell.x, cell.y + 1).isWall:
             adjs.append(self.getCell(cell.x, cell.y + 1))
-        if cell.y > 0:
+        if cell.y > 0 and not self.getCell(cell.x, cell.y - 1).isWall:
             adjs.append(self.getCell(cell.x, cell.y - 1))
         return adjs
 
@@ -58,10 +62,10 @@ class AStarEuclidean:
     def showPath(self, destination):
         curr = destination
         while curr.parent != self.start:
-            print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--',end='')
+            print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
             curr = curr.parent
-        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--',end='')
-        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')' ,end='')
+        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
 
     def AStarEuclidean(self):
         heapq.heappush(self.openList, (0 + self.N - 2, self.start))
@@ -89,11 +93,12 @@ class AStarEuclidean:
 
                 self.updateCell(current, adj)
 
-        if(not hasPath):
+        if (not hasPath):
             print('No Path Found')
 
+
 def main():
-    aStar = AStarEuclidean(5, 0.3)
+    aStar = AStarEuclidean(5, 0.4)
     aStar.AStarEuclidean()
 
 
