@@ -55,17 +55,21 @@ class AStarEuclidean:
     def showPath(self, destination):
         curr = destination
         while curr.parent != self.start:
-            print('(' + curr.x + ',' + curr.y + ')' + '--')
+            print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--')
             curr = curr.parent
+        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--')
+        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')' + '--')
 
     def AStarEuclidean(self):
         heapq.heappush(self.openList, (0 + self.N - 2, self.start))
 
+        hasPath = False
         while len(self.openList) != 0:
             current = heapq.heappop(self.openList)[1]
             if current == self.destination:
                 print('find the path')
                 self.showPath(current)
+                hasPath = True
                 break
 
             self.closeList.add(current)
@@ -82,9 +86,11 @@ class AStarEuclidean:
 
                 self.updateCell(current, adj)
 
+        if(not hasPath):
+            print('No Path Found')
 
 def main():
-    aStar = AStarEuclidean(5, 1)
+    aStar = AStarEuclidean(5, 0.2)
     aStar.AStarEuclidean()
 
 
