@@ -8,3 +8,8 @@ class Cell:
         self.f = 0
         self.parent = None
 
+    def __lt__(self, other):
+        return self.f < other.f
+
+    def __gt__(self, other):
+        return self.f > other.f
