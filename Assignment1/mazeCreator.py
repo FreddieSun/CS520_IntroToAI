@@ -22,10 +22,9 @@ def drawmaze(maze):
     for i in range(size):
         for j in range(size):
             if maze[i][j] == 0:
-                color = 255
+                mazex[i,j]=(255,255,255)
             else:
-                color = 0
-            mazex[i, j] = (color, color, color)
+                mazex[i,j]=(0,0,0)
     mazedrown.show()
     return mazedrown
 
