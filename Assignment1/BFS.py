@@ -1,7 +1,8 @@
-from mazeCreator import createMaze
+from mazeCreator import createMaze,drawmaze
 import numpy as np
 import sys
 import time
+from PIL import Image
 sys.setrecursionlimit(150000)
 
 class parent:
@@ -22,7 +23,7 @@ def bfsmaze(maze):
     front=0
     end=1
     color[0][0] = 1
-    next=[[0,1],[0,-1],[1,0],[-1,0]]
+    next=[[-1,0],[0,1],[0,-1],[1,0]]
     while (front<end):
         for i in range(4):
             x_next=x[front]+next[i][0]
@@ -65,9 +66,10 @@ def getpath(x,y,path):
 
 def main():
     start=time.time()
-    maze=createMaze(4, 0.2)
+    maze=createMaze(29, 0.1)
     n=len(maze)
     print('The maze is:','\n',maze)
+    mazedrown = drawmaze(maze)
     path=bfsmaze(maze)
     getpath(n-1,n-1,path)
     finalpath=list(zip(pathx,pathy))
@@ -76,6 +78,11 @@ def main():
     print('The length of minimum path is',len(finalpath)-1)
     end=time.time()
     print('Running time is:',end-start,'s')
+    mazex=mazedrown.load()
+    for i in finalpath:
+        mazex[i]=(134,205,133)
+    mazedrown.show()
+
 
 if __name__ == "__main__":
     main()
