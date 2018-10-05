@@ -3,7 +3,7 @@ import random
 from Cell import *
 
 
-class AStarEuclidean:
+class AStarManhattan:
 
     def __init__(self, N, p):
         self.openList = []
@@ -73,7 +73,7 @@ class AStarEuclidean:
         print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
 
     # solve the maze
-    def AStarEuclidean(self):
+    def solveMaze(self):
         # add the start point into the heap
         heapq.heappush(self.openList, (0 + self.N - 2, self.start))
 
@@ -114,8 +114,8 @@ class AStarEuclidean:
 
 
 def main():
-    aStar = AStarEuclidean(99, 0.1)
-    aStar.AStarEuclidean()
+    aStar = AStarManhattan(9, 0.1)
+    aStar.solveMaze()
 
 
 if __name__ == "__main__":

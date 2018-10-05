@@ -8,7 +8,7 @@ sys.setrecursionlimit(150000)
 
 
 # create a parent class, for finding the minimum path
-class parent:
+class Parent:
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
@@ -23,7 +23,7 @@ def bfsmaze(maze):
         path += [[]]
         for j in range(n):
             # create a n*n two dimensional array, store each node's parent node
-            path[i] += [parent()]
+            path[i] += [Parent()]
     # the coordinate of the node
     x = [0]
     y = [0]
@@ -65,7 +65,7 @@ def bfsmaze(maze):
     # combine the x coordinate and y coordinate togther to get the final result.
     z = list(zip(x, y))
     print('Number of nodes expanded in total:', len(z))
-    print('Nodes expanded:', z)
+
     # if the destination has not been visited, then there's no solution.
     if (n - 1, n - 1) not in z:
         print('No path')
@@ -95,9 +95,10 @@ def main():
     # start counting time
     start = time.time()
 
-    maze = createMaze(290, 0.1)
+    maze = createMaze(30, 0.3)
     n = len(maze)
-    print('The maze is:', '\n', maze)
+
+    # draw the maze
     mazedrown = drawmaze(maze)
     path = bfsmaze(maze)
     getpath(n - 1, n - 1, path)
