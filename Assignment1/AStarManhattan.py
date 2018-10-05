@@ -1,5 +1,6 @@
 import heapq
 import random
+import time
 from Cell import *
 
 
@@ -71,9 +72,14 @@ class AStarManhattan:
             curr = curr.parent
         print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
         print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
+        print('\n')
+        print('number of node expanded is: ' + str(len(self.closeList)))
 
     # solve the maze
     def solveMaze(self):
+
+        start = time.time()
+
         # add the start point into the heap
         heapq.heappush(self.openList, (0 + self.N - 2, self.start))
 
@@ -111,6 +117,10 @@ class AStarManhattan:
 
         if (not hasPath):
             print('No Path Found')
+
+        end = time.time()
+
+        print('Running time is:', end - start, 's')
 
 
 def main():

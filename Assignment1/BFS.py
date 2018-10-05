@@ -34,6 +34,10 @@ def bfsmaze(maze):
     color[0][0] = 1
     # go left,go down,go up,go right
     next = [[-1, 0], [0, 1], [0, -1], [1, 0]]
+
+    # start counting time
+    start = time.time()
+
     while (front < end):
         for i in range(4):
             # bfs the node at the beginning of the queue
@@ -61,6 +65,12 @@ def bfsmaze(maze):
             x.append(x_next)
             y.append(y_next)
             break
+
+    # stop counting time
+    end = time.time()
+
+    print('Running time is:', end - start, 's')
+
 
     # combine the x coordinate and y coordinate togther to get the final result.
     z = list(zip(x, y))
@@ -92,8 +102,7 @@ def getpath(x, y, path):
 
 
 def main():
-    # start counting time
-    start = time.time()
+
 
     maze = createMaze(30, 0.3)
     n = len(maze)
@@ -109,9 +118,7 @@ def main():
     print('The final path is', finalpath)
     print('The length of minimum path is', len(finalpath) - 1)
 
-    # stop counting time
-    end = time.time()
-    print('Running time is:', end - start, 's')
+
     mazex = mazedrown.load()
 
     # draw the path
