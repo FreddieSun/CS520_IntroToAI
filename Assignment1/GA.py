@@ -1,35 +1,26 @@
 import random
+import Cell
 
-
-class GATool(object):
+class GATool(object, initSetsNum, maze_size, p):
     def __init__(self):
         self.initSetsNum = initSetsNum
         self.initSets = []
         self.maze_size = maze_size
-        self.end_maze = []
-        self.visited = []
-        self.path = []
-
+        self.maze = []
+        self.p = p
 
     def produceInitSet(self):
         for i in range(self.initSetsNum):
-            init_maze = []
+            maze = []
             for j in range(self.maze_size):
-                init_maze[j] = random.randint(0, 1)
+                randomNum = random.randint(0, 1)
+
+                if randomNum == 1:
+                    maze.append(Cell(i,j,randomNum))
+
             self.initSets.append(init_maze[i])
 
-    def select(self,mazeCodes):
-
-        return mazeCodes
-
-    def cross(self,mazeCodes):
-        crossPoint = random.randint()
-        for index in range(len(mazeCodes),2):
-            mazeCodes[index] cross with mazeCodes[index+1] in crossPoint
-        return mazeCodes
-
-
-    def variation(self,mazeCodes):
+    def variation(self, mazeCodes):
         for mazeCode in mazeCodes :
             variationPoint = random.randint()
             variationValue = random.randint(0,1)
@@ -50,17 +41,14 @@ class GATool(object):
         initCodes = self.initSets
 
         while(not exitFlag):
-
             for mazeCode in self.initSets:
                 # find other terminal condition
-                if mazeCode == self.end_maze:
-                    exitFlag == True
-                if self.visited == [1,1,1,1,1,1,1,1]:
+                self.getPath()
+                self.fitness()
+                if end :
                     exitFlag == True
 
-            selectCodes = self.select(initCodes)
-            crossCodes = self.cross(selectCodes)
-            variationCodes = self.variation(crossCodes)
+            variationCodes = self.variation(initCodes)
             initCodes = variationCodes
 
             loopCount += 1
@@ -68,7 +56,6 @@ class GATool(object):
                 exitFlag == True
 
         print("times:", loopCount)
-        self.getPath()
 
     def getPath(self):
 
