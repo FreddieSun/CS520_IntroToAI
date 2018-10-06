@@ -1,3 +1,6 @@
+from Cell import *
+import random
+
 class HillClimbing:
     def __init__(self, initSetsNum, mazeSize, p):
         self.initSetsNum = initSetsNum
@@ -6,6 +9,7 @@ class HillClimbing:
         self.maze = []
         self.p = p
         self.finalSets = []
+        self.randomMaze(initSetsNum)
 
     def hillClimbing(self):
         exitFlag = False
@@ -23,8 +27,33 @@ class HillClimbing:
         # 比较finalSets中的所有解，找到全局最优解
 
 
-    def randomMaze(self):
-        print('randomMaze')
+    def getCell(self, x, y, maze):
+        return maze[x * self.mazeSize + y]
+
+
+    #generate a random maze
+    def generateMaze(self, mazeSize, p):
+        tempMaze = []
+        for i in range(mazeSize):
+            for j in range(mazeSize):
+                b = random.uniform(0, 1)
+                if b <= p:
+                    tempMaze.append(Cell(i, j, True))
+                else:
+                    tempMaze.append(Cell(i, j, False))
+        tempMaze[0].isWall = False
+        tempMaze[mazeSize*mazeSize-1].isWall=False
+        return tempMaze
+
+    #generate a number of initSetsNum mazes and store them in the InitSets list.
+    def randomMaze(self,initSetsNum):
+        mazeSize=self.mazeSize
+        p=self.p
+        for i in range(initSetsNum):
+            self.initSets.append(self.generateMaze(mazeSize,p))
+        print(self.initSets)
+        return self.initSets
+
 
 
     def randomWalk(self, maze):
