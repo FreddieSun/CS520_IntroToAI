@@ -152,6 +152,7 @@ class AStarManhattan:
 
         if (not hasPath):
             print('No Path Found')
+            print(len(self.closeList))
 
         end = time.time()
 
@@ -160,9 +161,8 @@ class AStarManhattan:
 
 
 def main():
-    aStar = AStarManhattan(10, 0.1)
+    aStar = AStarManhattan(10, 0.9)
     aStar.solveMaze()
-    aStar.printMaze()
 
 
 if __name__ == "__main__":

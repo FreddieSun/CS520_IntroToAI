@@ -133,7 +133,7 @@ class DFS_Stack:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    dfs = DFS_Stack(4,0.2)
+    dfs = DFS_Stack(99,0.2)
     dfs.dfs()
 
 
