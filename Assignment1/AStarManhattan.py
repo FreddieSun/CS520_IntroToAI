@@ -2,7 +2,8 @@ import heapq
 import random
 import time
 from Cell import *
-
+from PIL import Image
+import numpy as np
 
 class AStarManhattan:
 
@@ -37,7 +38,31 @@ class AStarManhattan:
                 if j % N == N - 1:
                     print('')
 
-    # return the cell according to the x and y
+    def printMaze(self):
+        n = self.N
+        maze0 = np.zeros([n, n])
+        for i in range(n):
+            for j in range(n):
+                if self.grid[i * self.N + j].isWall:
+                    maze0[i][j] = 1
+                else:
+                    maze0[i][j] = 0
+        mazeDrown = Image.new('RGB', (n, n))
+        mazeX = mazeDrown.load()
+        for i in range(n):
+            for j in range(n):
+                if maze0[i][j] == 0:
+                    mazeX[i, j] = (255, 255, 255)
+                else:
+                    mazeX[i, j] = (0, 0, 0)
+        path = self.showPath(self.destination)
+        print(n)
+        mazeDrown.show()
+        for i in path:
+            mazeX[i] = (134, 205, 133)
+        mazeDrown.show()
+
+        # return the cell according to the x and y
     def getCell(self, x, y):
         return self.grid[x * self.N + y]
 
@@ -66,16 +91,26 @@ class AStarManhattan:
 
     # print the path
     def showPath(self, destination):
+        pathx = []
+        pathy = []
         curr = destination
         while curr.parent != self.start:
             print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+            pathx.append(curr.x)
+            pathy.append(curr.y)
             curr = curr.parent
         print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+        pathx.append(curr.x)
+        pathy.append(curr.y)
         print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
+        pathx.append(self.start.x)
+        pathy.append(self.start.y)
         print('\n')
         print('number of node expanded is: ' + str(len(self.closeList)))
+        path = list(zip(pathx, pathy))
+        return path
 
-    # solve the maze
+        # solve the maze
     def solveMaze(self):
 
         start = time.time()
@@ -123,9 +158,11 @@ class AStarManhattan:
         print('Running time is:', end - start, 's')
 
 
+
 def main():
     aStar = AStarManhattan(9, 0.1)
     aStar.solveMaze()
+    aStar.printMaze()
 
 
 if __name__ == "__main__":

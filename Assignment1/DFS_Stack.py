@@ -34,15 +34,39 @@ class DFS_Stack:
         #         if j % N == N - 1:
         #             print('')
 
+    def printMaze(self):
+        n = self.N
+        maze = np.zeros([n, n])
+        for i in range(n):
+            for j in range(n):
+                if self.maze[i * self.N + j].isWall:
+                    maze[i][j] = 1
+                else:
+                    maze[i][j] = 0
+        mazeDrown = Image.new('RGB', (n, n))
+        mazeX = mazeDrown.load()
+        for i in range(n):
+            for j in range(n):
+                if maze[i][j] == 0:
+                    mazeX[i, j] = (255, 255, 255)
+                else:
+                    mazeX[i, j] = (0, 0, 0)
+        path = self.showPath(self.destination)
+        print(n)
 
+        for i in path:
+            mazeX[i] = (134, 205, 133)
+        mazeDrown.show()
 
     def dfs(self):
         stack = []
         stack.append(self.getCell(0,0))
         hasPath = False
         start = time.time()
+        numOfExpanded = 0
         while len(stack) != 0:
             current = stack.pop()
+            numOfExpanded += 1
             if current == self.destination:
                 print('find the path')
                 self.showPath(self.destination)
@@ -60,7 +84,7 @@ class DFS_Stack:
         print('duration is: ', str(end - start), 's')
         if not hasPath:
             print('No Path')
-
+        print('number of node expanded is: ', numOfExpanded)
 
 
 
@@ -84,18 +108,28 @@ class DFS_Stack:
 
     # print the path
     def showPath(self, destination):
+        pathx = []
+        pathy = []
         curr = destination
         while curr.parent != self.start:
             print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+            pathx.append(curr.x)
+            pathy.append(curr.y)
             curr = curr.parent
         print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+        pathx.append(curr.x)
+        pathy.append(curr.y)
         print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
+        pathx.append(self.start.x)
+        pathy.append(self.start.y)
         print('\n')
+        path = list(zip(pathx, pathy))
+        return path
 
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    dfs = DFS_Stack(3500,0.1)
+    dfs = DFS_Stack(90,0.2)
     dfs.dfs()
 
 
