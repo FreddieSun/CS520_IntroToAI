@@ -95,14 +95,14 @@ class DFS_Stack:
     # return the adjacent cell of the input cell
     def getAdj(self, cell):
         adjs = []
-        if cell.x < self.N - 1 and not self.getCell(cell.x + 1, cell.y).isWall:
-            adjs.append(self.getCell(cell.x + 1, cell.y))
         if cell.x > 0 and not self.getCell(cell.x - 1, cell.y).isWall:
             adjs.append(self.getCell(cell.x - 1, cell.y))
-        if cell.y < self.N - 1 and not self.getCell(cell.x, cell.y + 1).isWall:
-            adjs.append(self.getCell(cell.x, cell.y + 1))
         if cell.y > 0 and not self.getCell(cell.x, cell.y - 1).isWall:
             adjs.append(self.getCell(cell.x, cell.y - 1))
+        if cell.x < self.N - 1 and not self.getCell(cell.x + 1, cell.y).isWall:
+            adjs.append(self.getCell(cell.x + 1, cell.y))
+        if cell.y < self.N - 1 and not self.getCell(cell.x, cell.y + 1).isWall:
+            adjs.append(self.getCell(cell.x, cell.y + 1))
         return adjs
 
 
