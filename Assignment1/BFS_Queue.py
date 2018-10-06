@@ -4,6 +4,7 @@ import sys
 from Cell import *
 import random
 import time
+from collections import deque
 
 class BFS_Stack:
 
@@ -26,23 +27,23 @@ class BFS_Stack:
         self.destination = self.getCell(N - 1, N - 1)
         self.destination.__setattr__('isWall', False)
 
-        # # print the maze
-        # for i in range(N):
-        #     for j in range(N):
-        #         print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
-        #         print(' ', end = '')
-        #         if j % N == N - 1:
-        #             print('')
+        # print the maze
+        for i in range(N):
+            for j in range(N):
+                print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
+                print(' ', end = '')
+                if j % N == N - 1:
+                    print('')
 
 
 
     def bfs(self):
-        stack = []
-        stack.append(self.getCell(0,0))
+        queue = deque()
+        queue.append(self.getCell(0,0))
         hasPath = False
         start = time.time()
-        while len(stack) != 0:
-            current = stack.pop()
+        while len(queue) != 0:
+            current = queue.popleft()
             if current == self.destination:
                 print('find the path')
                 self.showPath(self.destination)
@@ -53,15 +54,13 @@ class BFS_Stack:
                 for adj in self.getAdj(current):
                     if adj.visited:
                         continue
-                    stack.append(adj)
+                    queue.append(adj)
                     adj.parent = current
         end = time.time()
 
         print('duration is: ', str(end - start), 's')
         if not hasPath:
             print('No Path')
-
-
 
 
     # return the adjacent cell of the input cell
@@ -95,7 +94,7 @@ class BFS_Stack:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    bfs = BFS_Stack(3500,0.1)
+    bfs = BFS_Stack(9,0.4)
     bfs.bfs()
 
 
