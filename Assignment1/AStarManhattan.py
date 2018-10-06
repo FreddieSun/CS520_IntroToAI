@@ -160,7 +160,7 @@ class AStarManhattan:
 
 
 def main():
-    aStar = AStarManhattan(9, 0.1)
+    aStar = AStarManhattan(10, 0.1)
     aStar.solveMaze()
     aStar.printMaze()
 
