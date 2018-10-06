@@ -57,7 +57,7 @@ class AStarEuclidean:
         mazeX = mazeDrown.load()
         for i in range(n):
             for j in range(n):
-                if maze[i][j] == 0:
+                if maze[j][i] == 0:
                     mazeX[i, j] = (255, 255, 255)
                 else:
                     mazeX[i, j] = (0, 0, 0)
@@ -109,7 +109,7 @@ class AStarEuclidean:
         pathx.append(self.start.x)
         pathy.append(self.start.y)
         print('\n')
-        path = list(zip(pathx, pathy))
+        path = list(zip(pathy, pathx))
         return path
 
 

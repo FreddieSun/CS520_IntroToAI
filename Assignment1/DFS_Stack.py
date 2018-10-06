@@ -12,10 +12,14 @@ class DFS_Stack:
         self.P = P
 
         # generate the maze
+        #array=np.loadtxt("mazearray.txt", delimiter=',')
+
         for i in range(N):
             for j in range(N):
                 b = random.uniform(0, 1)
+                #b=array[i+j-2]
                 if b <= P:
+                #if b==1:
                     self.maze.append(Cell(i, j, True))
                 else:
                     self.maze.append(Cell(i, j, False))
@@ -46,12 +50,13 @@ class DFS_Stack:
         mazeX = mazeDrown.load()
         for i in range(n):
             for j in range(n):
-                if maze[i][j] == 0:
+                if maze[j][i] == 0:
                     mazeX[i, j] = (255, 255, 255)
                 else:
                     mazeX[i, j] = (0, 0, 0)
         path = self.showPath(self.destination)
         print(path)
+        mazeDrown.show()
         for i in path:
             mazeX[i] = (134, 205, 133)
         mazeDrown.show()
@@ -122,13 +127,13 @@ class DFS_Stack:
         pathx.append(self.start.x)
         pathy.append(self.start.y)
         print('\n')
-        path = list(zip(pathx, pathy))
+        path = list(zip(pathy, pathx))
         return path
 
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    dfs = DFS_Stack(10,0.2)
+    dfs = DFS_Stack(4,0.2)
     dfs.dfs()
 
 

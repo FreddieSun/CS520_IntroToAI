@@ -34,6 +34,14 @@ class BFS_Stack:
                 if j % N == N - 1:
                     print('')
 
+        #save maze as an array
+        array=[]
+        for i in range(N):
+            for j in range(N):
+                array.append(1 if self.maze[i * self.N + j].isWall else 0)
+        print(array)
+        np.savetxt('mazearray.txt',array)
+
     def printMaze(self):
         n=self.N
         maze = np.zeros([n, n])
@@ -47,7 +55,7 @@ class BFS_Stack:
         mazeX = mazeDrown.load()
         for i in range(n):
             for j in range(n):
-                if maze[i][j] == 0:
+                if maze[j][i] == 0:
                     mazeX[i, j] = (255, 255, 255)
                 else:
                     mazeX[i, j] = (0, 0, 0)
@@ -57,7 +65,7 @@ class BFS_Stack:
         for i in path:
             mazeX[i] = (134, 205, 133)
         mazeDrown.show()
-
+        mazeDrown.save('bfsmaze.png')
 
 
     def bfs(self):
@@ -88,6 +96,9 @@ class BFS_Stack:
         if not hasPath:
             print('No Path')
         print('number of node expanded', numOfExpanded)
+
+
+
 
 
     # return the adjacent cell of the input cell
@@ -125,13 +136,14 @@ class BFS_Stack:
         pathx.append(self.start.x)
         pathy.append(self.start.y)
         print('\n')
-        path=list(zip(pathx,pathy))
+        path=list(zip(pathy,pathx))
         return path
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    bfs = BFS_Stack(90,0.3)
+    bfs = BFS_Stack(9,0.3)
     bfs.bfs()
+    
 
 
 if __name__ == "__main__":
