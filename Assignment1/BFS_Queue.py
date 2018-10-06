@@ -130,7 +130,7 @@ class BFS_Stack:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    bfs = BFS_Stack(90,0.1)
+    bfs = BFS_Stack(90,0.7)
     bfs.bfs()
 
 

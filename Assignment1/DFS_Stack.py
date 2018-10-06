@@ -1,9 +1,8 @@
 import numpy as np
-from mazeCreator import createMaze
-import sys
 from Cell import *
 import random
 import time
+from PIL import Image
 
 class DFS_Stack:
 
@@ -52,8 +51,7 @@ class DFS_Stack:
                 else:
                     mazeX[i, j] = (0, 0, 0)
         path = self.showPath(self.destination)
-        print(n)
-
+        print(path)
         for i in path:
             mazeX[i] = (134, 205, 133)
         mazeDrown.show()
@@ -70,6 +68,7 @@ class DFS_Stack:
             if current == self.destination:
                 print('find the path')
                 self.showPath(self.destination)
+                self.printMaze()
                 hasPath = True
                 break
             if not current.visited:
@@ -129,8 +128,9 @@ class DFS_Stack:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    dfs = DFS_Stack(90,0.2)
+    dfs = DFS_Stack(10,0.2)
     dfs.dfs()
+
 
 
 
