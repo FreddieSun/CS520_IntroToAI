@@ -4,6 +4,8 @@ import numpy as np
 from Cell import *
 import time
 from PIL import Image
+from scipy.spatial import distance
+
 
 class AStarEuclidean:
 
@@ -55,7 +57,7 @@ class AStarEuclidean:
         mazeX = mazeDrown.load()
         for i in range(n):
             for j in range(n):
-                if maze[i][j] == 0:
+                if maze[j][i] == 0:
                     mazeX[i, j] = (255, 255, 255)
                 else:
                     mazeX[i, j] = (0, 0, 0)
@@ -82,7 +84,7 @@ class AStarEuclidean:
 
     # get the heuristics value of the input cell
     def getHeuristics(self, cell):
-        return np.sqrt(pow(cell.x - self.N, 2) + pow(cell.y - self.N, 2))
+        return round(distance.euclidean((cell.x, cell. y), (self.N - 1, self.N - 1)))
 
     # update(relax) the current cell
     def updateCell(self, cell, adj):
@@ -107,7 +109,7 @@ class AStarEuclidean:
         pathx.append(self.start.x)
         pathy.append(self.start.y)
         print('\n')
-        path = list(zip(pathx, pathy))
+        path = list(zip(pathy, pathx))
         return path
 
 
@@ -159,7 +161,7 @@ class AStarEuclidean:
         print('Running time is:', end - start, 's')
 
 def main():
-    aStar = AStarEuclidean(10, 0.2)
+    aStar = AStarEuclidean(100, 0.2)
     aStar.solveMaze()
 
 if __name__ == "__main__":

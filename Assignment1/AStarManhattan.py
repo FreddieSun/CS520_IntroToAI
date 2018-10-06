@@ -52,9 +52,9 @@ class AStarManhattan:
         for i in range(n):
             for j in range(n):
                 if maze0[i][j] == 0:
-                    mazeX[i, j] = (255, 255, 255)
+                    mazeX[j, i] = (255, 255, 255)
                 else:
-                    mazeX[i, j] = (0, 0, 0)
+                    mazeX[j, i] = (0, 0, 0)
         path = self.showPath(self.destination)
         print(n)
         mazeDrown.show()
@@ -160,7 +160,7 @@ class AStarManhattan:
 
 
 def main():
-    aStar = AStarManhattan(9, 0.1)
+    aStar = AStarManhattan(10, 0.1)
     aStar.solveMaze()
     aStar.printMaze()
 

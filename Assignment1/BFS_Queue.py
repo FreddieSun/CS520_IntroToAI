@@ -1,12 +1,9 @@
-from __future__ import print_function
 import numpy as np
-from mazeCreator import createMaze
-import sys
-
 from Cell import *
 import random
 import time
 from collections import deque
+from PIL import Image
 
 class BFS_Stack:
 
@@ -32,11 +29,43 @@ class BFS_Stack:
         # print the maze
         for i in range(N):
             for j in range(N):
-                print(1 if self.maze[i * self.N + j].isWall else 0, end=''),
-                print(' ', end='')
+                print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
+                print(' ', end = '')
                 if j % N == N - 1:
                     print('')
 
+        #save maze as an array
+        array=[]
+        for i in range(N):
+            for j in range(N):
+                array.append(1 if self.maze[i * self.N + j].isWall else 0)
+        print(array)
+        np.savetxt('mazearray.txt',array)
+
+    def printMaze(self):
+        n=self.N
+        maze = np.zeros([n, n])
+        for i in range(n):
+            for j in range(n):
+                if self.maze[i * self.N + j].isWall:
+                    maze[i][j]=1
+                else:
+                    maze[i][j]=0
+        mazeDrown = Image.new('RGB', (n, n))
+        mazeX = mazeDrown.load()
+        for i in range(n):
+            for j in range(n):
+                if maze[j][i] == 0:
+                    mazeX[i, j] = (255, 255, 255)
+                else:
+                    mazeX[i, j] = (0, 0, 0)
+        path=self.showPath(self.destination)
+        print(n)
+        
+        for i in path:
+            mazeX[i] = (134, 205, 133)
+        mazeDrown.show()
+        mazeDrown.save('bfsmaze.png')
 
 
     def bfs(self):
@@ -44,11 +73,14 @@ class BFS_Stack:
         queue.append(self.getCell(0,0))
         hasPath = False
         start = time.time()
+        numOfExpanded = 0
         while len(queue) != 0:
             current = queue.popleft()
+            numOfExpanded += 1
             if current == self.destination:
                 print('find the path')
                 self.showPath(self.destination)
+                self.printMaze()
                 hasPath = True
                 break
             if not current.visited:
@@ -63,6 +95,10 @@ class BFS_Stack:
         print('duration is: ', str(end - start), 's')
         if not hasPath:
             print('No Path')
+        print('number of node expanded', numOfExpanded)
+
+
+
 
 
     # return the adjacent cell of the input cell
@@ -85,20 +121,29 @@ class BFS_Stack:
 
     # print the path
     def showPath(self, destination):
+        pathx=[]
+        pathy=[]
         curr = destination
         while curr.parent != self.start:
             print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+            pathx.append(curr.x)
+            pathy.append(curr.y)
             curr = curr.parent
         print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+        pathx.append(curr.x)
+        pathy.append(curr.y)
         print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
+        pathx.append(self.start.x)
+        pathy.append(self.start.y)
         print('\n')
-
+        path=list(zip(pathy,pathx))
+        return path
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    bfs = BFS_Stack(9,0.4)
+    bfs = BFS_Stack(9,0.3)
     bfs.bfs()
-
+    
 
 
 if __name__ == "__main__":
