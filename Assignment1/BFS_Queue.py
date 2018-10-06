@@ -5,42 +5,43 @@ import time
 from collections import deque
 from PIL import Image
 
-class BFS_Stack:
+class BFS_Queue:
 
-    def __init__(self, N, P):
-        self.maze=[]
-        self.N = N
-        self.P = P
+    def __init__(self, N, P, maze=None):
+        self.maze = []
 
         # generate the maze
-        for i in range(N):
-            for j in range(N):
-                b = random.uniform(0, 1)
-                if b <= P:
-                    self.maze.append(Cell(i, j, True))
-                else:
-                    self.maze.append(Cell(i, j, False))
-        # set the start point and the destination point
-        self.start = self.getCell(0, 0)
-        self.start.__setattr__('isWall', False)
-        self.destination = self.getCell(N - 1, N - 1)
-        self.destination.__setattr__('isWall', False)
+        # array=np.loadtxt("mazearray.txt", delimiter=',')
+        if maze == None:
+            self.N = N
+            self.P = P
+            for i in range(N):
+                for j in range(N):
+                    b = random.uniform(0, 1)
+                    # b=array[i+j-2]
+                    if b <= P:
+                        # if b==1:
+                        self.maze.append(Cell(i, j, True))
+                    else:
+                        self.maze.append(Cell(i, j, False))
+                        # set the start point and the destination point
+            self.start = self.getCell(0, 0)
+            self.start.__setattr__('isWall', False)
+            self.destination = self.getCell(N - 1, N - 1)
+            self.destination.__setattr__('isWall', False)
 
-        # print the maze
-        for i in range(N):
-            for j in range(N):
-                print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
-                print(' ', end = '')
-                if j % N == N - 1:
-                    print('')
+            # # print the maze
+            # for i in range(N):
+            #     for j in range(N):
+            #         print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
+            #         print(' ', end = '')
+            #         if j % N == N - 1:
+            #             print('')
+        else:
+            self.maze = maze
+            self.N = len(maze)
+            self.P = 0
 
-        #save maze as an array
-        array=[]
-        for i in range(N):
-            for j in range(N):
-                array.append(1 if self.maze[i * self.N + j].isWall else 0)
-        print(array)
-        np.savetxt('mazearray.txt',array)
 
     def printMaze(self):
         n=self.N
@@ -146,9 +147,11 @@ class BFS_Stack:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    bfs = BFS_Stack(9,0.3)
+    bfs = BFS_Queue(9,0.3)
     print (bfs.bfs())
-    
+    bfs = BFS_Queue(10000,0.1)
+    bfs.bfs()
+
 
 
 if __name__ == "__main__":
