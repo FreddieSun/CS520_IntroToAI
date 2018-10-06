@@ -7,6 +7,7 @@ class Cell:
         self.h = 0
         self.f = 0
         self.parent = None
+        self.visited = False
 
     def __lt__(self, other):
         return self.f < other.f

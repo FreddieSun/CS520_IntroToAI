@@ -124,7 +124,7 @@ class AStarEuclidean:
 
 
 def main():
-    aStar = AStarEuclidean(9, 0.2)
+    aStar = AStarEuclidean(100, 0.2)
     aStar.solveMaze()
 
 

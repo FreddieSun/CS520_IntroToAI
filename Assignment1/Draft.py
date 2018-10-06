@@ -3,14 +3,12 @@ from queue import PriorityQueue as PQueue
 from Cell import *
 import heapq
 
-cells = []
+A=[1,2,3,4,5]
 
-A = Cell(2, 2, True)
-B = Cell(2, 2, True)
+print(A)
 
-heapq.heapify(cells)
-heapq.heappush(cells, (10, A))
-heapq.heappush(cells, (10, B))
+A.append(6)
 
-print(heapq.heappop(cells))
-print(heapq.heappop(cells))
+print(A)
+
+print(A.pop())
