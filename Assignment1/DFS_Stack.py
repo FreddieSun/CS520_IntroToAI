@@ -63,16 +63,21 @@ class DFS_Stack:
 
     def dfs(self):
         stack = []
-        stack.append(self.getCell(0,0))
+        stack.append(self.getCell(0, 0))
         hasPath = False
         start = time.time()
         numOfExpanded = 0
+        mof = 0
+        lop = 0
         while len(stack) != 0:
+            if (len(stack) > mof):
+                mof = len(stack)
             current = stack.pop()
             numOfExpanded += 1
             if current == self.destination:
                 print('find the path')
-                self.showPath(self.destination)
+                path = self.showPath(self.destination)
+                lop = len(path)
                 self.printMaze()
                 hasPath = True
                 break
@@ -89,6 +94,7 @@ class DFS_Stack:
         if not hasPath:
             print('No Path')
         print('number of node expanded is: ', numOfExpanded)
+        return [numOfExpanded, mof, lop]
 
 
 
@@ -134,7 +140,7 @@ class DFS_Stack:
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
     dfs = DFS_Stack(99,0.2)
-    dfs.dfs()
+    print(dfs.dfs())
 
 
 

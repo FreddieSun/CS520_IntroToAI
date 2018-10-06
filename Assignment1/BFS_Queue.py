@@ -74,12 +74,17 @@ class BFS_Stack:
         hasPath = False
         start = time.time()
         numOfExpanded = 0
+        mof = 0
+        lop = 0
         while len(queue) != 0:
+            if (len(queue) > mof):
+                mof = len(queue)
             current = queue.popleft()
             numOfExpanded += 1
             if current == self.destination:
                 print('find the path')
-                self.showPath(self.destination)
+                path=self.showPath(self.destination)
+                lop =len(path)
                 self.printMaze()
                 hasPath = True
                 break
@@ -96,7 +101,7 @@ class BFS_Stack:
         if not hasPath:
             print('No Path')
         print('number of node expanded', numOfExpanded)
-
+        return [numOfExpanded, mof, lop]
 
 
 
@@ -142,7 +147,7 @@ class BFS_Stack:
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
     bfs = BFS_Stack(9,0.3)
-    bfs.bfs()
+    print (bfs.bfs())
     
 
 
