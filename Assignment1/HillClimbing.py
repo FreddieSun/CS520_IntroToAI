@@ -1,7 +1,14 @@
-from Cell import *
 import random
+from Cell import *
+from DFS_Stack import *
+from AStarEuclidean import *
+from AStarManhattan import *
+from BFS_Queue import *
+
 
 class HillClimbing:
+
+
     def __init__(self, initSetsNum, mazeSize, p):
         self.initSetsNum = initSetsNum
         self.initSets = []
@@ -10,12 +17,19 @@ class HillClimbing:
         self.p = p
         self.finalSets = []
         self.randomMaze(initSetsNum)
+        self.A_STAR_MANHATTON = "A_STAR_MANHATTON"
+        self.A_STAR_EUCLIDEAN = "A_STAR_EUCLIDEAN"
+        self.DFS = "DFS"
+        self.BFS = "BFS"
+        self.LOP = "LOP"
+        self.NOE = "NOE"
+        self.MOF = "MOF"
 
     def hillClimbing(self):
         exitFlag = False
         # 对每一个maze，找到他的最优解， 故循环100次
         for i in range(100):
-            while(exitFlag):
+            while (exitFlag):
                 # 对当前的maze，爬山找到最优解
                 next = self.randomWalk(self.initSets[i])
                 if (self.evaluateMaze(next) > self.evaluateMaze(self.initSets[i])):
@@ -26,12 +40,10 @@ class HillClimbing:
 
         # 比较finalSets中的所有解，找到全局最优解
 
-
     def getCell(self, x, y, maze):
         return maze[x * self.mazeSize + y]
 
-
-    #generate a random maze
+    # generate a random maze
     def generateMaze(self, mazeSize, p):
         tempMaze = []
         for i in range(mazeSize):
@@ -42,28 +54,44 @@ class HillClimbing:
                 else:
                     tempMaze.append(Cell(i, j, False))
         tempMaze[0].isWall = False
-        tempMaze[mazeSize*mazeSize-1].isWall=False
+        tempMaze[mazeSize * mazeSize - 1].isWall = False
         return tempMaze
 
-    #generate a number of initSetsNum mazes and store them in the InitSets list.
-    def randomMaze(self,initSetsNum):
-        mazeSize=self.mazeSize
-        p=self.p
+    # generate a number of initSetsNum mazes and store them in the InitSets list.
+    def randomMaze(self, initSetsNum):
+        mazeSize = self.mazeSize
+        p = self.p
         for i in range(initSetsNum):
-            self.initSets.append(self.generateMaze(mazeSize,p))
+            self.initSets.append(self.generateMaze(mazeSize, p))
         print(self.initSets)
         return self.initSets
-
-
 
     def randomWalk(self, maze):
         print('randomWalk')
 
-    def evaluateMaze(self, maze):
+    def evaluateMaze(self, maze, type, criteria):
+        if type == self.A_STAR_EUCLIDEAN:
+            aStarEuclidean = AStarEuclidean(0, 0, maze)
+            lop, noe, mof = aStarEuclidean.solveMaze()
+        elif type == self.A_STAR_MANHATTON:
+            aStarManhattan = AStarManhattan(0, 0, maze)
+            lop, noe, mof = aStarManhattan.solveMaze()
+            print('a*')
+        elif type == self.BFS:
+            bfs = BFS_Queue(0, 0, maze)
+            lop, noe, mof = bfs.bfs()
+            print('BFS')
+        else:
+            dfs = DFS_Stack(0, 0, maze)
+            lop, noe, mof = dfs.dfs()
+            print('DFS')
+
+
+
         print('evaluateMaze')
         return 1
+
 
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(100, 100, 0.2)
-

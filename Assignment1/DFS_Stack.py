@@ -4,38 +4,43 @@ import random
 import time
 from PIL import Image
 
+
 class DFS_Stack:
 
-    def __init__(self, N, P):
-        self.maze=[]
-        self.N = N
-        self.P = P
+    def __init__(self, N, P, maze=None):
+        self.maze = []
 
         # generate the maze
-        #array=np.loadtxt("mazearray.txt", delimiter=',')
+        # array=np.loadtxt("mazearray.txt", delimiter=',')
+        if maze == None:
+            self.N = N
+            self.P = P
+            for i in range(N):
+                for j in range(N):
+                    b = random.uniform(0, 1)
+                    # b=array[i+j-2]
+                    if b <= P:
+                        # if b==1:
+                        self.maze.append(Cell(i, j, True))
+                    else:
+                        self.maze.append(Cell(i, j, False))
+            # set the start point and the destination point
+            self.start = self.getCell(0, 0)
+            self.start.__setattr__('isWall', False)
+            self.destination = self.getCell(N - 1, N - 1)
+            self.destination.__setattr__('isWall', False)
 
-        for i in range(N):
-            for j in range(N):
-                b = random.uniform(0, 1)
-                #b=array[i+j-2]
-                if b <= P:
-                #if b==1:
-                    self.maze.append(Cell(i, j, True))
-                else:
-                    self.maze.append(Cell(i, j, False))
-        # set the start point and the destination point
-        self.start = self.getCell(0, 0)
-        self.start.__setattr__('isWall', False)
-        self.destination = self.getCell(N - 1, N - 1)
-        self.destination.__setattr__('isWall', False)
-
-        # # print the maze
-        # for i in range(N):
-        #     for j in range(N):
-        #         print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
-        #         print(' ', end = '')
-        #         if j % N == N - 1:
-        #             print('')
+            # # print the maze
+            # for i in range(N):
+            #     for j in range(N):
+            #         print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
+            #         print(' ', end = '')
+            #         if j % N == N - 1:                                                               
+            #             print('')
+        else:
+            self.maze = maze
+            self.N = len(maze)
+            self.P = 0
 
     def printMaze(self):
         n = self.N
@@ -61,9 +66,12 @@ class DFS_Stack:
             mazeX[i] = (134, 205, 133)
         mazeDrown.show()
 
+    def getLOP(self, maze):
+        stack = []
+
     def dfs(self):
         stack = []
-        stack.append(self.getCell(0,0))
+        stack.append(self.getCell(0, 0))
         hasPath = False
         start = time.time()
         numOfExpanded = 0
@@ -89,8 +97,7 @@ class DFS_Stack:
         if not hasPath:
             print('No Path')
         print('number of node expanded is: ', numOfExpanded)
-
-
+        return numOfExpanded
 
     # return the adjacent cell of the input cell
     def getAdj(self, cell):
@@ -104,7 +111,6 @@ class DFS_Stack:
         if cell.y < self.N - 1 and not self.getCell(cell.x, cell.y + 1).isWall:
             adjs.append(self.getCell(cell.x, cell.y + 1))
         return adjs
-
 
     # return the cell according to the x and y
     def getCell(self, x, y):
@@ -133,10 +139,8 @@ class DFS_Stack:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    dfs = DFS_Stack(99,0.2)
+    dfs = DFS_Stack(99, 0.2)
     dfs.dfs()
-
-
 
 
 if __name__ == "__main__":

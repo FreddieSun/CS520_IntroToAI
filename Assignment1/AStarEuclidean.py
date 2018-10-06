@@ -9,36 +9,35 @@ from scipy.spatial import distance
 
 class AStarEuclidean:
 
-    def __init__(self, N, p):
+    def __init__(self, N, p, maze = None):
         self.openList = []
         self.closeList = set()
-        self.grid = []
-        self.N = N
-        self.p = p
         heapq.heapify(self.openList)
 
-        # generate the maze
-        for i in range(N):
-            for j in range(N):
-                b = random.uniform(0, 1)
-                if b <= p:
-                    self.grid.append(Cell(i, j, True))
-                else:
-                    self.grid.append(Cell(i, j, False))
+        if maze == None:
+            self.grid = []
+            self.N = N
+            self.p = p
 
-        # set the start point and the destination point
-        self.start = self.getCell(0, 0)
-        self.start.__setattr__('isWall', False)
-        self.destination = self.getCell(N - 1, N - 1)
-        self.destination.__setattr__('isWall', False)
+            # generate the maze
+            for i in range(N):
+                for j in range(N):
+                    b = random.uniform(0, 1)
+                    if b <= p:
+                        self.grid.append(Cell(i, j, True))
+                    else:
+                        self.grid.append(Cell(i, j, False))
 
-        # print the maze
-        for i in range(N):
-            for j in range(N):
-                print(1 if self.grid[i * self.N + j].isWall else 0, end = ''),
-                print(' ', end = '')
-                if j % N == N - 1:
-                    print('')
+            # set the start point and the destination point
+            self.start = self.getCell(0, 0)
+            self.start.__setattr__('isWall', False)
+            self.destination = self.getCell(N - 1, N - 1)
+            self.destination.__setattr__('isWall', False)
+
+        else:
+            self.grid = maze
+            self.N = len(maze)
+            self.p = 0
 
     # return the cell according to the x and y
     def getCell(self, x, y):
