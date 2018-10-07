@@ -122,7 +122,7 @@ class AStarManhattan:
 
         # solve the maze
     def solveMaze(self):
-
+        path = []
         start = time.time()
 
         # add the start point into the heap
@@ -178,7 +178,7 @@ class AStarManhattan:
         print('Running time is:', end - start, 's')
         numOfExpanded=len(self.closeList)
 
-        return [numOfExpanded, mof,lop]
+        return [[numOfExpanded, mof,lop],path]
 
 
 def main():

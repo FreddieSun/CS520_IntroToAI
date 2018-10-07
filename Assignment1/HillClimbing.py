@@ -5,6 +5,7 @@ from AStarEuclidean import *
 from AStarManhattan import *
 from BFS_Queue import *
 import copy
+from PrintMaze import *
 
 class HillClimbing:
     def __init__(self, initSetsNum, mazeSize, p):
@@ -72,30 +73,25 @@ class HillClimbing:
         tempMaze = copy.deepcopy(maze)
         if type == self.A_STAR_EUCLIDEAN:
             aStarEuclidean = AStarEuclidean(0, 0, tempMaze)
-            lop, noe, mof = aStarEuclidean.solveMaze()
+            [[noe, mof, lop], path] = aStarEuclidean.solveMaze()
         elif type == self.A_STAR_MANHATTON:
             aStarManhattan = AStarManhattan(0, 0, tempMaze)
-            lop, noe, mof = aStarManhattan.solveMaze()
+            [[noe, mof, lop], path] = aStarManhattan.solveMaze()
         elif type == self.BFS:
             bfs = BFS_Queue(0, 0, tempMaze)
-            lop, noe, mof = bfs.bfs()
+            [[noe, mof, lop], path] = bfs.bfs()
         else:
             dfs = DFS_Stack(0, 0, tempMaze)
-            lop, noe, mof = dfs.dfs()
+            [[noe, mof, lop], path] = dfs.dfs()
 
-        return [lop, noe, mof]
+        return [[noe, mof, lop],path]
 
     def randomWalk(self, maze, step):
         tempMaze = copy.deepcopy(maze)
 
         Wall = []
         notWall = []
-        if len(Wall) == 0:
-            print('BFS meets the hardest maze. the maze is empty')
-            return tempMaze
-        if len(notWall) == 0:
-            print('the maze is all wall')
-            return tempMaze
+
 
         # seperate cell into two wall and notWall
         for cell in tempMaze[1:self.mazeSize * self.mazeSize - 1]:
@@ -103,6 +99,14 @@ class HillClimbing:
                 Wall.append(cell)
             else:
                 notWall.append(cell)
+
+        if len(Wall) == 0:
+            print('BFS meets the hardest maze. the maze is empty')
+            return tempMaze
+        if len(notWall) == 0:
+            print('the maze is all wall')
+            return tempMaze
+
         # remove/add a wall
         randomNum = random.random()
         if 0 <= randomNum < 0.5:
@@ -118,7 +122,15 @@ class HillClimbing:
         return tempMaze
 
 
-    def hillClimbing(self, type):
+    def hillClimbing(self, type, criteria):
+        criteriaIndex = 0
+        if criteria == self.NOE:
+            criteriaIndex = 0
+        elif criteria == self.MOF:
+            criteriaIndex = 1
+        else:
+            criteriaIndex = 2
+
         print(self.evaluateMaze(self.initSets[0], type))
 
 
@@ -130,7 +142,8 @@ class HillClimbing:
                 # 对当前的maze，爬山找到最优解
                 next = self.randomWalk(self.initSets[i], 5)
                 print('\n')
-                if self.evaluateMaze(self.initSets[i], type)[0] < self.evaluateMaze(next, type)[0]:
+                if self.evaluateMaze(self.initSets[i], type)[0][criteriaIndex] \
+                        < self.evaluateMaze(next, type)[0][criteriaIndex]:
                     # 改变后的maze赋给当前的maze，进入下一次迭代
                     consectiveFailNum = 0
                     print('SUCCESS')
@@ -141,25 +154,25 @@ class HillClimbing:
                 print(consectiveFailNum)
                 if consectiveFailNum == 10:
                     break
-
-        self.finalSets.append(self.initSets[i])
-        print('第' + str(i) + '结果: ' + str(self.evaluateMaze(self.finalSets[0]), type))
+            self.finalSets.append(self.initSets[i])
+            print('第' + str(i) + '结果: ' + str(self.evaluateMaze(self.finalSets[i], type)[0]))
 
         # 比较finalSets中的所有解，找到全局最优解
         globalMax = 0
         globalMaxIndex = 0
         for i in range(1):
-            temp = self.evaluateMaze(self.finalSets[i], self.BFS)
+            temp = self.evaluateMaze(self.finalSets[i], type)[0][criteriaIndex]
             if temp > globalMax:
                 globalMax = temp
                 globalMaxIndex = i
 
-        print('final result is: ' + str(self.evaluateMaze(self.finalSets[globalMaxIndex], self.BFS)))
+        print('final result is: ' + str(self.evaluateMaze(self.finalSets[globalMaxIndex], self.BFS)[0]))
+        printMaze(self.finalSets[globalMaxIndex])
 
 
 if __name__ == '__main__':
     print('main function')
-    hillClimbing = HillClimbing(3, 100, 0.2)
-    hillClimbing.hillClimbing(hillClimbing.DFS)
+    hillClimbing = HillClimbing(1, 100, 0.2)
+    hillClimbing.hillClimbing(hillClimbing.DFS, hillClimbing.NOE)
 
 

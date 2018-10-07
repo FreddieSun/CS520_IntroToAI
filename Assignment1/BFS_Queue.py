@@ -79,6 +79,7 @@ class BFS_Queue:
         numOfExpanded = 0
         mof = 0
         lop = 0
+        path = []
         while len(queue) != 0:
             if (len(queue) > mof):
                 mof = len(queue)
@@ -108,7 +109,7 @@ class BFS_Queue:
             print('No Path')
         numOfExpanded += 1
         print('number of node expanded', numOfExpanded)
-        return [numOfExpanded, mof, lop]
+        return [[numOfExpanded, mof,lop],path]
 
 
 

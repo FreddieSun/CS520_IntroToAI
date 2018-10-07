@@ -76,6 +76,7 @@ class DFS_Stack:
         numOfExpanded = 0
         mof = 0
         lop = 0
+        path = []
         while len(stack) != 0:
             if (len(stack) > mof):
                 mof = len(stack)
@@ -98,12 +99,12 @@ class DFS_Stack:
                     adj.parent = current
         end = time.time()
 
-        print('duration is: ', str(end - start), 's')
+        # print('duration is: ', str(end - start), 's')
         if not hasPath:
             print('No Path')
         numOfExpanded += 1
-        # print('number of node expanded is: ', numOfExpanded)
-        return [numOfExpanded,mof,lop]
+        print('number of node expanded is: ', numOfExpanded)
+        return [[numOfExpanded, mof,lop],path]
 
 
     # return the adjacent cell of the input cell

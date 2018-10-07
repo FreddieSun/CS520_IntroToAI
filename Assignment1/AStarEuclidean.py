@@ -117,6 +117,7 @@ class AStarEuclidean:
     # solve the maze
     def solveMaze(self):
         start = time.time()
+        path = []
 
         # add the start point into the heap
         heapq.heappush(self.openList, (0 + self.N - 2, self.start))
@@ -167,7 +168,7 @@ class AStarEuclidean:
 
         print('Running time is:', end - start, 's')
         numOfExpanded=len(self.closeList)
-        return [numOfExpanded, mof,lop]
+        return [[numOfExpanded, mof,lop],path]
 
 def main():
     aStar = AStarEuclidean(10, 0.1)
