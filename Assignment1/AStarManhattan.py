@@ -120,6 +120,9 @@ class AStarManhattan:
 
         # the flag to show if the maze has solution
         hasPath = False
+        mof = 0
+        numOfExpanded = 0
+        lop = 0
         # Start the loop
         while len(self.openList) != 0:
             if (len(self.openList) > mof):
@@ -165,8 +168,8 @@ class AStarManhattan:
 
 
 def main():
-    aStar = AStarManhattan(10, 0.9)
-    aStar.solveMaze()
+    aStar = AStarManhattan(10, 0.1)
+    print(aStar.solveMaze())
 
 
 if __name__ == "__main__":

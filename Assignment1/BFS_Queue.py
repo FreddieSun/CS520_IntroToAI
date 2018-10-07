@@ -149,8 +149,7 @@ def main():
     # Generate the maze with size len(maze)*len(maze) and p
     bfs = BFS_Queue(9,0.3)
     print (bfs.bfs())
-    bfs = BFS_Queue(10000,0.1)
-    bfs.bfs()
+
 
 
 
