@@ -38,6 +38,13 @@ class AStarManhattan:
             self.p = 0
             self.start = maze[0]
             self.destination = maze[self.N * self.N - 1]
+        #print the maze
+        for i in range(N):
+             for j in range(N):
+                 print(1 if self.grid[i * self.N + j].isWall else 0, end = ''),
+                 print(' ', end = '')
+                 if j % N == N - 1:
+                     print('')
 
 
 
@@ -126,6 +133,7 @@ class AStarManhattan:
         mof = 0
         numOfExpanded = 0
         lop = 0
+        moflist=[]
         # Start the loop
         while len(self.openList) != 0:
             if (len(self.openList) > mof):
@@ -159,6 +167,8 @@ class AStarManhattan:
                 # update(relax) the cell
                 self.updateCell(current, adj)
 
+
+
         if (not hasPath):
             print('No Path Found')
             # print(len(self.closeList))
@@ -166,11 +176,13 @@ class AStarManhattan:
         end = time.time()
 
         print('Running time is:', end - start, 's')
+        numOfExpanded=len(self.closeList)
+
         return [numOfExpanded, mof,lop]
 
 
 def main():
-    aStar = AStarManhattan(10, 0.1)
+    aStar = AStarManhattan(4, 0.2)
     #[numOfExpanded, mof, lop]
     print(aStar.solveMaze())
 

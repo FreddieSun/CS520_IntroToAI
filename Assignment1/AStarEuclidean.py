@@ -166,10 +166,11 @@ class AStarEuclidean:
         end = time.time()
 
         print('Running time is:', end - start, 's')
+        numOfExpanded=len(self.closeList)
         return [numOfExpanded, mof,lop]
 
 def main():
-    aStar = AStarEuclidean(10, 0.2)
+    aStar = AStarEuclidean(10, 0.1)
     print(aStar.solveMaze())
 
 if __name__ == "__main__":
