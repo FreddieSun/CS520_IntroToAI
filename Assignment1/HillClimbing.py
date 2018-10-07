@@ -135,6 +135,7 @@ class HillClimbing:
                     print('FAIL')
                 print(consectiveFailNum)
                 if consectiveFailNum == 10:
+
                     break
             self.finalSets.append(self.initSets[i])
             print('第' + str(i) + '结果: ' + str(self.evaluateMaze(self.finalSets[i], type)[0]))
