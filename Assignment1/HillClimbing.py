@@ -23,6 +23,25 @@ class HillClimbing:
         self.NOE = "NOE"
         self.MOF = "MOF"
 
+    def printMaze(self,maze):
+        n=self.mazeSize
+        mazeinit = np.zeros([n, n])
+        for i in range(n):
+            for j in range(n):
+                if maze[i * n + j].isWall:
+                    mazeinit[i][j]=1
+                else:
+                    mazeinit[i][j]=0
+        mazeDrown = Image.new('RGB', (n, n))
+        mazeX = mazeDrown.load()
+        for i in range(n):
+            for j in range(n):
+                if mazeinit[j][i] == 0:
+                    mazeX[i, j] = (255, 255, 255)
+                else:
+                    mazeX[i, j] = (0, 0, 0)
+        mazeDrown.show()
+
     def getCell(self, x, y, maze):
         return maze[x * self.mazeSize + y]
 
@@ -38,6 +57,7 @@ class HillClimbing:
                     tempMaze.append(Cell(i, j, False))
         tempMaze[0].isWall = False
         tempMaze[mazeSize * mazeSize - 1].isWall = False
+
         return tempMaze
 
     # generate a number of initSetsNum mazes and store them in the InitSets list.
