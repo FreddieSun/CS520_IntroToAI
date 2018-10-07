@@ -83,26 +83,30 @@ class BFS_Queue:
             if (len(queue) > mof):
                 mof = len(queue)
             current = queue.popleft()
-            numOfExpanded += 1
+            #numOfExpanded += 1
             if current == self.destination:
                 print('find the path')
                 path=self.showPath(self.destination)
                 lop =len(path)
                 # self.printMaze()
                 hasPath = True
+                
                 break
             if not current.visited:
+                numOfExpanded += 1 
                 current.visited = True
                 for adj in self.getAdj(current):
                     if adj.visited:
                         continue
                     queue.append(adj)
+
                     adj.parent = current
         end = time.time()
 
         print('duration is: ', str(end - start), 's')
         if not hasPath:
             print('No Path')
+        numOfExpanded += 1
         print('number of node expanded', numOfExpanded)
         return [numOfExpanded, mof, lop]
 
@@ -149,7 +153,7 @@ class BFS_Queue:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    bfs = BFS_Queue(9,0.3)
+    bfs = BFS_Queue(100,0.1)
     #[numOfExpanded, mof, lop]
     print (bfs.bfs())
 

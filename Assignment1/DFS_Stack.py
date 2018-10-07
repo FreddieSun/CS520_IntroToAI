@@ -80,7 +80,7 @@ class DFS_Stack:
             if (len(stack) > mof):
                 mof = len(stack)
             current = stack.pop()
-            numOfExpanded += 1
+
             if current == self.destination:
                 print('find the path')
                 path = self.showPath(self.destination)
@@ -90,6 +90,7 @@ class DFS_Stack:
                 break
             if not current.visited:
                 current.visited = True
+                numOfExpanded += 1
                 for adj in self.getAdj(current):
                     if adj.visited:
                         continue
@@ -100,6 +101,7 @@ class DFS_Stack:
         print('duration is: ', str(end - start), 's')
         if not hasPath:
             print('No Path')
+        numOfExpanded += 1
         print('number of node expanded is: ', numOfExpanded)
         return [numOfExpanded,mof,lop]
 
@@ -145,7 +147,7 @@ class DFS_Stack:
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    dfs = DFS_Stack(99,0.2)
+    dfs = DFS_Stack(10,0.2)
     #[numOfExpanded, mof, lop]
     print(dfs.dfs())
 
