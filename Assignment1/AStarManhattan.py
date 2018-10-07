@@ -98,18 +98,18 @@ class AStarManhattan:
         pathy = []
         curr = destination
         while curr.parent != self.start:
-            print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+            # print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
             pathx.append(curr.x)
             pathy.append(curr.y)
             curr = curr.parent
-        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+        # print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
         pathx.append(curr.x)
         pathy.append(curr.y)
-        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
+        # print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
         pathx.append(self.start.x)
         pathy.append(self.start.y)
-        print('\n')
-        print('number of node expanded is: ' + str(len(self.closeList)))
+        # print('\n')
+        # print('number of node expanded is: ' + str(len(self.closeList)))
         path = list(zip(pathx, pathy))
         return len(self.closeList),path
 
@@ -138,7 +138,6 @@ class AStarManhattan:
                 print('find the path')
                 numOfExpanded, path = self.showPath(current)
                 lop = len(path)
-                self.showPath(current)
                 hasPath = True
                 break
 
@@ -162,7 +161,7 @@ class AStarManhattan:
 
         if (not hasPath):
             print('No Path Found')
-            print(len(self.closeList))
+            # print(len(self.closeList))
 
         end = time.time()
 

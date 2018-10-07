@@ -88,7 +88,7 @@ class BFS_Queue:
                 print('find the path')
                 path=self.showPath(self.destination)
                 lop =len(path)
-                self.printMaze()
+                # self.printMaze()
                 hasPath = True
                 break
             if not current.visited:
@@ -133,17 +133,17 @@ class BFS_Queue:
         pathy=[]
         curr = destination
         while curr.parent != self.start:
-            print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+            # print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
             pathx.append(curr.x)
             pathy.append(curr.y)
             curr = curr.parent
-        print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
+        # print('(' + str(curr.x) + ',' + str(curr.y) + ')' + '--', end='')
         pathx.append(curr.x)
         pathy.append(curr.y)
-        print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
+        # print('(' + str(self.start.x) + ',' + str(self.start.y) + ')', end='')
         pathx.append(self.start.x)
         pathy.append(self.start.y)
-        print('\n')
+        # print('\n')
         path=list(zip(pathy,pathx))
         return path
 

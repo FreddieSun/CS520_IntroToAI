@@ -25,31 +25,6 @@ class HillClimbing:
         self.NOE = "NOE"
         self.MOF = "MOF"
 
-    def hillClimbing(self):
-        exitFlag = False
-        # 对每一个maze，找到他的最优解， 故循环100次
-        for i in range(100):
-            while (exitFlag):
-                # 对当前的maze，爬山找到最优解
-                next = self.randomWalk(self.initSets[i])
-                if (self.evaluateMaze(next) > self.evaluateMaze(self.initSets[i])):
-                    # 改变后的maze赋给当前的maze，进入下一次迭代
-                    self.initSets[i] = next
-
-            self.finalSets[i] = self.initSets[i]
-
-        # 比较finalSets中的所有解，找到全局最优解
-        globalMax = 0
-        globalMaxIndex = 0
-        for i in range(100):
-            temp = self.evaluateMaze(self.finalSets[i], self.A_STAR_MANHATTON, self.NOE)
-            if temp > globalMax:
-                globalMax = temp
-                globalMaxIndex = i
-
-        return self.finalSets[globalMaxIndex]
-
-
     def getCell(self, x, y, maze):
         return maze[x * self.mazeSize + y]
 
@@ -75,6 +50,22 @@ class HillClimbing:
             self.initSets.append(self.generateMaze(mazeSize, p))
         return self.initSets
 
+    def evaluateMaze(self, maze, type):
+        if type == self.A_STAR_EUCLIDEAN:
+            aStarEuclidean = AStarEuclidean(0, 0, maze)
+            lop, noe, mof = aStarEuclidean.solveMaze()
+        elif type == self.A_STAR_MANHATTON:
+            aStarManhattan = AStarManhattan(0, 0, maze)
+            lop, noe, mof = aStarManhattan.solveMaze()
+        elif type == self.BFS:
+            bfs = BFS_Queue(0, 0, maze)
+            lop, noe, mof = bfs.bfs()
+        else:
+            dfs = DFS_Stack(0, 0, maze)
+            lop, noe, mof = dfs.dfs()
+
+        return [lop, noe, mof]
+
     def randomWalk(self, maze, step):
         Wall = []
         notWall = []
@@ -98,29 +89,36 @@ class HillClimbing:
                 self.getCell(notWallCell.x, notWallCell.y, maze).isWall = True
         return maze
 
-    def evaluateMaze(self, maze, type):
-        lop = 0
-        noe = 0
-        mof = 0
-        if type == self.A_STAR_EUCLIDEAN:
-            aStarEuclidean = AStarEuclidean(0, 0, maze)
-            lop, noe, mof = aStarEuclidean.solveMaze()
-        elif type == self.A_STAR_MANHATTON:
-            aStarManhattan = AStarManhattan(0, 0, maze)
-            lop, noe, mof = aStarManhattan.solveMaze()
-        elif type == self.BFS:
-            bfs = BFS_Queue(0, 0, maze)
-            lop, noe, mof = bfs.bfs()
-        else:
-            dfs = DFS_Stack(0, 0, maze)
-            lop, noe, mof = dfs.dfs()
 
-        return [lop, noe, mof]
+
+   def hillClimbing(self):
+        exitFlag = False
+        print(self.evaluateMaze(self.initSets[0],'BFS'))
+
+        # 对每一个maze，找到他的最优解， 故循环100次
+        for i in range(1):
+            for j in range(100):
+                # 对当前的maze，爬山找到最优解
+                next = self.randomWalk(self.initSets[i])
+                if self.evaluateMaze(next, 'BFS')[0] > self.evaluateMaze(self.initSets[i], 'BFS')[0]:
+                    # 改变后的maze赋给当前的maze，进入下一次迭代
+                    self.initSets[i] = next
+            self.finalSets[i] = self.initSets[i]
+
+        # # 比较finalSets中的所有解，找到全局最优解
+        # globalMax = 0
+        # globalMaxIndex = 0
+        # for i in range(100):
+        #     temp = self.evaluateMaze(self.finalSets[i], self.A_STAR_MANHATTON, self.NOE)
+        #     if temp > globalMax:
+        #         globalMax = temp
+        #         globalMaxIndex = i
+        #
+        # return self.finalSets[globalMaxIndex]
+        print(self.evaluateMaze(self.finalSets[0],'BFS'))
+
 
 
 if __name__ == '__main__':
     print('main function')
-    hillClimbing = HillClimbing(100, 100, 0.2)
-    result = hillClimbing.evaluateMaze(hillClimbing.initSets[0], hillClimbing.BFS)
-    print(result)
-
+    hillClimbing = HillClimbing(1, 100, 0.2)
