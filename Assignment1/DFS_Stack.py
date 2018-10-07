@@ -39,8 +39,10 @@ class DFS_Stack:
             #             print('')
         else:
             self.maze = maze
-            self.N = len(maze)
+            self.N = int(np.sqrt(len(maze)))
             self.P = 0
+            self.start = maze[0]
+            self.destination = maze[self.N * self.N - 1]
 
     def printMaze(self):
         n = self.N

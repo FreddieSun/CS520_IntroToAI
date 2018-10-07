@@ -39,6 +39,16 @@ class HillClimbing:
             self.finalSets[i] = self.initSets[i]
 
         # 比较finalSets中的所有解，找到全局最优解
+        globalMax = 0
+        globalMaxIndex = 0
+        for i in range(100):
+            temp = self.evaluateMaze(self.finalSets[i], self.A_STAR_MANHATTON, self.NOE)
+            if temp > globalMax:
+                globalMax = temp
+                globalMaxIndex = i
+
+        return self.finalSets[globalMaxIndex]
+
 
     def getCell(self, x, y, maze):
         return maze[x * self.mazeSize + y]
@@ -63,35 +73,34 @@ class HillClimbing:
         p = self.p
         for i in range(initSetsNum):
             self.initSets.append(self.generateMaze(mazeSize, p))
-        print(self.initSets)
         return self.initSets
 
     def randomWalk(self, maze):
         print('randomWalk')
 
     def evaluateMaze(self, maze, type, criteria):
+        lop = 0
+        noe = 0
+        mof = 0
         if type == self.A_STAR_EUCLIDEAN:
             aStarEuclidean = AStarEuclidean(0, 0, maze)
             lop, noe, mof = aStarEuclidean.solveMaze()
         elif type == self.A_STAR_MANHATTON:
             aStarManhattan = AStarManhattan(0, 0, maze)
             lop, noe, mof = aStarManhattan.solveMaze()
-            print('a*')
         elif type == self.BFS:
             bfs = BFS_Queue(0, 0, maze)
             lop, noe, mof = bfs.bfs()
-            print('BFS')
         else:
             dfs = DFS_Stack(0, 0, maze)
             lop, noe, mof = dfs.dfs()
-            print('DFS')
 
-
-
-        print('evaluateMaze')
-        return 1
+        return [lop, noe, mof]
 
 
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(100, 100, 0.2)
+    result = hillClimbing.evaluateMaze(hillClimbing.initSets[0], hillClimbing.BFS, hillClimbing.NOE)
+    print(result)
+

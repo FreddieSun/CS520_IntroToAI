@@ -34,8 +34,11 @@ class AStarManhattan:
 
         else:
             self.grid = maze
-            self.N = len(maze)
+            self.N = int(np.sqrt(len(maze)))
             self.p = 0
+            self.start = maze[0]
+            self.destination = maze[self.N * self.N - 1]
+
 
 
     def printMaze(self):
