@@ -8,10 +8,27 @@ cells = []
 A = Cell(2, 2, True)
 B = Cell(2, 2, True)
 
+A = Cell(2, 2, True)
+B = Cell(2, 2, True)
+
+A = Cell(2, 2, True)
+B = Cell(2, 2, True)
+
 heapq.heapify(cells)
 heapq.heappush(cells, (10, A))
 heapq.heappush(cells, (10, B))
+heapq.heappush(cells, (10, A))
+heapq.heappush(cells, (10, B))
+heapq.heappush(cells, (10, A))
+heapq.heappush(cells, (10, B))
+heapq.heappush(cells, (10, A))
+heapq.heappush(cells, (10, B))
+
+print(len(cells))
 
 print(heapq.heappop(cells))
 print(heapq.heappop(cells))
+
+print(len(cells))
+
 

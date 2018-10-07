@@ -66,59 +66,80 @@ class HillClimbing:
         return [lop, noe, mof]
 
     def randomWalk(self, maze, step):
+        tempMaze = copy.deepcopy(maze)
+
         Wall = []
         notWall = []
+        if len(Wall) == 0:
+            print('BFS meets the hardest maze. the maze is empty')
+            return tempMaze
+        if len(notWall) == 0:
+            print('the maze is all wall')
+            return tempMaze
+
         # seperate cell into two wall and notWall
-        for cell in maze[1:len(self.maze) - 1]:
+        for cell in tempMaze[1:self.mazeSize * self.mazeSize - 1]:
             if cell.isWall is True:
                 Wall.append(cell)
             else:
                 notWall.append(cell)
         # remove/add a wall
-        randomNum = random.randint(0, 1)
-        if randomNum == 0:
+        randomNum = random.random()
+        if 0 <= randomNum < 0.5:
             for i in range(step):
                 # from wall find a wallcell
                 wallCell = Wall[random.randint(0, len(Wall) - 1)]
-                self.getCell(wallCell.x, wallCell.y, maze).isWall = False
+                self.getCell(wallCell.x, wallCell.y, tempMaze).isWall = False
         else:
             for i in range(step):
                 # from notwall find a notwallcell
                 notWallCell = notWall[random.randint(0, len(notWall) - 1)]
-                self.getCell(notWallCell.x, notWallCell.y, maze).isWall = True
-        return maze
+                self.getCell(notWallCell.x, notWallCell.y, tempMaze).isWall = True
+        return tempMaze
 
 
-    def hillClimbing(self):
-        print(self.evaluateMaze(self.initSets[0],'BFS'))
+    def hillClimbing(self, type):
+        print(self.evaluateMaze(self.initSets[0], type))
+
 
         # 对每一个maze，找到他的最优解， 故循环100次
-        for i in range(1):
-            for j in range(100):
+        for i in range(self.initSetsNum):
+            consectiveFailNum = 0
+            while(True):
+
                 # 对当前的maze，爬山找到最优解
-                next = self.randomWalk(self.initSets[i], 10)
-                if self.evaluateMaze(next, 'BFS')[0] > self.evaluateMaze(self.initSets[i], 'BFS')[0]:
+                next = self.randomWalk(self.initSets[i], 5)
+                print('\n')
+                if self.evaluateMaze(self.initSets[i], type)[0] < self.evaluateMaze(next, type)[0]:
                     # 改变后的maze赋给当前的maze，进入下一次迭代
-                    print('优化成功')
+                    consectiveFailNum = 0
+                    print('SUCCESS')
                     self.initSets[i] = next
                 else:
-                    print('优化失败')
-            self.finalSets.append(self.initSets[i])
-        print(self.evaluateMaze(self.finalSets[0], 'BFS'))
-        # # 比较finalSets中的所有解，找到全局最优解
-        # globalMax = 0
-        # globalMaxIndex = 0
-        # for i in range(100):
-        #     temp = self.evaluateMaze(self.finalSets[i], self.A_STAR_MANHATTON, self.NOE)
-        #     if temp > globalMax:
-        #         globalMax = temp
-        #         globalMaxIndex = i
-        #
-        # return self.finalSets[globalMaxIndex]
+                    consectiveFailNum += 1
+                    print('FAIL')
+                print(consectiveFailNum)
+                if consectiveFailNum == 10:
+                    break
+
+        self.finalSets.append(self.initSets[i])
+        print('第' + str(i) + '结果: ' + str(self.evaluateMaze(self.finalSets[0]), type))
+
+        # 比较finalSets中的所有解，找到全局最优解
+        globalMax = 0
+        globalMaxIndex = 0
+        for i in range(1):
+            temp = self.evaluateMaze(self.finalSets[i], self.BFS)
+            if temp > globalMax:
+                globalMax = temp
+                globalMaxIndex = i
+
+        print('final result is: ' + str(self.evaluateMaze(self.finalSets[globalMaxIndex], self.BFS)))
 
 
 if __name__ == '__main__':
     print('main function')
-    hillClimbing = HillClimbing(1, 100, 0.2)
-    hillClimbing.hillClimbing()
+    hillClimbing = HillClimbing(3, 100, 0.2)
+    hillClimbing.hillClimbing(hillClimbing.DFS)
+
 

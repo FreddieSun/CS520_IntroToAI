@@ -102,7 +102,7 @@ class DFS_Stack:
         if not hasPath:
             print('No Path')
         numOfExpanded += 1
-        print('number of node expanded is: ', numOfExpanded)
+        # print('number of node expanded is: ', numOfExpanded)
         return [numOfExpanded,mof,lop]
 
 

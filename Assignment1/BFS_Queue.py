@@ -103,7 +103,7 @@ class BFS_Queue:
                     adj.parent = current
         end = time.time()
 
-        print('duration is: ', str(end - start), 's')
+        # print('duration is: ', str(end - start), 's')
         if not hasPath:
             print('No Path')
         numOfExpanded += 1
