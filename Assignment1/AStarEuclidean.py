@@ -5,6 +5,7 @@ from Cell import *
 import time
 from PIL import Image
 from scipy.spatial import distance
+from PrintMaze import *
 
 
 class AStarEuclidean:
@@ -45,29 +46,29 @@ class AStarEuclidean:
     def getCell(self, x, y):
         return self.grid[x * self.N + y]
 
-    def printMaze(self):
-        n = self.N
-        maze = np.zeros([n, n])
-        for i in range(n):
-            for j in range(n):
-                if self.grid[i * self.N + j].isWall:
-                    maze[i][j] = 1
-                else:
-                    maze[i][j] = 0
-        mazeDrown = Image.new('RGB', (n, n))
-        mazeX = mazeDrown.load()
-        for i in range(n):
-            for j in range(n):
-                if maze[j][i] == 0:
-                    mazeX[i, j] = (255, 255, 255)
-                else:
-                    mazeX[i, j] = (0, 0, 0)
-        path = self.showPath(self.destination)
-        print(n)
-
-        for i in path:
-            mazeX[i] = (134, 205, 133)
-        mazeDrown.show()
+    # def printMaze(self):
+    #     n = self.N
+    #     maze = np.zeros([n, n])
+    #     for i in range(n):
+    #         for j in range(n):
+    #             if self.grid[i * self.N + j].isWall:
+    #                 maze[i][j] = 1
+    #             else:
+    #                 maze[i][j] = 0
+    #     mazeDrown = Image.new('RGB', (n, n))
+    #     mazeX = mazeDrown.load()
+    #     for i in range(n):
+    #         for j in range(n):
+    #             if maze[j][i] == 0:
+    #                 mazeX[i, j] = (255, 255, 255)
+    #             else:
+    #                 mazeX[i, j] = (0, 0, 0)
+    #     path = self.showPath(self.destination)
+    #     print(n)
+    #
+    #     for i in path:
+    #         mazeX[i] = (134, 205, 133)
+    #     mazeDrown.show()
 
 
         # return the adjacent cell of the input cell
@@ -110,7 +111,7 @@ class AStarEuclidean:
         pathx.append(self.start.x)
         pathy.append(self.start.y)
         # print('\n')
-        path = list(zip(pathy, pathx))
+        path = list(zip(pathx, pathy))
         return len(self.closeList),path
 
 
@@ -139,7 +140,7 @@ class AStarEuclidean:
                 print('find the path')
                 numOfExpanded, path = self.showPath(current)
                 lop = len(path)
-                #self.printMaze()
+                printPath(self.grid, path)
                 hasPath = True
                 break
 
@@ -172,7 +173,7 @@ class AStarEuclidean:
         return [[numOfExpanded, mof,lop],path, hasPath]
 
 def main():
-    aStar = AStarEuclidean(10, 0.1)
+    aStar = AStarEuclidean(100, 0.3)
     print(aStar.solveMaze())
 
 if __name__ == "__main__":

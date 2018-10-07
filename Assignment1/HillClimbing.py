@@ -138,7 +138,7 @@ class HillClimbing:
                     consectiveFailNum += 1
                     print('FAIL')
                 print(consectiveFailNum)
-                if consectiveFailNum == 20:
+                if consectiveFailNum == 10:
                     if currentValue[2] == False:
                         failMazeList.append(i)
                     break
@@ -169,4 +169,4 @@ class HillClimbing:
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(10, 100, 0.3)
-    hillClimbing.hillClimbing(hillClimbing.DFS, hillClimbing.LOP)
+    hillClimbing.hillClimbing(hillClimbing.A_STAR_EUCLIDEAN, hillClimbing.LOP)

@@ -42,6 +42,7 @@ def printPath(maze,path):
             else:
                 mazeX[i, j] = (0, 0, 0)
     mazeDrown.show()
+    finalpath = []
     for i in path:
         x.append(i[0])
         y.append(i[1])
