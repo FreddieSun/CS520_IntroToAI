@@ -75,8 +75,28 @@ class HillClimbing:
             self.initSets.append(self.generateMaze(mazeSize, p))
         return self.initSets
 
-    def randomWalk(self, maze):
-        print('randomWalk')
+    def randomWalk(self, maze, step):
+        Wall = []
+        notWall = []
+        # seperate cell into two wall and notWall
+        for cell in maze[1:len(self.cells) - 1]:
+            if cell.isWall is True:
+                Wall.append(cell)
+            else:
+                notWall.append(cell)
+        # remove/add a wall
+        randomNum = random.randint(0, 1)
+        if randomNum == 0:
+            for i in range(step):
+                # from wall find a wallcell
+                wallCell = Wall[random.randint(0, len(Wall) - 1)]
+                self.getCell(wallCell.x, wallCell.y, maze).isWall = False
+        else:
+            for i in range(step):
+                # from notwall find a notwallcell
+                notWallCell = notWall[random.randint(0, len(notWall) - 1)]
+                self.getCell(notWallCell.x, notWallCell.y, maze).isWall = True
+        return maze
 
     def evaluateMaze(self, maze, type, criteria):
         lop = 0
