@@ -129,6 +129,10 @@ class HillClimbing:
                 currentValue = self.evaluateMaze(self.initSets[i], type)
                 nextValue = self.evaluateMaze(next, type)
 
+                if currentValue[2] == False:
+                    failMazeList.append(i)
+                    break
+
                 if currentValue[0][criteriaIndex]  < nextValue[0][criteriaIndex]:
                     # 改变后的maze赋给当前的maze，进入下一次迭代
                     consectiveFailNum = 0
@@ -169,4 +173,4 @@ class HillClimbing:
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(10, 100, 0.3)
-    hillClimbing.hillClimbing(hillClimbing.A_STAR_EUCLIDEAN, hillClimbing.LOP)
+    hillClimbing.hillClimbing(hillClimbing.A_STAR_EUCLIDEAN, hillClimbing.NOE)

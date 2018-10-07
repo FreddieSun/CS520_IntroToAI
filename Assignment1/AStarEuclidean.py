@@ -140,7 +140,7 @@ class AStarEuclidean:
                 print('find the path')
                 numOfExpanded, path = self.showPath(current)
                 lop = len(path)
-                printPath(self.grid, path)
+                # printPath(self.grid, path)
                 hasPath = True
                 break
 
@@ -168,7 +168,7 @@ class AStarEuclidean:
         end = time.time()
 
         # print('Running time is:', end - start, 's')
-        print('lop is: ' , lop)
+        print('noe is: ' , noe)
         numOfExpanded=len(self.closeList)
         return [[numOfExpanded, mof,lop],path, hasPath]
 
