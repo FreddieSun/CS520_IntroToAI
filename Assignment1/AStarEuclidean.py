@@ -109,7 +109,7 @@ class AStarEuclidean:
         pathy.append(self.start.y)
         print('\n')
         path = list(zip(pathy, pathx))
-        return path
+        return len(self.closeList),path
 
 
     # solve the maze
@@ -122,14 +122,19 @@ class AStarEuclidean:
         # the flag to show if the maze has solution
         hasPath = False
         # Start the loop
+        mof = 0
+        lop = 0
         while len(self.openList) != 0:
+            if (len(self.openList) > mof):
+                mof = len(self.openList)
             # pop the cell which with the min f out
             current = heapq.heappop(self.openList)[1]
 
             # check if the current cell arrives the destination
             if current == self.destination:
                 print('find the path')
-                self.showPath(current)
+                numOfExpanded, path = self.showPath(current)
+                lop = len(path)
                 self.printMaze()
                 hasPath = True
                 break
@@ -158,6 +163,7 @@ class AStarEuclidean:
         end = time.time()
 
         print('Running time is:', end - start, 's')
+        return [numOfExpanded, mof,lop]
 
 def main():
     aStar = AStarEuclidean(100, 0.2)

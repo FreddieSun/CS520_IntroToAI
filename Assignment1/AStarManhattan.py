@@ -108,7 +108,7 @@ class AStarManhattan:
         print('\n')
         print('number of node expanded is: ' + str(len(self.closeList)))
         path = list(zip(pathx, pathy))
-        return path
+        return len(self.closeList),path
 
         # solve the maze
     def solveMaze(self):
@@ -122,12 +122,16 @@ class AStarManhattan:
         hasPath = False
         # Start the loop
         while len(self.openList) != 0:
+            if (len(self.openList) > mof):
+                mof = len(self.openList)
             # pop the cell which with the min f out
             current = heapq.heappop(self.openList)[1]
 
             # check if the current cell arrives the destination
             if current == self.destination:
                 print('find the path')
+                numOfExpanded, path = self.showPath(current)
+                lop = len(path)
                 self.showPath(current)
                 hasPath = True
                 break
@@ -157,7 +161,7 @@ class AStarManhattan:
         end = time.time()
 
         print('Running time is:', end - start, 's')
-
+        return [numOfExpanded, mof,lop]
 
 
 def main():
