@@ -98,7 +98,7 @@ class HillClimbing:
                 self.getCell(notWallCell.x, notWallCell.y, maze).isWall = True
         return maze
 
-    def evaluateMaze(self, maze, type, criteria):
+    def evaluateMaze(self, maze, type):
         lop = 0
         noe = 0
         mof = 0
@@ -121,6 +121,6 @@ class HillClimbing:
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(100, 100, 0.2)
-    result = hillClimbing.evaluateMaze(hillClimbing.initSets[0], hillClimbing.BFS, hillClimbing.NOE)
+    result = hillClimbing.evaluateMaze(hillClimbing.initSets[0], hillClimbing.BFS)
     print(result)
 
