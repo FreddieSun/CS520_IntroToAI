@@ -166,7 +166,8 @@ class AStarEuclidean:
 
         end = time.time()
 
-        print('Running time is:', end - start, 's')
+        # print('Running time is:', end - start, 's')
+        print('noe is: ' , numOfExpanded)
         numOfExpanded=len(self.closeList)
         return [[numOfExpanded, mof,lop],path, hasPath]
 

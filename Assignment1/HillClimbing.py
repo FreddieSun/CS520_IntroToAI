@@ -168,4 +168,4 @@ class HillClimbing:
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(10, 100, 0.2)
-    hillClimbing.hillClimbing(hillClimbing.DFS, hillClimbing.NOE)
+    hillClimbing.hillClimbing(hillClimbing.A_STAR_MANHATTON, hillClimbing.NOE)
