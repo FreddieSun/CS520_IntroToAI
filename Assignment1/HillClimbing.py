@@ -24,24 +24,7 @@ class HillClimbing:
         self.NOE = "NOE"
         self.MOF = "MOF"
 
-    def printMaze(self,maze):
-        n=self.mazeSize
-        mazeinit = np.zeros([n, n])
-        for i in range(n):
-            for j in range(n):
-                if maze[i * n + j].isWall:
-                    mazeinit[i][j]=1
-                else:
-                    mazeinit[i][j]=0
-        mazeDrown = Image.new('RGB', (n, n))
-        mazeX = mazeDrown.load()
-        for i in range(n):
-            for j in range(n):
-                if mazeinit[j][i] == 0:
-                    mazeX[i, j] = (255, 255, 255)
-                else:
-                    mazeX[i, j] = (0, 0, 0)
-        mazeDrown.show()
+
 
     def getCell(self, x, y, maze):
         return maze[x * self.mazeSize + y]
@@ -134,6 +117,7 @@ class HillClimbing:
         print(self.evaluateMaze(self.initSets[0], type))
 
 
+
         # 对每一个maze，找到他的最优解， 故循环100次
         for i in range(self.initSetsNum):
             consectiveFailNum = 0
@@ -167,7 +151,10 @@ class HillClimbing:
                 globalMaxIndex = i
 
         print('final result is: ' + str(self.evaluateMaze(self.finalSets[globalMaxIndex], self.BFS)[0]))
-        printMaze(self.finalSets[globalMaxIndex])
+        path=self.evaluateMaze(self.finalSets[globalMaxIndex],self.BFS)[1]
+
+        printMaze(self.finalSets[globalMaxIndex],path)
+        printPath(self.finalSets[globalMaxIndex],path)
 
 
 if __name__ == '__main__':
