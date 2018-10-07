@@ -138,7 +138,7 @@ class HillClimbing:
                     consectiveFailNum += 1
                     print('FAIL')
                 print(consectiveFailNum)
-                if consectiveFailNum == 10:
+                if consectiveFailNum == 20:
                     if currentValue[2] == False:
                         failMazeList.append(i)
                     break
@@ -148,24 +148,25 @@ class HillClimbing:
         # 比较finalSets中的所有解，找到全局最优解
         globalMax = 0
         globalMaxIndex = 0
+
+
         for i in range(self.initSetsNum):
             if i in failMazeList:
                 continue
-            temp = self.evaluateMaze(self.finalSets[i], type)[0][criteriaIndex]
-            if temp > globalMax:
-                globalMax = temp
+            print('第' + str(i) +'迷宫的初始数据：', str(self.evaluateMaze(self.initSets[i], type)[0]))
+            print('第' + str(i) +'迷宫的最终数据：', str(self.evaluateMaze(self.finalSets[i], type)[0]))
+            temp = self.evaluateMaze(self.finalSets[i], type)[0]
+            if temp[criteriaIndex] > globalMax:
+                globalMax = temp[criteriaIndex]
                 globalMaxIndex = i
 
         print('final result is: ' + str(self.evaluateMaze(self.finalSets[globalMaxIndex], type)[0]))
         path = self.evaluateMaze(self.finalSets[globalMaxIndex], type)[1]
 
-
-
-        # printMaze(self.finalSets[globalMaxIndex])
         printPath(self.finalSets[globalMaxIndex], path)
 
 
 if __name__ == '__main__':
     print('main function')
-    hillClimbing = HillClimbing(10, 100, 0.2)
-    hillClimbing.hillClimbing(hillClimbing.A_STAR_MANHATTON, hillClimbing.NOE)
+    hillClimbing = HillClimbing(10, 100, 0.3)
+    hillClimbing.hillClimbing(hillClimbing.DFS, hillClimbing.LOP)
