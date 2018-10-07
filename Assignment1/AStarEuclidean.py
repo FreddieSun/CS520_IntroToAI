@@ -126,6 +126,7 @@ class AStarEuclidean:
         # Start the loop
         mof = 0
         lop = 0
+        numOfExpanded = 0
         while len(self.openList) != 0:
             if (len(self.openList) > mof):
                 mof = len(self.openList)
@@ -137,7 +138,7 @@ class AStarEuclidean:
                 print('find the path')
                 numOfExpanded, path = self.showPath(current)
                 lop = len(path)
-                self.printMaze()
+                #self.printMaze()
                 hasPath = True
                 break
 
@@ -168,8 +169,9 @@ class AStarEuclidean:
         return [numOfExpanded, mof,lop]
 
 def main():
-    aStar = AStarEuclidean(100, 0.2)
-    aStar.solveMaze()
+    aStar = AStarEuclidean(10, 0.2)
+    #[numOfExpanded, mof, lop]
+    print(aStar.solveMaze())
 
 if __name__ == "__main__":
     main()
