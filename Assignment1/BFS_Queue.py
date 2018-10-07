@@ -109,7 +109,7 @@ class BFS_Queue:
             print('No Path')
         numOfExpanded += 1
         print('number of node expanded', numOfExpanded)
-        return [[numOfExpanded, mof,lop],path]
+        return [[numOfExpanded, mof,lop],path, hasPath]
 
 
 

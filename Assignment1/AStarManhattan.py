@@ -178,7 +178,7 @@ class AStarManhattan:
         print('Running time is:', end - start, 's')
         numOfExpanded=len(self.closeList)
 
-        return [[numOfExpanded, mof,lop],path]
+        return [[numOfExpanded, mof,lop],path, hasPath]
 
 
 def main():

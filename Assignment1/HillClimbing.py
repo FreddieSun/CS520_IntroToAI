@@ -57,18 +57,18 @@ class HillClimbing:
         tempMaze = copy.deepcopy(maze)
         if type == self.A_STAR_EUCLIDEAN:
             aStarEuclidean = AStarEuclidean(0, 0, tempMaze)
-            [[noe, mof, lop], path] = aStarEuclidean.solveMaze()
+            [[noe, mof, lop], path, hasPath] = aStarEuclidean.solveMaze()
         elif type == self.A_STAR_MANHATTON:
             aStarManhattan = AStarManhattan(0, 0, tempMaze)
-            [[noe, mof, lop], path] = aStarManhattan.solveMaze()
+            [[noe, mof, lop], path, hasPath] = aStarManhattan.solveMaze()
         elif type == self.BFS:
             bfs = BFS_Queue(0, 0, tempMaze)
-            [[noe, mof, lop], path] = bfs.bfs()
+            [[noe, mof, lop], path, hasPath] = bfs.bfs()
         else:
             dfs = DFS_Stack(0, 0, tempMaze)
-            [[noe, mof, lop], path] = dfs.dfs()
+            [[noe, mof, lop], path, hasPath] = dfs.dfs()
 
-        return [[noe, mof, lop], path]
+        return [[noe, mof, lop], path, hasPath]
 
     # use random walk to change the maze
     def randomWalk(self, maze, step):
@@ -116,6 +116,8 @@ class HillClimbing:
 
         print(self.evaluateMaze(self.initSets[0], type))
 
+        failMazeList = []
+
         # 对每一个maze，找到他的最优解， 故循环self.InitSetsNum次
         for i in range(self.initSetsNum):
             # random walk十次失败后，结束爬山算法
@@ -124,8 +126,10 @@ class HillClimbing:
                 # 对当前的maze，爬山找到最优解
                 next = self.randomWalk(self.initSets[i], 5)
                 print('\n')
-                if self.evaluateMaze(self.initSets[i], type)[0][criteriaIndex] \
-                        < self.evaluateMaze(next, type)[0][criteriaIndex]:
+                currentValue = self.evaluateMaze(self.initSets[i], type)
+                nextValue = self.evaluateMaze(next, type)
+
+                if currentValue[0][criteriaIndex]  < nextValue[0][criteriaIndex]:
                     # 改变后的maze赋给当前的maze，进入下一次迭代
                     consectiveFailNum = 0
                     print('SUCCESS')
@@ -135,7 +139,8 @@ class HillClimbing:
                     print('FAIL')
                 print(consectiveFailNum)
                 if consectiveFailNum == 10:
-
+                    if currentValue[2] == False:
+                        failMazeList.append(i)
                     break
             self.finalSets.append(self.initSets[i])
             print('第' + str(i) + '结果: ' + str(self.evaluateMaze(self.finalSets[i], type)[0]))
@@ -144,6 +149,8 @@ class HillClimbing:
         globalMax = 0
         globalMaxIndex = 0
         for i in range(self.initSetsNum):
+            if i in failMazeList:
+                continue
             temp = self.evaluateMaze(self.finalSets[i], type)[0][criteriaIndex]
             if temp > globalMax:
                 globalMax = temp
