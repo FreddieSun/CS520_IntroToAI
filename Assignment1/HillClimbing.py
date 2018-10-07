@@ -4,10 +4,9 @@ from DFS_Stack import *
 from AStarEuclidean import *
 from AStarManhattan import *
 from BFS_Queue import *
+import copy
 
 class HillClimbing:
-
-
     def __init__(self, initSetsNum, mazeSize, p):
         self.initSetsNum = initSetsNum
         self.initSets = []
@@ -50,17 +49,18 @@ class HillClimbing:
         return self.initSets
 
     def evaluateMaze(self, maze, type):
+        tempMaze = copy.deepcopy(maze)
         if type == self.A_STAR_EUCLIDEAN:
-            aStarEuclidean = AStarEuclidean(0, 0, maze)
+            aStarEuclidean = AStarEuclidean(0, 0, tempMaze)
             lop, noe, mof = aStarEuclidean.solveMaze()
         elif type == self.A_STAR_MANHATTON:
-            aStarManhattan = AStarManhattan(0, 0, maze)
+            aStarManhattan = AStarManhattan(0, 0, tempMaze)
             lop, noe, mof = aStarManhattan.solveMaze()
         elif type == self.BFS:
-            bfs = BFS_Queue(0, 0, maze)
+            bfs = BFS_Queue(0, 0, tempMaze)
             lop, noe, mof = bfs.bfs()
         else:
-            dfs = DFS_Stack(0, 0, maze)
+            dfs = DFS_Stack(0, 0, tempMaze)
             lop, noe, mof = dfs.dfs()
 
         return [lop, noe, mof]
@@ -69,7 +69,7 @@ class HillClimbing:
         Wall = []
         notWall = []
         # seperate cell into two wall and notWall
-        for cell in maze[1:len(self.cells) - 1]:
+        for cell in maze[1:len(self.maze) - 1]:
             if cell.isWall is True:
                 Wall.append(cell)
             else:
@@ -89,20 +89,22 @@ class HillClimbing:
         return maze
 
 
-   def hillClimbing(self):
-        exitFlag = False
+    def hillClimbing(self):
         print(self.evaluateMaze(self.initSets[0],'BFS'))
 
         # 对每一个maze，找到他的最优解， 故循环100次
         for i in range(1):
             for j in range(100):
                 # 对当前的maze，爬山找到最优解
-                next = self.randomWalk(self.initSets[i])
+                next = self.randomWalk(self.initSets[i], 10)
                 if self.evaluateMaze(next, 'BFS')[0] > self.evaluateMaze(self.initSets[i], 'BFS')[0]:
                     # 改变后的maze赋给当前的maze，进入下一次迭代
+                    print('优化成功')
                     self.initSets[i] = next
-            self.finalSets[i] = self.initSets[i]
-
+                else:
+                    print('优化失败')
+            self.finalSets.append(self.initSets[i])
+        print(self.evaluateMaze(self.finalSets[0], 'BFS'))
         # # 比较finalSets中的所有解，找到全局最优解
         # globalMax = 0
         # globalMaxIndex = 0
@@ -113,8 +115,10 @@ class HillClimbing:
         #         globalMaxIndex = i
         #
         # return self.finalSets[globalMaxIndex]
-        print(self.evaluateMaze(self.finalSets[0],'BFS'))
+
 
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(1, 100, 0.2)
+    hillClimbing.hillClimbing()
+
