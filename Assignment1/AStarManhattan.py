@@ -169,6 +169,7 @@ class AStarManhattan:
 
 def main():
     aStar = AStarManhattan(10, 0.1)
+    #[numOfExpanded, mof, lop]
     print(aStar.solveMaze())
 
 

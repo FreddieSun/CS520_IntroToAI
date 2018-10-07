@@ -168,6 +168,7 @@ class AStarEuclidean:
 
 def main():
     aStar = AStarEuclidean(10, 0.2)
+    #[numOfExpanded, mof, lop]
     print(aStar.solveMaze())
 
 if __name__ == "__main__":

@@ -148,6 +148,7 @@ class BFS_Queue:
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
     bfs = BFS_Queue(9,0.3)
+    #[numOfExpanded, mof, lop]
     print (bfs.bfs())
 
 
