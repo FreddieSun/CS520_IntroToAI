@@ -30,13 +30,13 @@ class BFS_Queue:
             self.destination = self.getCell(N - 1, N - 1)
             self.destination.__setattr__('isWall', False)
 
-            # # print the maze
-            # for i in range(N):
-            #     for j in range(N):
-            #         print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
-            #         print(' ', end = '')
-            #         if j % N == N - 1:
-            #             print('')
+            # print the maze
+            for i in range(N):
+                for j in range(N):
+                    print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
+                    print(' ', end = '')
+                    if j % N == N - 1:
+                        print('')
         else:
             self.maze = maze
             self.N = int(np.sqrt(len(maze)))
@@ -149,12 +149,12 @@ class BFS_Queue:
         pathx.append(self.start.x)
         pathy.append(self.start.y)
         # print('\n')
-        path=list(zip(pathy,pathx))
+        path=list(zip(pathx,pathy))
         return path
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    bfs = BFS_Queue(10,0.1)
+    bfs = BFS_Queue(5,0.2)
     #[numOfExpanded, mof, lop]
     print (bfs.bfs())
 

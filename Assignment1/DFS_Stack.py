@@ -30,13 +30,13 @@ class DFS_Stack:
             self.destination = self.getCell(N - 1, N - 1)
             self.destination.__setattr__('isWall', False)
 
-            # # print the maze
-            # for i in range(N):
-            #     for j in range(N):
-            #         print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
-            #         print(' ', end = '')
-            #         if j % N == N - 1:
-            #             print('')
+            # print the maze
+            for i in range(N):
+                for j in range(N):
+                    print(1 if self.maze[i * self.N + j].isWall else 0, end = ''),
+                    print(' ', end = '')
+                    if j % N == N - 1:
+                        print('')
         else:
             self.maze = maze
             self.N = int(np.sqrt(len(maze)))
@@ -103,7 +103,7 @@ class DFS_Stack:
         if not hasPath:
             print('No Path')
         numOfExpanded += 1
-        print('number of node expanded is: ', numOfExpanded)
+        print('lop is: ', lop)
         return [[numOfExpanded, mof,lop],path, hasPath]
 
 
@@ -142,13 +142,13 @@ class DFS_Stack:
         pathx.append(self.start.x)
         pathy.append(self.start.y)
         # print('\n')
-        path = list(zip(pathy, pathx))
+        path = list(zip(pathx, pathy))
         return path
 
 
 def main():
     # Generate the maze with size len(maze)*len(maze) and p
-    dfs = DFS_Stack(100,0.2)
+    dfs = DFS_Stack(5,0.2)
     #[numOfExpanded, mof, lop]
     print(dfs.dfs())
 
