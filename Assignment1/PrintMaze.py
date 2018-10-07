@@ -23,6 +23,8 @@ def printMaze(maze):
 
 
 def printPath(maze,path):
+    x = []
+    y = []
     n = int(np.sqrt(len(maze)))
     mazeinit = np.zeros([n, n])
     for i in range(n):
@@ -31,6 +33,7 @@ def printPath(maze,path):
                 mazeinit[i][j]=1
             else:
                 mazeinit[i][j]=0
+    print('mazeinit = ','\n', mazeinit)
     mazeDrown = Image.new('RGB', (n, n))
     mazeX = mazeDrown.load()
     for i in range(n):
@@ -39,6 +42,12 @@ def printPath(maze,path):
                 mazeX[i, j] = (255, 255, 255)
             else:
                 mazeX[i, j] = (0, 0, 0)
+    mazeDrown.show()
     for i in path:
+        x.append(i[0])
+        y.append(i[1])
+        finalpath=list(zip(y,x))
+        print(finalpath)
+    for i in finalpath:
         mazeX[i] = (134, 205, 133)
     mazeDrown.show()
