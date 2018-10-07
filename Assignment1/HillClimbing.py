@@ -5,7 +5,6 @@ from AStarEuclidean import *
 from AStarManhattan import *
 from BFS_Queue import *
 
-
 class HillClimbing:
 
 
@@ -90,7 +89,6 @@ class HillClimbing:
         return maze
 
 
-
    def hillClimbing(self):
         exitFlag = False
         print(self.evaluateMaze(self.initSets[0],'BFS'))
@@ -116,8 +114,6 @@ class HillClimbing:
         #
         # return self.finalSets[globalMaxIndex]
         print(self.evaluateMaze(self.finalSets[0],'BFS'))
-
-
 
 if __name__ == '__main__':
     print('main function')
