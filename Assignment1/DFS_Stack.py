@@ -99,7 +99,7 @@ class DFS_Stack:
         if not hasPath:
             print('No Path')
         print('number of node expanded is: ', numOfExpanded)
-
+        return [numOfExpanded,mof,lop]
 
 
     # return the adjacent cell of the input cell
