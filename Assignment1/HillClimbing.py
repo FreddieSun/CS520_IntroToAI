@@ -7,6 +7,7 @@ from BFS_Queue import *
 import copy
 from PrintMaze import *
 
+
 class HillClimbing:
     def __init__(self, initSetsNum, mazeSize, p):
         self.initSetsNum = initSetsNum
@@ -24,8 +25,7 @@ class HillClimbing:
         self.NOE = "NOE"
         self.MOF = "MOF"
 
-
-
+    # get the cell from the maze
     def getCell(self, x, y, maze):
         return maze[x * self.mazeSize + y]
 
@@ -52,6 +52,7 @@ class HillClimbing:
             self.initSets.append(self.generateMaze(mazeSize, p))
         return self.initSets
 
+    # evaluate the hardness of maze from noe, mof, and lop
     def evaluateMaze(self, maze, type):
         tempMaze = copy.deepcopy(maze)
         if type == self.A_STAR_EUCLIDEAN:
@@ -67,16 +68,16 @@ class HillClimbing:
             dfs = DFS_Stack(0, 0, tempMaze)
             [[noe, mof, lop], path] = dfs.dfs()
 
-        return [[noe, mof, lop],path]
+        return [[noe, mof, lop], path]
 
+    # use random walk to change the maze
     def randomWalk(self, maze, step):
         tempMaze = copy.deepcopy(maze)
 
         Wall = []
         notWall = []
 
-
-        # seperate cell into two wall and notWall
+        # seperate cell into two: wall and notWall
         for cell in tempMaze[1:self.mazeSize * self.mazeSize - 1]:
             if cell.isWall is True:
                 Wall.append(cell)
@@ -104,7 +105,6 @@ class HillClimbing:
                 self.getCell(notWallCell.x, notWallCell.y, tempMaze).isWall = True
         return tempMaze
 
-
     def hillClimbing(self, type, criteria):
         criteriaIndex = 0
         if criteria == self.NOE:
@@ -116,13 +116,11 @@ class HillClimbing:
 
         print(self.evaluateMaze(self.initSets[0], type))
 
-
-
-        # 对每一个maze，找到他的最优解， 故循环100次
+        # 对每一个maze，找到他的最优解， 故循环self.InitSetsNum次
         for i in range(self.initSetsNum):
+            # random walk十次失败后，结束爬山算法
             consectiveFailNum = 0
-            while(True):
-
+            while (True):
                 # 对当前的maze，爬山找到最优解
                 next = self.randomWalk(self.initSets[i], 5)
                 print('\n')
@@ -144,22 +142,22 @@ class HillClimbing:
         # 比较finalSets中的所有解，找到全局最优解
         globalMax = 0
         globalMaxIndex = 0
-        for i in range(1):
+        for i in range(self.initSetsNum):
             temp = self.evaluateMaze(self.finalSets[i], type)[0][criteriaIndex]
             if temp > globalMax:
                 globalMax = temp
                 globalMaxIndex = i
 
-        print('final result is: ' + str(self.evaluateMaze(self.finalSets[globalMaxIndex], self.BFS)[0]))
-        path=self.evaluateMaze(self.finalSets[globalMaxIndex],self.BFS)[1]
+        print('final result is: ' + str(self.evaluateMaze(self.finalSets[globalMaxIndex], type)[0]))
+        path = self.evaluateMaze(self.finalSets[globalMaxIndex], type)[1]
 
-        printMaze(self.finalSets[globalMaxIndex],path)
-        printPath(self.finalSets[globalMaxIndex],path)
+
+
+        # printMaze(self.finalSets[globalMaxIndex])
+        printPath(self.finalSets[globalMaxIndex], path)
 
 
 if __name__ == '__main__':
     print('main function')
-    hillClimbing = HillClimbing(1, 100, 0.2)
+    hillClimbing = HillClimbing(10, 100, 0.2)
     hillClimbing.hillClimbing(hillClimbing.DFS, hillClimbing.NOE)
-
-

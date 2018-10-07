@@ -22,8 +22,8 @@ def printMaze(maze):
     mazeDrown.show()
 
 
-def printPath(self,maze,path):
-    n=self.mazeSize
+def printPath(maze,path):
+    n = int(np.sqrt(len(maze)))
     mazeinit = np.zeros([n, n])
     for i in range(n):
         for j in range(n):
