@@ -93,7 +93,7 @@ class HillClimbing:
 
         # remove/add a wall
         randomNum = random.random()
-        if 0 <= randomNum < 0.5:
+        if 0 <= randomNum <= 0:
             for i in range(step):
                 # from wall find a wallcell
                 wallCell = Wall[random.randint(0, len(Wall) - 1)]
@@ -105,8 +105,9 @@ class HillClimbing:
                 self.getCell(notWallCell.x, notWallCell.y, tempMaze).isWall = True
         return tempMaze
 
+    # Start the hill climbing algorithm
     def hillClimbing(self, type, criteria):
-        criteriaIndex = 0
+        # criteriaIndex represents which criteria to use
         if criteria == self.NOE:
             criteriaIndex = 0
         elif criteria == self.MOF:
@@ -124,7 +125,7 @@ class HillClimbing:
             consectiveFailNum = 0
             while (True):
                 # 对当前的maze，爬山找到最优解
-                next = self.randomWalk(self.initSets[i], 5)
+                next = self.randomWalk(self.initSets[i], 10)
                 print('\n')
                 currentValue = self.evaluateMaze(self.initSets[i], type)
                 nextValue = self.evaluateMaze(next, type)
@@ -142,12 +143,12 @@ class HillClimbing:
                     consectiveFailNum += 1
                     print('FAIL')
                 print(consectiveFailNum)
-                if consectiveFailNum == 10:
+                if consectiveFailNum == 15:
                     if currentValue[2] == False:
                         failMazeList.append(i)
                     break
             self.finalSets.append(self.initSets[i])
-            print('第' + str(i) + '结果: ' + str(self.evaluateMaze(self.finalSets[i], type)[0]))
+            print('num' + str(i) + 'result: ' + str(self.evaluateMaze(self.finalSets[i], type)[0]))
 
         # 比较finalSets中的所有解，找到全局最优解
         globalMax = 0
@@ -157,8 +158,6 @@ class HillClimbing:
         for i in range(self.initSetsNum):
             if i in failMazeList:
                 continue
-            print('第' + str(i) +'迷宫的初始数据：', str(self.evaluateMaze(self.initSets[i], type)[0]))
-            print('第' + str(i) +'迷宫的最终数据：', str(self.evaluateMaze(self.finalSets[i], type)[0]))
             temp = self.evaluateMaze(self.finalSets[i], type)[0]
             if temp[criteriaIndex] > globalMax:
                 globalMax = temp[criteriaIndex]
@@ -173,4 +172,4 @@ class HillClimbing:
 if __name__ == '__main__':
     print('main function')
     hillClimbing = HillClimbing(10, 100, 0.3)
-    hillClimbing.hillClimbing(hillClimbing.A_STAR_EUCLIDEAN, hillClimbing.NOE)
+    hillClimbing.hillClimbing(hillClimbing.A_STAR_EUCLIDEAN, hillClimbing.LOP)
