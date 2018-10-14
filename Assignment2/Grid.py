@@ -33,12 +33,12 @@ class Grid:
     def markMineNumber(self, x, y):
         for i in range(self.height):
             for j in range(self.width):
-                Cell = self.getCell(x,y)
+                cell = self.getCell(x,y)
                 for ii in range(-1 , 2):
                     for jj in range(-1,2):
-                        cell = self.getCell(ii,jj)
-                        if cell.isOutside == False and cell.isMine==True:
-                            Cell.numOfMines += 1
+                        adj = self.getCell(ii,jj)
+                        if adj.isOutside == False and adj.isMine==True:
+                            cell.numOfMines += 1
 
     def getCell(self, x, y):
         return self.grid[(x + 1) * self.borderWidth + (y + 1)]
