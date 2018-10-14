@@ -5,10 +5,23 @@ CS 520 : Introduction to Artificial Intelligence Assignment2
 
 ##Cell
 ###成员变量：
-* 
+* numOfMines
+* isCovered
+* isMine
+* isWrong
+* isOutside
 
 
-##GridState：
+
+##Grid:
+*** 成员变量：
+* Array[height + 1][weight + 1]
+* isConsistency
+
+*** 方法：
+* 判断是否Consistency
+
+
 
 
 
@@ -18,12 +31,10 @@ CS 520 : Introduction to Artificial Intelligence Assignment2
 * height
 * width
 * grid
-* isConsistency
 
 ### 方法：
 * 生成grid
 * UpdateGrid
-* 判断是否Consistency
 * 标出雷点
 * 点开无雷点
 
