@@ -5,7 +5,7 @@ CS 520 : Introduction to Artificial Intelligence Assignment2
 
 ##Cell
 * 
-##GridState：
+##Grid：
 *
 ##MineSweeper：
  
