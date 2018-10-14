@@ -30,10 +30,10 @@ class Grid:
                     cell.isMine = False
                     self.grid.append(cell)
 
-    def markMineNumber(self, x, y):
+    def markMineNumber(self):
         for i in range(self.height):
             for j in range(self.width):
-                cell = self.getCell(x,y)
+                cell = self.getCell(i,j)
                 for ii in range(-1 , 2):
                     for jj in range(-1,2):
                         adj = self.getCell(ii,jj)
