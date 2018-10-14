@@ -1,10 +1,12 @@
 import random
-from Assignment2 import Cell
+from Cell import *
+
+
 class Grid:
-    def __init__(self, height, width, isConsistency, minP):
+    def __init__(self, height, width, minP):
         self.height = height
         self.width = width
-        self.isConsistency = isConsistency
+        self.isConsistency = True
         self.grid = []
         self.mineP = minP
         self.numOfMine = 0
@@ -14,30 +16,29 @@ class Grid:
     def generateGrid(self):
         for i in range(self.borderHeight):
             for j in range(self.borderWidth):
-                if i == self.borderHeight - 1 or i == 0 or j == self.borderWidth - 1 or j == 0:
-                    cell = Cell
-                    cell.isOutside = True
-                    cell.isMine = False
-                    self.grid.append(cell)
                 rNum = random.random()
-                if 0 <= rNum < self.mineP:
-                    cell = Cell
-                    cell.isMine = True
+                if i == self.borderHeight - 1 or i == 0 or j == self.borderWidth - 1 or j == 0:
+                    cell = Cell(False)
+                    cell.isOutside = True
+                    self.grid.append(cell)
+                elif 0 <= rNum < self.mineP:
+                    cell = Cell(True)
                     self.grid.append(cell)
                     self.numOfMine += 1
                 else:
-                    cell = Cell
-                    cell.isMine = False
+                    cell = Cell(False)
                     self.grid.append(cell)
 
     def markMineNumber(self):
         for i in range(self.height):
             for j in range(self.width):
-                cell = self.getCell(i,j)
-                for ii in range(-1 , 2):
-                    for jj in range(-1,2):
-                        adj = self.getCell(ii,jj)
-                        if adj.isOutside == False and adj.isMine==True:
+                cell = self.getCell(i, j)
+                for ii in range(-1, 2):
+                    for jj in range(-1, 2):
+                        if ii == 0 and jj == 0:
+                            continue
+                        adj = self.getCell(i + ii, j + jj)
+                        if not adj.isOutside and adj.isMine:
                             cell.numOfMines += 1
 
     def getCell(self, x, y):
@@ -64,17 +65,23 @@ class Grid:
 
     def numOfCoveredCell(self, i, j, grid):
         result = 0
-        for p in range(-1, 1):
-            for q in range(-1, 1):
-                if self.getCell(i + p, j + q).isCovered:
+        for p in range(-1, 2):
+            for q in range(-1, 2):
+                if not self.getCell(i + p, j + q).isOutside and self.getCell(i + p, j + q).isCovered:
                     result += 1
         return result
-
 
     def numOfFlags(self, i, j, grid):
         result = 0
-        for p in range(-1, 1):
-            for q in range(-1, 1):
-                if self.getCell(i + p, j + q).isMine:
+        for p in range(-1, 2):
+            for q in range(-1, 2):
+                if not self.getCell(i + p, j + q).isOutside and self.getCell(i + p, j + q).isMine:
                     result += 1
         return result
+
+
+if __name__ == '__main__':
+    grid = Grid(3, 3, 0.3)
+    grid.generateGrid()
+    grid.markMineNumber()
+    print('1')
