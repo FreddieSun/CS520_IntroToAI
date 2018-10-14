@@ -1,9 +1,15 @@
 class Cell:
 
-    def __init__(self, height, width):
-        self.height = height
-        self.width = width
+    def __init__(self,isMine):
+        self.isMine = isMine
+        self.isWrong = False
+        self.isOutside = False
+        self.isCovered = True
+        self.numOfMines = 0
 
 
 
-    def generateGrid(self):
+
+
+
+
