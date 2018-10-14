@@ -8,13 +8,13 @@ class Grid:
         self.grid = []
         self.mineP = minP
         self.numOfMine = 0
+        self.borderHeight = self.height+2
+        self.borderWidth = self.width+2
 
     def generateGrid(self):
-        borderHeight = self.height+2
-        borderWidth = self.width+2
-        for i in range(borderHeight):
-            for j in range(borderWidth):
-                if i == borderHeight-1 or i == 0 or j == borderWidth-1 or j == 0:
+        for i in range(self.borderHeight):
+            for j in range(self.borderWidth):
+                if i == self.borderHeight-1 or i == 0 or j == self.borderWidth-1 or j == 0:
                     cell = Cell
                     cell.isOutside = True
                     cell.isMine = False
@@ -29,10 +29,14 @@ class Grid:
                     cell = Cell
                     cell.isMine = False
                     self.grid.append(cell)
-    def getCell(self):
+    def getCell(self, x, y):
+        return self.grid[(x+ 1) * self.borderWidth + (y+ 1)]
 
-    def markMineNumber(self,width,height):
-
+    def markMineNumber(self, x, y):
+        cell = self.getCell(x,y)
+        for i in range(3):
+            for j in range(3):
+                getCell
     def isConsistency(self):
 
 
