@@ -4,9 +4,14 @@ CS 520 : Introduction to Artificial Intelligence Assignment2
 #基础类定义
 
 ##Cell
+###成员变量：
 * 
+
+
 ##GridState：
-*
+
+
+
 ##MineSweeper：
  
 ###成员变量：
