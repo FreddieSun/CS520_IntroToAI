@@ -34,9 +34,14 @@ class Grid:
 
     def markMineNumber(self, x, y):
         cell = self.getCell(x,y)
-        for i in range(3):
-            for j in range(3):
-                getCell
+        for i in range(x-1,x+2):
+            for j in range(y-1,y+2):
+                cell = self.getCell(i,j)
+                if cell.isOutside == True:
+                    continue
+                elif cell.isMine == True:
+                    cell.numOfMines += 1
+
     def isConsistency(self):
 
 
