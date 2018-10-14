@@ -70,7 +70,6 @@ class Grid:
                     result += 1
         return result
 
-        return 0
 
     def numOfFlags(self, i, j, grid):
         result = 0
