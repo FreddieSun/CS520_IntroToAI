@@ -6,7 +6,7 @@ CS 520 : Introduction to Artificial Intelligence Assignment2
 ##Cell
 * 
 ##GridState：
-
+*
 ##MineSweeper：
  
 ###成员变量：
@@ -20,6 +20,6 @@ CS 520 : Introduction to Artificial Intelligence Assignment2
 * UpdateGrid
 * 判断是否Consistency
 * 标出雷点
-* 标出无雷电
+* 点开无雷点
 
 
