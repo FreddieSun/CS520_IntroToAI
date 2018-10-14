@@ -5,11 +5,10 @@ CS 520 : Introduction to Artificial Intelligence Assignment2
 
 ##Cell
 * 
+##GridState：
 
 ##MineSweeper：
-class grid_state
-class cell
-class Straightforward 
+ 
 ###成员变量：
 * height
 * width
@@ -18,6 +17,9 @@ class Straightforward
 
 ### 方法：
 * 生成grid
-* 
+* UpdateGrid
+* 判断是否Consistency
+* 标出雷点
+* 标出无雷电
 
 
