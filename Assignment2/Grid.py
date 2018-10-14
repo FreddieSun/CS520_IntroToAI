@@ -30,18 +30,18 @@ class Grid:
                     cell.isMine = False
                     self.grid.append(cell)
 
+    def markMineNumber(self, x, y):
+        for i in range(self.height):
+            for j in range(self.width):
+                Cell = self.getCell(x,y)
+                for ii in range(-1 , 2):
+                    for jj in range(-1,2):
+                        cell = self.getCell(ii,jj)
+                        if cell.isOutside == False and cell.isMine==True:
+                            Cell.numOfMines += 1
+
     def getCell(self, x, y):
         return self.grid[(x + 1) * self.borderWidth + (y + 1)]
-
-    def markMineNumber(self, x, y):
-        cell = self.getCell(x,y)
-        for i in range(x-1,x+2):
-            for j in range(y-1,y+2):
-                cell = self.getCell(i,j)
-                if cell.isOutside == True:
-                    continue
-                elif cell.isMine == True:
-                    cell.numOfMines += 1
 
     def isConsistency(self):
         for i in range(self.height):
