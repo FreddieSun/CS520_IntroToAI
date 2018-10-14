@@ -29,6 +29,9 @@ class Grid:
                     cell = Cell
                     cell.isMine = False
                     self.grid.append(cell)
+    def getCell(self):
+
+    def markMineNumber(self,width,height):
 
     def isConsistency(self):
 
