@@ -4,6 +4,7 @@ from Assignment2.Cell import *
 
 class MineSweeper:
     def __init__(self):
+        grid = Grid(9, 9, 0.1)
         print(1)
 
     def flagMines(self,grid):
@@ -29,6 +30,31 @@ class MineSweeper:
                 else:
                     print(cell.numOfMines)
 
+
+
+
+    def clickCell(self, grid):
+        flag = False
+
+        for i in range(grid.borderHeight):
+            for j in range(grid.borderWidth):
+
+                curCell = grid.getCell(i, j)
+
+                // if
+                if not curCell.isCovered:
+                    continue
+
+                numOfMines = curCell.numOfMines
+                numOfActualMines = grid.numOfFlags(i, j)
+                numOfCoveredCell = grid.numOfCoveredCell(i, j)
+
+                if numOfMines == numOfActualMines and numOfCoveredCell > 0:
+                    for ii in range(-1, 2):
+                        for jj in range(-1, 2):
+                            adj = grid.getCell(i + ii, j + jj)
+                            if not adj.isOutside and adj.isCovered:
+                                 adj.isCovered = False
 
 
 

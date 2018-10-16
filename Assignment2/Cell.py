@@ -6,6 +6,7 @@ class Cell:
         self.isOutside = False
         self.isCovered = True
         self.numOfMines = 0
+        self.isFlag = False
 
 
 
