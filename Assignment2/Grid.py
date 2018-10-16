@@ -80,8 +80,3 @@ class Grid:
         return result
 
 
-if __name__ == '__main__':
-    grid = Grid(3, 3, 0.3)
-    grid.generateGrid()
-    grid.markMineNumber()
-    print('1')
