@@ -4,7 +4,7 @@ from Assignment2.Grid import *
 
 class MineSweeper:
     def __init__(self):
-        self.grid = Grid(4, 4, 0.2)
+        self.grid = Grid(3, 3, 0.3)
         self.grid.generateGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
@@ -27,22 +27,21 @@ class MineSweeper:
         return flag
 
     def drawGrid(self, grid):
-        for cell in grid:
-            for i in range(grid.height):
-                string = ''
-                for j in range(grid.width):
-                    if grid.getCell(i, j).isFlag:
-                        string += '*'
-                    else:
-                        string += str(cell.numOfMines)
-                print(string,'\n')
+        for i in range(grid.height):
+            for j in range(grid.width):
+                curCell = grid.getCell(i, j)
+                if curCell.isMine:
+                    print('X ', end='')
+                else:
+                    print('O ', end='')
+            print('\n')
 
     def clickCell(self, grid):
-        flag = False
+        successClick = False
         isLose = False
 
-        for i in range(grid.borderHeight):
-            for j in range(grid.borderWidth):
+        for i in range(grid.height):
+            for j in range(grid.width):
 
                 curCell = grid.getCell(i, j)
 
@@ -54,7 +53,7 @@ class MineSweeper:
                 numOfCoveredCell = grid.numOfCoveredCell(i, j)
 
                 if numOfMines == numOfActualMines and numOfCoveredCell > 0:
-                    flag = True
+                    successClick = True
                     for ii in range(-1, 2):
                         for jj in range(-1, 2):
                             adj = grid.getCell(i + ii, j + jj)
@@ -62,23 +61,23 @@ class MineSweeper:
                                 if adj.isMine:
                                     isLose = True
                                     adj.isCovered = False
-                                    return [flag, isLose]
+                                    return [successClick, isLose]
                                 adj.isCovered = False
                                 self.currentNumOfMine -= 1
 
-                return [flag, isLose]
+                return [successClick, isLose]
 
     def game(self):
         print('Start')
-
-        # self.drawGrid(self.grid)
-        while self.currentNumOfMine == 0:
-            while self.clickCell(self.grid):
+        self.drawGrid(self.grid)
+        while not self.currentNumOfMine == 0:
+            while self.clickCell(self.grid)[1] and self.clickCell(self.grid)[0]:
                 pass
             while self.flagMines(self.grid):
                 pass
         # self.drawGrid(self.grid)
         print('Finish')
+
 
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
