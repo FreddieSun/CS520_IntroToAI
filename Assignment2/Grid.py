@@ -1,5 +1,5 @@
 import random
-from Cell import *
+from Assignment2.Cell import *
 
 
 class Grid:
