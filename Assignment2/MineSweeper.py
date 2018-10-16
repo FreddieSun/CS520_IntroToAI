@@ -27,12 +27,14 @@ class MineSweeper:
     def drawGrid(self,grid):
         for cell in grid:
             for i in range(grid.height):
+                string = ''
                 for j in range(grid.width):
                     if grid.getCell(i,j):
-                if cell.isMine == True:
-                    print ("*")
-                else:
-                    print(cell.numOfMines)
+                        if cell.isFlag == True:
+                            string += '*'
+                        else:
+                            string += str(cell.numOfMines)
+                        print(string)
 
 
 
