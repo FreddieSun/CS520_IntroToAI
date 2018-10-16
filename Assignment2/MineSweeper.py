@@ -6,7 +6,7 @@ class MineSweeper:
     def __init__(self):
         print(1)
 
-    def markMines(self,grid):
+    def flagMines(self,grid):
         for i in range(grid.height):
             for j in range(grid.width):
                 cell = grid.getCell(i,j)
@@ -17,7 +17,7 @@ class MineSweeper:
                             for jj in range(-1, 2):
                                 adj = grid.getCell(i + ii, j + jj)
                                 if not adj.isOutside and adj.isCovered:
-                                    adj.isMine = True
+                                    adj.isFlag = True
 
     def drawGrid(self,grid):
         for cell in grid:
