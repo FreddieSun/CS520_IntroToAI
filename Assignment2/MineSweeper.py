@@ -24,7 +24,7 @@ class MineSweeper:
         for cell in grid:
             for i in range(grid.height):
                 for j in range(grid.width):
-                    if grid.getCell(i,j)
+                    if grid.getCell(i,j):
                 if cell.isMine == True:
                     print ("*")
                 else:
