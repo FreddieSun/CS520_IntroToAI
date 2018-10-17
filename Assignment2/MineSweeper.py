@@ -6,7 +6,7 @@ from Assignment2.Grid import *
 
 class MineSweeper:
     def __init__(self):
-        self.grid = Grid(3, 3, 0.3)
+        self.grid = Grid(3, 3, 0.2)
         self.grid.generateGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
@@ -31,7 +31,7 @@ class MineSweeper:
 
                 curCell = grid.getCell(i, j)
 
-                if not curCell.isCovered or curCell.isFlag:
+                if curCell.isCovered or curCell.isFlag:
                     continue
 
                 numOfMines = curCell.numOfMines
@@ -47,11 +47,8 @@ class MineSweeper:
                                 if adj.isMine:
                                     isLose = True
                                     adj.isCovered = False
-                                    self.currentNumOfMine -= 1
                                     return [successClick, isLose]
                                 adj.isCovered = False
-                                self.currentNumOfMine -= 1
-
         return [successClick, isLose]
 
     def flagMines(self, grid):
@@ -70,7 +67,6 @@ class MineSweeper:
                                     adj.isFlag = True
         return flag
 
-
     def game(self):
         print('Start')
         self.drawGrid(self.grid)
@@ -79,9 +75,10 @@ class MineSweeper:
         # in order to trigger the algorithm
         firstTrigger = True
         while firstTrigger:
-            i = random.randint(0,self.grid.height)
-            j = random.randint(0, self.grid.width)
-            if not self.grid.getCell(i, j).isMine:
+            i = random.randint(0, self.grid.height - 1)
+            j = random.randint(0, self.grid.width - 1)
+            currCell = self.grid.getCell(i, j)
+            if not currCell.isMine and currCell.numOfMines == 0:
                 # click one cell and trigger the algorithm
                 self.grid.getCell(i, j).isCovered = False
                 firstTrigger = False
@@ -99,7 +96,8 @@ class MineSweeper:
             while self.flagMines(self.grid):
                 pass
         # self.drawGrid(self.grid)
-        print('Finish')
+
+        print('Win')
 
 
 if __name__ == '__main__':
