@@ -2,11 +2,12 @@ import Grid
 import sys
 import random
 from Assignment2.Grid import *
+from Assignment2.PrintGrid import *
 
 
 class MineSweeper:
     def __init__(self):
-        self.grid = Grid(3, 3, 0.2)
+        self.grid = Grid(9, 9, 0.2)
         self.grid.generateGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
@@ -102,4 +103,7 @@ class MineSweeper:
 
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
-    mineSweeper.game()
+    mineSweeper.drawGrid(mineSweeper.grid)
+    # mineSweeper.game()
+    gridPrinter = gridList(mineSweeper.grid)
+    drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
