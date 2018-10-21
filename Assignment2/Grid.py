@@ -76,7 +76,8 @@ class Grid:
         result = 0
         for p in range(-1, 2):
             for q in range(-1, 2):
-                if not self.getCell(i + p, j + q).isOutside and self.getCell(i + p, j + q).isFlag:
+                currCell = self.getCell(i + p, j + q)
+                if not currCell.isOutside and currCell.isFlag:
                     result += 1
         return result
 

@@ -7,7 +7,7 @@ from Assignment2.PrintGrid import *
 
 class MineSweeper:
     def __init__(self):
-        self.grid = Grid(5, 5, 0.1)
+        self.grid = Grid(5, 5, 0.123)
         self.grid.generateGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
@@ -18,9 +18,9 @@ class MineSweeper:
             for j in range(grid.width):
                 curCell = grid.getCell(i, j)
                 if curCell.isMine:
-                    print('X ', end='')
+                    print('X  ', end='')
                 else:
-                    print(curCell.numOfMines, '', end='')
+                    print(curCell.numOfMines, ' ', end='')
             print('\n')
 
     def clickCell(self, grid):
@@ -46,7 +46,7 @@ class MineSweeper:
                     for ii in range(-1, 2):
                         for jj in range(-1, 2):
                             adj = grid.getCell(i + ii, j + jj)
-                            if not adj.isOutside and adj.isCovered  and not adj.isFlag:
+                            if not adj.isOutside and adj.isCovered and not adj.isFlag:
                                 if adj.isMine:
                                     isLose = True
                                     loseI = i + ii
@@ -62,7 +62,7 @@ class MineSweeper:
                 cell = grid.getCell(i, j)
                 if not cell.isCovered:
                     numOfmines = cell.numOfMines
-                    if numOfmines >= 1 and numOfmines == grid.numOfCoveredCell(i, j):
+                    if numOfmines >= 1 and numOfmines == grid.numOfCoveredCell(i, j) + grid.numOfFlags(i, j):
                         flag = True
                         for ii in range(-1, 2):
                             for jj in range(-1, 2):
