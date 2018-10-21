@@ -7,7 +7,7 @@ from Assignment2.PrintGrid import *
 
 class MineSweeper:
     def __init__(self):
-        self.grid = Grid(9, 9, 0.2)
+        self.grid = Grid(5, 5, 0.1)
         self.grid.generateGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
@@ -26,6 +26,8 @@ class MineSweeper:
     def clickCell(self, grid):
         successClick = False
         isLose = False
+        loseI = 0
+        loseJ = 0
 
         for i in range(grid.height):
             for j in range(grid.width):
@@ -44,13 +46,14 @@ class MineSweeper:
                     for ii in range(-1, 2):
                         for jj in range(-1, 2):
                             adj = grid.getCell(i + ii, j + jj)
-                            if not adj.isOutside and adj.isCovered:
+                            if not adj.isOutside and adj.isCovered  and not adj.isFlag:
                                 if adj.isMine:
                                     isLose = True
-                                    adj.isCovered = False
-                                    return [successClick, isLose]
+                                    loseI = i + ii
+                                    loseJ = j + jj
+                                    return [successClick, isLose, loseI, loseJ]
                                 adj.isCovered = False
-        return [successClick, isLose]
+        return [successClick, isLose, loseI, loseJ]
 
     def flagMines(self, grid):
         flag = False
@@ -66,6 +69,7 @@ class MineSweeper:
                                 adj = grid.getCell(i + ii, j + jj)
                                 if not adj.isOutside and adj.isCovered:
                                     adj.isFlag = True
+                                    self.currentNumOfMine -= 1
         return flag
 
     def game(self):
@@ -82,13 +86,14 @@ class MineSweeper:
             if not currCell.isMine and currCell.numOfMines == 0:
                 # click one cell and trigger the algorithm
                 self.grid.getCell(i, j).isCovered = False
+                print('点开的点是', i, j)
                 firstTrigger = False
 
         while not self.currentNumOfMine == 0:
             for i in range(sys.maxsize):
-                successClick, isLose = self.clickCell(self.grid)
+                successClick, isLose, loseI, loseJ = self.clickCell(self.grid)
                 if isLose:
-                    print('Game Over')
+                    print('Game Over at ',loseI, loseJ)
                     sys.exit()
                 if successClick:
                     continue
@@ -103,7 +108,7 @@ class MineSweeper:
 
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
-    mineSweeper.drawGrid(mineSweeper.grid)
-    # mineSweeper.game()
-    gridPrinter = gridList(mineSweeper.grid)
-    drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
+    # mineSweeper.drawGrid(mineSweeper.grid)
+    # gridPrinter = gridList(mineSweeper.grid)
+    # drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
+    mineSweeper.game()
