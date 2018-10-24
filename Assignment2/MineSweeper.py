@@ -23,7 +23,7 @@ class MineSweeper:
                     print(curCell.numOfMines, ' ', end='')
             print('\n')
 
-    #点开这个cell周围的点
+    # 点开这个cell周围的点
     def clickCell(self, grid):
         successClick = False
         isLose = False
@@ -34,7 +34,7 @@ class MineSweeper:
             for j in range(grid.width):
 
                 curCell = grid.getCell(i, j)
-                #如果这个点还没被点开或者是旗子，跳过
+                # 如果这个点还没被点开或者是旗子，跳过
                 if curCell.isCovered or curCell.isFlag:
                     continue
 
@@ -73,21 +73,29 @@ class MineSweeper:
                                     self.currentNumOfMine -= 1
         return flag
 
-    def isBoundary(self,grid,i,j):
-        cell=grid.getCell(i,j)
-        if cell.isCovered == False:
+    def isBoundary(self, grid, i, j):
+        cell = grid.getCell(i, j)
+        if not cell.isCovered:
             return False
-        else:
-            up = False
-            down = False
-            left = False
-            right = False
-            if i==0 or j==0 or i == grid.height-1 or j == grid.width-1:
-                return False
-            if grid.getCell(i-1,j).isCovered == True:
-                return True
 
+        if i != 0 and not grid.getCell(i - 1, j).isCovered:
+            return True
+        if j != 0 and not grid.getCell(i, j - 1).isCovered:
+            return True
+        if i != grid.height - 1 and not grid.getCell(i + 1, j).isCovered:
+            return True
+        if j != grid.width - 1 and not grid.getCell(i, j + 1).isCovered:
+            return True
+        if i != 0 and j != 0 and not grid.getCell(i - 1, j - 1).isCovered:
+            return True
+        if i != 0 and j != grid.width - 1 and not grid.getCell(i - 1, j + 1).isCovered:
+            return True
+        if i != grid.height - 1 and j != 0 and not grid.getCell(i + 1, j - 1).isCovered:
+            return True
+        if i != grid.height - 1 and j != grid.width - 1 and not grid.getCell(i + 1, j + 1).isCovered:
+            return True
 
+        return False
 
     def game(self):
         print('Start')
@@ -110,7 +118,7 @@ class MineSweeper:
             for i in range(sys.maxsize):
                 successClick, isLose, loseI, loseJ = self.clickCell(self.grid)
                 if isLose:
-                    print('Game Over at ',loseI, loseJ)
+                    print('Game Over at ', loseI, loseJ)
                     sys.exit()
                 if successClick:
                     continue
