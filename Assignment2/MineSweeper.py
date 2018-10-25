@@ -6,6 +6,10 @@ from Assignment2.PrintGrid import *
 import copy
 import Queue
 
+solutions = []
+BF_LIMIT = 8
+borderOptimization = False
+
 
 class MineSweeper:
     def __init__(self):
@@ -81,7 +85,7 @@ class MineSweeper:
 
         # todo
         numOfCellInSquare = len(coveredCellList) - len(boundaryCells)
-        if numOfCellInSquare > 8:
+        if numOfCellInSquare > BF_LIMIT:
             boundaryOptimization = True
         else:
             boundaryCells = coveredCellList
@@ -98,6 +102,11 @@ class MineSweeper:
             regionsList = self.getRegions(boundaryCells)
 
         # todo 各种变量的声明
+        totalCases = 1
+        success = False
+        prob_best = 0
+        prob_best_index = -1
+        prob_best_s = -1
 
         # for each separate region, find the result
         for i in range(len(regionsList)):
@@ -126,7 +135,36 @@ class MineSweeper:
                     self.grid.getCell(tempI, tempJ).isFlag = True
                 if allClick:
                     # todo success
+                    success = True
                     self.grid.getCell(tempI, tempJ).isCovered = False
+
+            totalCases *= len(solutions)
+            if success:
+                continue
+            maxEmpty = -10000
+            index = -1
+            for j in range(len(regionsList[i])):
+                tempIndex = 0
+                for tempList in solutions:
+                    if not tempList[j]:
+                        tempIndex += 1
+                if tempIndex > maxEmpty:
+                    maxEmpty = tempIndex
+                    index = j
+
+            probability = maxEmpty / len(solutions)
+
+            if probability > prob_best:
+                prob_best = probability
+                prob_best_index = index
+                prob_best_s = i
+
+        if
+
+
+
+
+
 
     def getRegions(self, boundaryCells):
         print('This is getRegions')
@@ -237,14 +275,14 @@ class MineSweeper:
             if k == len(borderTile):
                 if not borderOptimization and flagCount < TOT_MINES:
                     return
-                solution = []
+                solutions = []
                 for i in range(len(borderTile)):
                     s = borderTile[i]
                     si = s[0]
                     sj = s[1]
-                    # solution[i] = knownMine[si][sj]
-                    solution[i] = grid.getCell(si, sj).isMine
-                tank_solutions.append(solution)
+                    # solutions[i] = knownMine[si][sj]
+                    solutions[i] = grid.getCell(si, sj).isMine
+                solutions.append(solutions)
                 return
             q = borderTile[k]
             qi = q[0]
