@@ -3,6 +3,7 @@ import sys
 import random
 from Assignment2.Grid import *
 from Assignment2.PrintGrid import *
+import copy
 
 
 class MineSweeper:
@@ -65,7 +66,7 @@ class MineSweeper:
         boundaryCells = []
         coveredCellList = []
 
-        boundaryoptimization = False
+        boundaryOptimization = False
 
         # add all the covered cell into the lise
         # add all the boundary cell into the list
@@ -80,7 +81,7 @@ class MineSweeper:
         # todo
         numOfCellInSquare = len(coveredCellList) - len(boundaryCells)
         if numOfCellInSquare > 8:
-            boundaryoptimization = True
+            boundaryOptimization = True
         else:
             boundaryCells = coveredCellList
 
@@ -90,10 +91,41 @@ class MineSweeper:
         # get the different regions and solve them one by one
 
         regionsList = []
-        if not boundaryoptimization:
+        if not boundaryOptimization:
             regionsList.append(boundaryCells)
         else:
-            regionsList = self.getRegions()
+            regionsList = self.getRegions(boundaryCells)
+
+        # todo 各种变量的声明
+
+        # for each separate region, find the result
+        for i in range(len(regionsList)):
+            solutions = []
+            curGrid = copy.deepcopy(self.grid)
+
+            self.recurse(regionsList[i], 0, self.grid)
+
+            # failed to find a solution
+            if len(solutions) == 0:
+                return
+
+            for j in range(len(regionsList[i])):
+                allMine = True
+                allClick = True
+
+                for tempList in solutions:
+                    if not tempList[j]:
+                        allMine = False
+                    if tempList[i]:
+                        allClick = False
+
+                [tempI, tempJ] = regionsList[i][j]
+
+                if allMine:
+                    self.grid.getCell(tempI, tempJ).isFlag = True
+                if allClick:
+                    # todo success
+                    self.grid.getCell(tempI, tempJ).isCovered = False
 
 
 
