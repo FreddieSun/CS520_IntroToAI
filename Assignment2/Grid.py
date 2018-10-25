@@ -6,7 +6,6 @@ class Grid:
     def __init__(self, height, width, minP):
         self.height = height
         self.width = width
-        self.isConsistency = True
         self.grid = []
         self.mineP = minP
         self.numOfMine = 0
