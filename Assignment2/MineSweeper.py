@@ -4,6 +4,7 @@ import random
 from Assignment2.Grid import *
 from Assignment2.PrintGrid import *
 import copy
+import Queue
 
 
 class MineSweeper:
@@ -127,9 +128,6 @@ class MineSweeper:
                     # todo success
                     self.grid.getCell(tempI, tempJ).isCovered = False
 
-
-
-
     def getRegions(self, boundaryCells):
         print('This is getRegions')
         regionsList = []
@@ -213,10 +211,10 @@ class MineSweeper:
             flagCount = 0
             for i in range(grid.height):
                 for j in range(grid.width):
-                    #if konwnMine[i][j]:
-                    if grid.getCell(i,j).isFlag:
+                    # if konwnMine[i][j]:
+                    if grid.getCell(i, j).isFlag:
                         flagCount += 1
-                    #num = tank_board[i][j]
+                    # num = tank_board[i][j]
                     num = grid.getCell(i, j).numOfMines
                     if num < 0:
                         continue
@@ -226,10 +224,10 @@ class MineSweeper:
                         surround = 5
                     else:
                         surround = 8
-                    #numFlags = knownMine.numOfFlags(i, j)
-                    numFlags = grid.numOfFlags(i,j)
-                    #numFree = knownEmpty.numOfFlags(i, j)
-                    numFree = grid.numOfFlags(i,j)
+                    # numFlags = knownMine.numOfFlags(i, j)
+                    numFlags = grid.numOfFlags(i, j)
+                    # numFree = knownEmpty.numOfFlags(i, j)
+                    numFree = grid.numOfFlags(i, j)
                     if numFlags > num:
                         return
                     if surround - numFree < num:
@@ -237,33 +235,75 @@ class MineSweeper:
             if flagCount > TOT_MINES:
                 return
             if k == len(borderTile):
-                if not borderOptimization and flagCount<TOT_MINES:
+                if not borderOptimization and flagCount < TOT_MINES:
                     return
                 solution = []
                 for i in range(len(borderTile)):
                     s = borderTile[i]
                     si = s[0]
                     sj = s[1]
-                    #solution[i] = knownMine[si][sj]
-                    solution[i] = grid.getCell(si,sj).isMine
+                    # solution[i] = knownMine[si][sj]
+                    solution[i] = grid.getCell(si, sj).isMine
                 tank_solutions.append(solution)
                 return
             q = borderTile[k]
             qi = q[0]
             qj = q[1]
 
-            #knownMine[qi][qj] = True
-            grid.getCell(qi, qj).isFlag= True
-            Recurse(borderTile,k+1,grid)
-            #nownMine[qi][qj] = False
+            # knownMine[qi][qj] = True
+            grid.getCell(qi, qj).isFlag = True
+            Recurse(borderTile, k + 1, grid)
+            # nownMine[qi][qj] = False
             grid.getCell(qi, qj).isFlag = False
 
-
-            #knownEmpty[qi][qj] = True
+            # knownEmpty[qi][qj] = True
             grid.getCell(qi, qj).isCovered = False
-            Recurse(borderTile,k+1,grid)
-            #nownEmpty[qi][qj] = False
+            Recurse(borderTile, k + 1, grid)
+            # nownEmpty[qi][qj] = False
             grid.getCell(qi, qj).isCovered = True
+
+        def tankSegregate(borderTiles, grid):
+            allRegions = []
+            covered = []
+            while True:
+                queue = Queue.Queue()
+                finishedRegion = []
+                for firstT in borderTiles:
+                    if firstT not in covered:
+                        queue.put(firstT)
+                        break
+                if queue.empty():
+                    break
+                while not queue.empty():
+                    curTile = queue.get()
+                    ci = curTile[0]
+                    cj = curTile[1]
+                    finishedRegion.append(curTile)
+                    covered.append(curTile)
+                    for tile in borderTiles:
+                        ti = tile[0]
+                        tj = tile[1]
+                        isConnected = False
+                        if tile in finishedRegion:
+                            continue
+                        if abs(ci - ti) > 2 or abs(cj - tj) > 2:
+                            isConnected = False
+                        else:
+                            flag = True
+                            while(flag):
+                                for i in range(grid.height):
+                                    for j in range(grid.width):
+                                        if grid.getCell(i, j).numOfMines > 0:
+                                            if abs(ci - i) <= 1 and abs(cj - j) <= 1 and abs(ti - i) <= 1 and abs(
+                                                    tj - i) <= 1:
+                                                isConnected = True
+                                                flag = False
+                        if not isConnected:
+                            continue
+                        if tile not in queue:
+                            queue.put(tile)
+                allRegions.append(finishedRegion)
+            return allRegions
 
 
 if __name__ == '__main__':
