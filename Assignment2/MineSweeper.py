@@ -181,9 +181,11 @@ class MineSweeper:
             flagCount = 0
             for i in range(grid.height):
                 for j in range(grid.width):
-                    if konwnMine[i][j]:
+                    #if konwnMine[i][j]:
+                    if grid.getCell(i,j).isMine:
                         flagCount += 1
-                    num = tank_board[i][j]
+                    #num = tank_board[i][j]
+                    num = grid.getCell(i,j)
                     if num < 0:
                         continue
                     if (i == 0 and j == 0) or (i == grid.height - 1 and j == grid.width - 1):
@@ -192,8 +194,10 @@ class MineSweeper:
                         surround = 5
                     else:
                         surround = 8
-                    numFlags = knownMine.numOfFlags(i, j)
-                    numFree = knownEmpty.numOfFlags(i, j)
+                    #numFlags = knownMine.numOfFlags(i, j)
+                    numFlags = grid.numOfFlags(i,j)
+                    #numFree = knownEmpty.numOfFlags(i, j)
+                    numFree = grid.numOfFlags(i,j)
                     if numFlags > num:
                         return
                     if surround - numFree < num:
@@ -208,20 +212,26 @@ class MineSweeper:
                     s = borderTile[i]
                     si = s[0]
                     sj = s[1]
-                    solution[i] = knownMine[si][sj]
+                    #solution[i] = knownMine[si][sj]
+                    solution[i] = grid.getCell(i,j).isMine
                 tank_solutions.append(solution)
                 return
             q = borderTile[k]
             qi = q[0]
             qj = q[1]
 
-            knownMine[qi][qj] = True
+            #knownMine[qi][qj] = True
+            grid.getCell(i, j).isMine= True
             Recurse(borderTile,k+1,grid)
-            nownMine[qi][qj] = False
+            #nownMine[qi][qj] = False
+            grid.getCell(i, j).isMine = False
 
-            knownEmpty[qi][qj] = True
+
+            #knownEmpty[qi][qj] = True
+            grid.getCell(i, j).isCovered = False
             Recurse(borderTile,k+1,grid)
-            nownEmpty[qi][qj] = False
+            #nownEmpty[qi][qj] = False
+            grid.getCell(i, j).isCovered = True
 
 
 if __name__ == '__main__':
