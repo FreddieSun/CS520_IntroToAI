@@ -62,6 +62,7 @@ class MineSweeper:
                                 adj.isCovered = False
         return [successClick, isLose, loseI, loseJ]
 
+    global BF_LIMIT
     def logicInference(self):
         print('Enter logic inference')
 
@@ -158,7 +159,6 @@ class MineSweeper:
                 prob_best_index = index
                 prob_best_s = i
 
-        global BF_LIMIT
         if BF_LIMIT == 8 and 8 < numOfCellInSquare <= 13:
             print('Extending brute force horizon')
             BF_LIMIT = 13
@@ -335,6 +335,8 @@ class MineSweeper:
                 firstTrigger = False
 
         while not self.currentNumOfMine == 0:
+            while self.flagMines(self.grid):
+                pass
             for i in range(sys.maxsize):
                 successClick, isLose, loseI, loseJ = self.clickCell(self.grid)
                 if isLose:
@@ -343,9 +345,7 @@ class MineSweeper:
                 if successClick:
                     continue
                 else:
-                    break
-            while self.flagMines(self.grid):
-                pass
+                    self.logicInference()
         # self.drawGrid(self.grid)
 
         print('Win')
