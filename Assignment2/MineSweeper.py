@@ -100,7 +100,7 @@ class MineSweeper:
 
         # todo
         numOfCellInSquare = len(coveredCellList) - len(boundaryCells)
-        if numOfCellInSquare > BF_LIMIT:
+        if numOfCellInSquare > self.BF_LIMIT:
             boundaryOptimization = True
         else:
             boundaryCells = coveredCellList
@@ -173,11 +173,11 @@ class MineSweeper:
                 prob_best_index = index
                 prob_best_s = i
 
-        if BF_LIMIT == 8 and 8 < numOfCellInSquare <= 13:
+        if self.BF_LIMIT == 8 and 8 < numOfCellInSquare <= 13:
             print('Extending brute force horizon')
-            BF_LIMIT = 13
+            self.BF_LIMIT = 13
             self.logicInference()
-            BF_LIMIT = 8
+            self.BF_LIMIT = 8
             return
 
         print('Start Guess')
@@ -194,12 +194,13 @@ class MineSweeper:
                 cell = grid.getCell(i, j)
                 if not cell.isCovered:
                     numOfmines = cell.numOfMines
-                    if numOfmines >= 1 and numOfmines == grid.numOfCoveredCell(i, j):
+                    numOfFlags = self.grid.numOfFlags(i, j)
+                    if numOfmines - numOfFlags >= 1 and numOfmines == grid.numOfCoveredCell(i, j) + numOfFlags:
                         successFlag = True
                         for ii in range(-1, 2):
                             for jj in range(-1, 2):
                                 adj = grid.getCell(i + ii, j + jj)
-                                if not adj.isOutside and adj.isCovered:
+                                if not adj.isOutside and adj.isCovered and not adj.isFlag:
                                     adj.isFlag = True
                                     self.currentNumOfMine -= 1
         return successFlag
