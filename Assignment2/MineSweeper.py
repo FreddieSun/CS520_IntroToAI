@@ -29,6 +29,19 @@ class MineSweeper:
                     print(curCell.numOfMines, ' ', end='')
             print('\n')
 
+    def drawUserView(self, grid):
+        print('当前用户界面')
+        for i in range(grid.height):
+            for j in range(grid.width):
+                curCell = grid.getCell(i, j)
+                if curCell.isFlag:
+                    print('X  ', end='')
+                elif not curCell.isCovered:
+                    print(curCell.numOfMines, ' ', end='')
+                else:
+                    print('🀆  ', end='')
+            print('\n')
+
     # 点开这个cell周围的点
     def clickCell(self, grid):
         successClick = False
@@ -73,6 +86,7 @@ class MineSweeper:
         coveredCellList = []
 
         boundaryOptimization = False
+
 
         # add all the covered cell into the lise
         # add all the boundary cell into the list
@@ -339,13 +353,14 @@ class MineSweeper:
                 pass
             for i in range(sys.maxsize):
                 successClick, isLose, loseI, loseJ = self.clickCell(self.grid)
+                self.drawUserView(self.grid)
                 if isLose:
                     print('Game Over at ', loseI, loseJ)
                     sys.exit()
                 if successClick:
                     continue
                 else:
-                    self.logicInference()
+                    break
         # self.drawGrid(self.grid)
 
         print('Win')
