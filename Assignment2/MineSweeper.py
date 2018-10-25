@@ -178,12 +178,12 @@ class MineSweeper:
         print('Win')
 
         def Recurse(self, borderTile, k, grid):
-            flagCount = 0;
+            flagCount = 0
             for i in range(grid.height):
                 for j in range(grid.width):
-                    if grid.getCell(i, j).isMine:
+                    if konwnMine[i][j]:
                         flagCount += 1
-                    num = grid.getCell(i, j).numOfMines
+                    num = tank_board[i][j]
                     if num < 0:
                         continue
                     if (i == 0 and j == 0) or (i == grid.height - 1 and j == grid.width - 1):
@@ -205,9 +205,23 @@ class MineSweeper:
                     return
                 solution = []
                 for i in range(len(borderTile)):
-                    x = borderTile.get(i)[0]
-                    y = borderTile.get(i)[1]
-                    solution[i]=knownMine[][]
+                    s = borderTile[i]
+                    si = s[0]
+                    sj = s[1]
+                    solution[i] = knownMine[si][sj]
+                tank_solutions.append(solution)
+                return
+            q = borderTile[k]
+            qi = q[0]
+            qj = q[1]
+
+            knownMine[qi][qj] = True
+            Recurse(borderTile,k+1,grid)
+            nownMine[qi][qj] = False
+
+            knownEmpty[qi][qj] = True
+            Recurse(borderTile,k+1,grid)
+            nownEmpty[qi][qj] = False
 
 
 if __name__ == '__main__':
