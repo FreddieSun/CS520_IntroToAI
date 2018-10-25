@@ -46,18 +46,21 @@ class Grid:
     def isConsistency(self):
         for i in range(self.height):
             for j in range(self.width):
+                curCell = self.getCell(i, j)
+                if curCell.isCovered:
+                    continue
                 numOfCovered = self.numOfCoveredCell(i, j)
                 numOfFlag = self.numOfFlags(i, j)
                 # if the current cell shows number of mines around is 0
                 # but the actual number of cells covered around > 0
                 # then it is not consistency
-                if self.getCell(i, j).numOfMines == 0 and numOfCovered > 0:
+                if curCell.numOfMines == 0 and numOfCovered > 0:
                     return False
                 # if the number of mines showed by the current cells
                 # is greater than the number of flags around
                 # but the number of covered cells around is 0
                 # then it is not consistency
-                if self.getCell(i, j).numOfMines > numOfFlag and numOfCovered == 0:
+                if curCell.numOfMines > numOfFlag and numOfCovered == 0:
                     return False
 
         return True

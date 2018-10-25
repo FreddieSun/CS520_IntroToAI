@@ -71,14 +71,36 @@ class MineSweeper:
                                     isLose = True
                                     loseI = i + ii
                                     loseJ = j + jj
-                                    return [successClick, isLose, loseI, loseJ]
+                                    print('Game Over at :[', loseI, ',', loseJ, ']')
+                                    sys.exit()
+                                    # return [successClick, isLose, loseI, loseJ]
                                 adj.isCovered = False
-        return [successClick, isLose, loseI, loseJ]
+        # return [successClick, isLose, loseI, loseJ]
+        if successClick:
+            return
+        self.logicInference()
 
-    global BF_LIMIT
+    def flagMines(self, grid):
+        successFlag = False
+        for i in range(grid.height):
+            for j in range(grid.width):
+                cell = grid.getCell(i, j)
+                if not cell.isCovered:
+                    numOfmines = cell.numOfMines
+                    numOfFlags = self.grid.numOfFlags(i, j)
+                    if numOfmines - numOfFlags >= 1 and numOfmines == grid.numOfCoveredCell(i, j) + numOfFlags:
+                        successFlag = True
+                        for ii in range(-1, 2):
+                            for jj in range(-1, 2):
+                                adj = grid.getCell(i + ii, j + jj)
+                                if not adj.isOutside and adj.isCovered and not adj.isFlag:
+                                    adj.isFlag = True
+                                    self.currentNumOfMine -= 1
+        return successFlag
+
     def logicInference(self):
         print('Enter logic inference')
-
+        global BF_LIMIT
         if not self.grid.isConsistency():
             return
 
@@ -87,20 +109,19 @@ class MineSweeper:
 
         boundaryOptimization = False
 
-
         # add all the covered cell into the lise
         # add all the boundary cell into the list
         for i in range(self.grid.height):
             for j in range(self.grid.width):
                 curCell = self.grid.getCell(i, j)
-                if curCell.isCovered and not curCell.isFlag:
+                if not curCell.isOutside and curCell.isCovered and not curCell.isFlag:
                     coveredCellList.append([i, j])
-                if self.isBoundary(self.grid, i, j) and not curCell.isFlag:
+                if not curCell.isOutside and self.isBoundary(self.grid, i, j) and not curCell.isFlag:
                     boundaryCells.append([i, j])
 
         # todo
         numOfCellInSquare = len(coveredCellList) - len(boundaryCells)
-        if numOfCellInSquare > self.BF_LIMIT:
+        if numOfCellInSquare > BF_LIMIT:
             boundaryOptimization = True
         else:
             boundaryCells = coveredCellList
@@ -114,7 +135,7 @@ class MineSweeper:
         if not boundaryOptimization:
             regionsList.append(boundaryCells)
         else:
-            regionsList = self.tankSegregate(boundaryCells)
+            regionsList = self.tankSegregate(boundaryCells, self.grid)
 
         totalCases = 1
         success = False
@@ -173,11 +194,11 @@ class MineSweeper:
                 prob_best_index = index
                 prob_best_s = i
 
-        if self.BF_LIMIT == 8 and 8 < numOfCellInSquare <= 13:
+        if BF_LIMIT == 8 and 8 < numOfCellInSquare <= 13:
             print('Extending brute force horizon')
-            self.BF_LIMIT = 13
+            BF_LIMIT = 13
             self.logicInference()
-            self.BF_LIMIT = 8
+            BF_LIMIT = 8
             return
 
         print('Start Guess')
@@ -186,24 +207,6 @@ class MineSweeper:
         if self.grid.getCell(guessI, guessJ).isMine:
             print('game over')
             sys.exit()
-
-    def flagMines(self, grid):
-        successFlag = False
-        for i in range(grid.height):
-            for j in range(grid.width):
-                cell = grid.getCell(i, j)
-                if not cell.isCovered:
-                    numOfmines = cell.numOfMines
-                    numOfFlags = self.grid.numOfFlags(i, j)
-                    if numOfmines - numOfFlags >= 1 and numOfmines == grid.numOfCoveredCell(i, j) + numOfFlags:
-                        successFlag = True
-                        for ii in range(-1, 2):
-                            for jj in range(-1, 2):
-                                adj = grid.getCell(i + ii, j + jj)
-                                if not adj.isOutside and adj.isCovered and not adj.isFlag:
-                                    adj.isFlag = True
-                                    self.currentNumOfMine -= 1
-        return successFlag
 
     def isBoundary(self, grid, i, j):
         cell = grid.getCell(i, j)
@@ -335,6 +338,7 @@ class MineSweeper:
     def game(self):
         print('Start')
         self.drawGrid(self.grid)
+        print('共有雷:', self.totalNumOfMine, '个')
 
         # random choose a cell which is not bomb
         # in order to trigger the algorithm
@@ -350,18 +354,22 @@ class MineSweeper:
                 firstTrigger = False
 
         while not self.currentNumOfMine == 0:
-            while self.flagMines(self.grid):
-                pass
-            for i in range(sys.maxsize):
-                successClick, isLose, loseI, loseJ = self.clickCell(self.grid)
-                self.drawUserView(self.grid)
-                if isLose:
-                    print('Game Over at ', loseI, loseJ)
-                    sys.exit()
-                if successClick:
-                    continue
-                else:
-                    break
+            # while self.flagMines(self.grid):
+            #     pass
+            # for i in range(sys.maxsize):
+            #     successClick, isLose, loseI, loseJ = self.clickCell(self.grid)
+            #     self.drawUserView(self.grid)
+            #     if isLose:
+            #         print('Game Over at ', loseI, loseJ)
+            #         sys.exit()
+            #     if successClick:
+            #         continue
+            #     else:
+            #         break
+            self.flagMines(self.grid)
+            self.clickCell(self.grid)
+            self.drawUserView(self.grid)
+
         # self.drawGrid(self.grid)
 
         print('Win')
