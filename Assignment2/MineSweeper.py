@@ -56,6 +56,53 @@ class MineSweeper:
                                 adj.isCovered = False
         return [successClick, isLose, loseI, loseJ]
 
+    def logicInference(self):
+        print('Enter logic inference')
+
+        if not self.grid.isConsistency():
+            return
+
+        boundaryCells = []
+        coveredCellList = []
+
+        boundaryoptimization = False
+
+        # add all the covered cell into the lise
+        # add all the boundary cell into the list
+        for i in range(self.grid.height):
+            for j in range(self.grid.width):
+                curCell = self.grid.getCell(i, j)
+                if curCell.isCovered and not curCell.isFlag:
+                    coveredCellList.append([i, j])
+                if self.isBoundary(self.grid, i, j) and not curCell.isFlag:
+                    boundaryCells.append([i, j])
+
+        # todo
+        numOfCellInSquare = len(coveredCellList) - len(boundaryCells)
+        if numOfCellInSquare > 8:
+            boundaryoptimization = True
+        else:
+            boundaryCells = coveredCellList
+
+        if len(boundaryCells) == 0:
+            return
+
+        # get the different regions and solve them one by one
+
+        regionsList = []
+        if not boundaryoptimization:
+            regionsList.append(boundaryCells)
+        else:
+            regionsList = self.getRegions()
+
+
+
+
+    def getRegions(self, boundaryCells):
+        print('This is getRegions')
+        regionsList = []
+        return regionsList
+
     def flagMines(self, grid):
         flag = False
         for i in range(grid.height):
@@ -94,7 +141,6 @@ class MineSweeper:
             return True
         if i != grid.height - 1 and j != grid.width - 1 and not grid.getCell(i + 1, j + 1).isCovered:
             return True
-
 
         return False
 
