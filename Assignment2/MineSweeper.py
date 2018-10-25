@@ -214,10 +214,10 @@ class MineSweeper:
             for i in range(grid.height):
                 for j in range(grid.width):
                     #if konwnMine[i][j]:
-                    if grid.getCell(i,j).isMine:
+                    if grid.getCell(i,j).isFlag:
                         flagCount += 1
                     #num = tank_board[i][j]
-                    num = grid.getCell(i,j)
+                    num = grid.getCell(i, j).numOfMines
                     if num < 0:
                         continue
                     if (i == 0 and j == 0) or (i == grid.height - 1 and j == grid.width - 1):
@@ -245,7 +245,7 @@ class MineSweeper:
                     si = s[0]
                     sj = s[1]
                     #solution[i] = knownMine[si][sj]
-                    solution[i] = grid.getCell(i,j).isMine
+                    solution[i] = grid.getCell(si,sj).isMine
                 tank_solutions.append(solution)
                 return
             q = borderTile[k]
@@ -253,17 +253,17 @@ class MineSweeper:
             qj = q[1]
 
             #knownMine[qi][qj] = True
-            grid.getCell(i, j).isMine= True
+            grid.getCell(qi, qj).isFlag= True
             Recurse(borderTile,k+1,grid)
             #nownMine[qi][qj] = False
-            grid.getCell(i, j).isMine = False
+            grid.getCell(qi, qj).isFlag = False
 
 
             #knownEmpty[qi][qj] = True
-            grid.getCell(i, j).isCovered = False
+            grid.getCell(qi, qj).isCovered = False
             Recurse(borderTile,k+1,grid)
             #nownEmpty[qi][qj] = False
-            grid.getCell(i, j).isCovered = True
+            grid.getCell(qi, qj).isCovered = True
 
 
 if __name__ == '__main__':
