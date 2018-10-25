@@ -291,19 +291,19 @@ class MineSweeper:
         allRegions = []
         covered = []
         while True:
-            queue = Queue()
+            queue = []
             finishedRegion = []
 
             for i in range(len(borderTiles)):
                 firstT = borderTiles[i]
                 if firstT not in covered:
-                    queue.put(firstT)
+                    queue.append(firstT)
                     break
 
-            if queue.empty():
+            if len(queue) == 0:
                 break
-            while not queue.empty():
-                curTile = queue.get()
+            while len(queue) != 0:
+                curTile = queue.pop(0)
                 ci = curTile[0]
                 cj = curTile[1]
                 finishedRegion.append(curTile)
@@ -331,7 +331,7 @@ class MineSweeper:
                     if not isConnected:
                         continue
                     if tile not in queue:
-                        queue.put(tile)
+                        queue.append(tile)
             allRegions.append(finishedRegion)
         return allRegions
 
