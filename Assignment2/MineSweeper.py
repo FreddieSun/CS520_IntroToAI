@@ -114,9 +114,9 @@ class MineSweeper:
         for i in range(self.grid.height):
             for j in range(self.grid.width):
                 curCell = self.grid.getCell(i, j)
-                if not curCell.isOutside and curCell.isCovered and not curCell.isFlag:
+                if curCell.isCovered and not curCell.isFlag:
                     coveredCellList.append([i, j])
-                if not curCell.isOutside and self.isBoundary(self.grid, i, j) and not curCell.isFlag:
+                if self.isBoundary(self.grid, i, j) and not curCell.isFlag:
                     boundaryCells.append([i, j])
 
         # todo
@@ -366,8 +366,10 @@ class MineSweeper:
             #         continue
             #     else:
             #         break
-            self.flagMines(self.grid)
-            self.clickCell(self.grid)
+            while self.flagMines(self.grid):
+                pass
+            while self.clickCell(self.grid):
+                pass
             self.drawUserView(self.grid)
 
         # self.drawGrid(self.grid)
