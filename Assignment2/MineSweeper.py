@@ -95,6 +95,7 @@ class MineSweeper:
         if i != grid.height - 1 and j != grid.width - 1 and not grid.getCell(i + 1, j + 1).isCovered:
             return True
 
+
         return False
 
     def game(self):
