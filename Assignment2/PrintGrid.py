@@ -80,6 +80,6 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
 
 if __name__ == '__main__':
     grid = createGrid(HEIGHT, WIDTH, minP)
-    # print(grid)
-    # print(gridList(grid))
-    # drawInitialGrid(gridList(grid))
+    #print(grid)
+    #print(gridList(grid))
+    #drawInitialGrid(gridList(grid))

@@ -177,6 +177,38 @@ class MineSweeper:
 
         print('Win')
 
+        def Recurse(self, borderTile, k, grid):
+            flagCount = 0;
+            for i in range(grid.height):
+                for j in range(grid.width):
+                    if grid.getCell(i, j).isMine:
+                        flagCount += 1
+                    num = grid.getCell(i, j).numOfMines
+                    if num < 0:
+                        continue
+                    if (i == 0 and j == 0) or (i == grid.height - 1 and j == grid.width - 1):
+                        surround = 3
+                    elif i == 0 or j == 0 or i == grid.height - 1 or j == grid.width - 1:
+                        surround = 5
+                    else:
+                        surround = 8
+                    numFlags = knownMine.numOfFlags(i, j)
+                    numFree = knownEmpty.numOfFlags(i, j)
+                    if numFlags > num:
+                        return
+                    if surround - numFree < num:
+                        return
+            if flagCount > TOT_MINES:
+                return
+            if k == len(borderTile):
+                if not borderOptimization and flagCount<TOT_MINES:
+                    return
+                solution = []
+                for i in range(len(borderTile)):
+                    x = borderTile.get(i)[0]
+                    y = borderTile.get(i)[1]
+                    solution[i]=knownMine[][]
+
 
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
