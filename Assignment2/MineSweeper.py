@@ -188,21 +188,21 @@ class MineSweeper:
             sys.exit()
 
     def flagMines(self, grid):
-        flag = False
+        successFlag = False
         for i in range(grid.height):
             for j in range(grid.width):
                 cell = grid.getCell(i, j)
                 if not cell.isCovered:
                     numOfmines = cell.numOfMines
-                    if numOfmines >= 1 and numOfmines == grid.numOfCoveredCell(i, j) + grid.numOfFlags(i, j):
-                        flag = True
+                    if numOfmines >= 1 and numOfmines == grid.numOfCoveredCell(i, j):
+                        successFlag = True
                         for ii in range(-1, 2):
                             for jj in range(-1, 2):
                                 adj = grid.getCell(i + ii, j + jj)
                                 if not adj.isOutside and adj.isCovered:
                                     adj.isFlag = True
                                     self.currentNumOfMine -= 1
-        return flag
+        return successFlag
 
     def isBoundary(self, grid, i, j):
         cell = grid.getCell(i, j)
