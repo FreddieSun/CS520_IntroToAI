@@ -14,8 +14,8 @@ knownEmpty = []
 class MineSweeper:
 
     def __init__(self):
-        self.grid = Grid(5, 5, 0.123)
-        #self.grid.generateSpecificGrid()
+        self.grid = Grid(9,9, 0.2)
+        # self.grid.generateSpecificGrid()
         self.grid.generateGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
@@ -108,6 +108,8 @@ class MineSweeper:
 
         boundaryCells = []
         coveredCellList = []
+
+        global borderOptimization
 
         borderOptimization = False
 
@@ -413,6 +415,8 @@ class MineSweeper:
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
     # mineSweeper.drawGrid(mineSweeper.grid)
-    # gridPrinter = gridList(mineSweeper.grid)
-    # drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
+    gridPrinter = gridList(mineSweeper.grid)
+    drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
     mineSweeper.game()
+    gridPrinter1 = gridList(mineSweeper.grid)
+    drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
