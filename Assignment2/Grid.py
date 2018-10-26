@@ -28,6 +28,23 @@ class Grid:
                     cell = Cell(False)
                     self.grid.append(cell)
 
+    def generateSpecificGrid(self):
+        for i in range(self.borderHeight):
+            for j in range(self.borderWidth):
+                if i == self.borderHeight - 1 or i == 0 or j == self.borderWidth - 1 or j == 0:
+                    cell = Cell(False)
+                    cell.isOutside = True
+                    self.grid.append(cell)
+                else:
+                    cell = Cell(False)
+                    self.grid.append(cell)
+
+        self.getCell(2, 1).isMine = True
+        self.getCell(4, 1).isMine = True
+        self.getCell(4, 3).isMine = True
+        self.numOfMine = 3
+
+
     def markMineNumber(self):
         for i in range(self.height):
             for j in range(self.width):

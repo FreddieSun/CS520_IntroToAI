@@ -16,7 +16,7 @@ knownEmpty = []
 class MineSweeper:
     def __init__(self):
         self.grid = Grid(5, 5, 0.123)
-        self.grid.generateGrid()
+        self.grid.generateSpecificGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
         self.currentNumOfMine = self.totalNumOfMine
@@ -257,15 +257,17 @@ class MineSweeper:
                 if curGrid.getCell(i, j).isFlag:
                     flagCount += 1
                 # num = tank_board[i][j]
-
-                if curGrid.getCell(i, j).isFlag:
-                    continue
-
-                num = -1
+                num = 10
                 if not self.grid.getCell(i, j).isCovered:
                     num = self.grid.getCell(i, j).numOfMines
 
-                if (i == 0 and j == 0) or (i == curGrid.height - 1 and j == curGrid.width - 1):
+                if curGrid.getCell(i, j).isFlag or curGrid.getCell(i, j).isCovered:
+                    continue
+                if num == 10:
+                    continue
+
+                if (i == 0 and j == 0) or (i == curGrid.height - 1 and j == curGrid.width - 1) \
+                        or (i == 0 and j == curGrid.width - 1) or (j == 0 and i == curGrid.height - 1):
                     surround = 3
                 elif i == 0 or j == 0 or i == curGrid.height - 1 or j == curGrid.width - 1:
                     surround = 5
@@ -287,13 +289,13 @@ class MineSweeper:
         if k == len(borderTile):
             if not borderOptimization and flagCount < self.totalNumOfMine:
                 return
-            solutions = []
+            tempSolutions = [len(borderTile)]
             for i in range(len(borderTile)):
                 s = borderTile[i]
                 si = s[0]
                 sj = s[1]
                 # solutions[i] = knownMine[si][sj]
-                solutions[i] = curGrid.getCell(si, sj).isFlag
+                tempSolutions[i] = curGrid.getCell(si, sj).isFlag
             solutions.append(solutions)
             return
 
@@ -355,8 +357,8 @@ class MineSweeper:
         return allRegions
 
     def findIsConnected(self, ci, cj, ti, tj):
-        for i in range(grid.height):
-            for j in range(grid.width):
+        for i in range(self.grid.height):
+            for j in range(self.grid.width):
                 if abs(ci - i) <= 1 and abs(cj - j) <= 1 and abs(ti - i) <= 1 and abs(
                         tj - i) <= 1:
                     isConnected = True
