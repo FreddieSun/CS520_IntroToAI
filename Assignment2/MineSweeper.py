@@ -7,14 +7,14 @@ import copy
 from queue import Queue
 
 solutions = []
-BF_LIMIT = 8
+BF_LIMIT = 0
 borderOptimization = False
 knownMine = []
 knownEmpty = []
 class MineSweeper:
 
     def __init__(self):
-        self.grid = Grid(9,9, 0.2)
+        self.grid = Grid(19,19, 0.123)
         # self.grid.generateSpecificGrid()
         self.grid.generateGrid()
         self.grid.markMineNumber()
@@ -287,11 +287,13 @@ class MineSweeper:
                 if surround - numFree < num:
                     return
 
-        if flagCount > self.totalNumOfMine:
-            return
+        # if flagCount > self.totalNumOfMine:
+        #     return
 
         if k == len(borderTile):
-            if not borderOptimization and flagCount < self.totalNumOfMine:
+            # if not borderOptimization and flagCount < self.totalNumOfMine:
+            #     return
+            if not borderOptimization:
                 return
             tempSolutions = []
             for i in range(len(borderTile)):
@@ -415,8 +417,8 @@ class MineSweeper:
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
     # mineSweeper.drawGrid(mineSweeper.grid)
-    gridPrinter = gridList(mineSweeper.grid)
-    drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
+    # gridPrinter = gridList(mineSweeper.grid)
+    # drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
     mineSweeper.game()
-    gridPrinter1 = gridList(mineSweeper.grid)
-    drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
+    # gridPrinter1 = gridList(mineSweeper.grid)
+    # drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
