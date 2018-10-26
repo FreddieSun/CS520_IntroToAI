@@ -63,6 +63,9 @@ class Grid:
                 if curCell.numOfMines > numOfFlag and numOfCovered == 0:
                     return False
 
+                if curCell.numOfMines < numOfFlag:
+                    return False
+
         return True
 
     def numOfCoveredCell(self, i, j):
@@ -78,6 +81,8 @@ class Grid:
         result = 0
         for p in range(-1, 2):
             for q in range(-1, 2):
+                if p == 0 and q == 0:
+                    continue
                 currCell = self.getCell(i + p, j + q)
                 if not currCell.isOutside and currCell.isFlag:
                     result += 1

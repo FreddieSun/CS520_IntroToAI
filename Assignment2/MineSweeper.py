@@ -205,7 +205,7 @@ class MineSweeper:
         [guessI, guessJ] = regionsList[prob_best_s][prob_best_index]
         self.grid.getCell(guessI, guessJ).isCovered = False
         if self.grid.getCell(guessI, guessJ).isMine:
-            print('game over')
+            print('Game over')
             sys.exit()
 
     def isBoundary(self, grid, i, j):
@@ -232,33 +232,40 @@ class MineSweeper:
 
         return False
 
-    def recurse(self, borderTile, k, grid):
+    def recurse(self, borderTile, k, curGrid):
         flagCount = 0
-        for i in range(grid.height):
-            for j in range(grid.width):
+        for i in range(curGrid.height):
+            for j in range(curGrid.width):
                 # if konwnMine[i][j]:
-                if grid.getCell(i, j).isFlag:
+                if curGrid.getCell(i, j).isFlag:
                     flagCount += 1
                 # num = tank_board[i][j]
-                num = grid.getCell(i, j).numOfMines
-                if num < 0:
+
+                if curGrid.getCell(i, j).isFlag:
                     continue
-                if (i == 0 and j == 0) or (i == grid.height - 1 and j == grid.width - 1):
-                    surround = 3
-                elif i == 0 or j == 0 or i == grid.height - 1 or j == grid.width - 1:
-                    surround = 5
-                else:
-                    surround = 8
-                # numFlags = knownMine.numOfFlags(i, j)
-                numFlags = grid.numOfFlags(i, j)
-                # numFree = knownEmpty.numOfFlags(i, j)
-                numFree = grid.numOfFlags(i, j)
-                if numFlags > num:
+
+                # num = curGrid.getCell(i, j).numOfMines
+                #
+                # if (i == 0 and j == 0) or (i == curGrid.height - 1 and j == curGrid.width - 1):
+                #     surround = 3
+                # elif i == 0 or j == 0 or i == curGrid.height - 1 or j == curGrid.width - 1:
+                #     surround = 5
+                # else:
+                #     surround = 8
+                # # numFlags = knownMine.numOfFlags(i, j)
+                # numFlags = curGrid.numOfFlags(i, j)
+                # # numFree = knownEmpty.numOfFlags(i, j)
+                # numFree = curGrid.numOfFlags(i, j)
+                # if numFlags > num:
+                #     return
+                # if surround - numFree < num:
+                #     return
+                if not curGrid.isConsistency():
                     return
-                if surround - numFree < num:
-                    return
+
         if flagCount > self.totalNumOfMine:
             return
+
         if k == len(borderTile):
             if not borderOptimization and flagCount < self.totalNumOfMine:
                 return
@@ -268,24 +275,25 @@ class MineSweeper:
                 si = s[0]
                 sj = s[1]
                 # solutions[i] = knownMine[si][sj]
-                solutions[i] = grid.getCell(si, sj).isMine
+                solutions[i] = curGrid.getCell(si, sj).isFlag
             solutions.append(solutions)
             return
+
         q = borderTile[k]
         qi = q[0]
         qj = q[1]
 
         # knownMine[qi][qj] = True
-        grid.getCell(qi, qj).isFlag = True
-        self.recurse(borderTile, k + 1, grid)
+        curGrid.getCell(qi, qj).isFlag = True
+        self.recurse(borderTile, k + 1, curGrid)
         # nownMine[qi][qj] = False
-        grid.getCell(qi, qj).isFlag = False
+        curGrid.getCell(qi, qj).isFlag = False
 
         # knownEmpty[qi][qj] = True
-        grid.getCell(qi, qj).isCovered = False
-        self.recurse(borderTile, k + 1, grid)
+        curGrid.getCell(qi, qj).isCovered = False
+        self.recurse(borderTile, k + 1, curGrid)
         # nownEmpty[qi][qj] = False
-        grid.getCell(qi, qj).isCovered = True
+        curGrid.getCell(qi, qj).isCovered = True
 
     def tankSegregate(self, borderTiles, grid):
         allRegions = []
