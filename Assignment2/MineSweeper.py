@@ -319,21 +319,24 @@ class MineSweeper:
                     if abs(ci - ti) > 2 or abs(cj - tj) > 2:
                         isConnected = False
                     else:
-                        flag = True
-                        while (flag):
-                            for i in range(grid.height):
-                                for j in range(grid.width):
-                                    if grid.getCell(i, j).numOfMines > 0:
-                                        if abs(ci - i) <= 1 and abs(cj - j) <= 1 and abs(ti - i) <= 1 and abs(
-                                                tj - i) <= 1:
-                                            isConnected = True
-                                            flag = False
+                        isConnected = self.findIsConnected(ci, cj, ti, tj)
+
                     if not isConnected:
                         continue
                     if tile not in queue:
                         queue.append(tile)
             allRegions.append(finishedRegion)
         return allRegions
+
+    def findIsConnected(self, ci, cj, ti, tj):
+        for i in range(grid.height):
+            for j in range(grid.width):
+                if abs(ci - i) <= 1 and abs(cj - j) <= 1 and abs(ti - i) <= 1 and abs(
+                        tj - i) <= 1:
+                    isConnected = True
+                    return isConnected
+
+        return False
 
     def game(self):
         print('Start')
