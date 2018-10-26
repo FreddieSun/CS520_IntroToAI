@@ -11,9 +11,8 @@ BF_LIMIT = 8
 borderOptimization = False
 knownMine = []
 knownEmpty = []
-
-
 class MineSweeper:
+
     def __init__(self):
         self.grid = Grid(5, 5, 0.123)
         self.grid.generateSpecificGrid()
@@ -289,14 +288,13 @@ class MineSweeper:
         if k == len(borderTile):
             if not borderOptimization and flagCount < self.totalNumOfMine:
                 return
-            tempSolutions = [len(borderTile)]
+            tempSolutions = []
             for i in range(len(borderTile)):
                 s = borderTile[i]
                 si = s[0]
                 sj = s[1]
-                # solutions[i] = knownMine[si][sj]
-                tempSolutions[i] = curGrid.getCell(si, sj).isFlag
-            solutions.append(solutions)
+                tempSolutions.append((curGrid.getCell(si, sj)).isFlag)
+            solutions.append(tempSolutions)
             return
 
         q = borderTile[k]
