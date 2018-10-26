@@ -14,7 +14,7 @@ knownEmpty = []
 class MineSweeper:
 
     def __init__(self):
-        self.grid = Grid(16, 16, 0.2)
+        self.grid = Grid(16, 30, 0.2)
         # self.grid.generateSpecificGrid()
         self.grid.generateGrid()
         self.grid.markMineNumber()
@@ -229,7 +229,7 @@ class MineSweeper:
         print('Start Guess')
         [guessI, guessJ] = regionsList[prob_best_s][prob_best_index]
         self.grid.getCell(guessI, guessJ).isCovered = False
-        print("我猜的是：",'[',guessI,',',guessJ,']')
+        print("我猜的是：",'[',guessI,',',guessJ,']','这个点不是雷的概率是：',prob_best)
         if self.grid.getCell(guessI, guessJ).isMine:
             print('Game over')
             gridPrinter1 = gridList(mineSweeper.grid)
@@ -295,12 +295,12 @@ class MineSweeper:
                 if surround - numFree < num:
                     return
 
-        if flagCount > self.totalNumOfMine:
-            return
+        # if flagCount > self.totalNumOfMine:
+        #     return
 
         if k == len(borderTile):
-            if not borderOptimization and flagCount < self.totalNumOfMine:
-                return
+            # if not borderOptimization and flagCount < self.totalNumOfMine:
+            #     return
             # if not borderOptimization:
             #     return
             tempSolutions = []
