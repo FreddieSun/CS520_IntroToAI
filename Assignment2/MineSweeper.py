@@ -14,7 +14,7 @@ knownEmpty = []
 class MineSweeper:
 
     def __init__(self):
-        self.grid = Grid(9, 9, 0.123)
+        self.grid = Grid(16, 16, 0.2)
         # self.grid.generateSpecificGrid()
         self.grid.generateGrid()
         self.grid.markMineNumber()
@@ -76,6 +76,8 @@ class MineSweeper:
                                     loseI = i + ii
                                     loseJ = j + jj
                                     print('Game Over at(clickCell method) :[', loseI, ',', loseJ, ']')
+                                    gridPrinter1 = gridList(mineSweeper.grid)
+                                    drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
                                     sys.exit()
                                     # return [successClick, isLose, loseI, loseJ]
                                 adj.isCovered = False
@@ -230,6 +232,8 @@ class MineSweeper:
         print("我猜的是：",'[',guessI,',',guessJ,']')
         if self.grid.getCell(guessI, guessJ).isMine:
             print('Game over')
+            gridPrinter1 = gridList(mineSweeper.grid)
+            drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
             sys.exit()
 
     def isBoundary(self, grid, i, j):
@@ -412,8 +416,13 @@ class MineSweeper:
                     print('我们凉凉了',i, j)
                 if curCell.isCovered and not curCell.isFlag:
                     print('我们凉凉了',i, j)
-
         print('Win')
+
+
+        gridPrinter1 = gridList(mineSweeper.grid)
+        drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
+
+
     def isFinished(self):
         for i in range(self.grid.height):
             for j in range(self.grid.width):

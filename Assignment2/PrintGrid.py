@@ -38,6 +38,8 @@ def gridList(grid):
         #     GridList.append(9)
         elif smallGrid[i].isFlag:
             GridList.append(9)
+        elif smallGrid[i].isCovered == False and smallGrid[i].isMine == True:
+            GridList.append(12)
 
         else:
             GridList.append(smallGrid[i].numOfMines)
@@ -56,7 +58,7 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
         for i in range(gridHeight):
             for j in range(gridWidth):
                 if gridlist[i * gridWidth + j] == 11:
-                    pygame.draw.rect(surface, WHITE, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
+                    pygame.draw.rect(surface, GREY, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
 
                 elif gridlist[i * gridWidth + j] == 9:
                     pygame.draw.rect(surface, RED, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
@@ -68,7 +70,10 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
                     numberRect.center = ((gap + size) * j + gap + size / 2, (gap + size) * i + gap + size / 2)
                     surface.blit(numberSurface, numberRect)
                 elif gridlist[i * gridWidth + j] == 0:
-                    pygame.draw.rect(surface, GREY, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
+                    pygame.draw.rect(surface, WHITE, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
+
+                elif gridlist[i * gridWidth + j] == 12:
+                    pygame.draw.rect(surface, BLACK, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
 
                 else:
                     pygame.draw.rect(surface, WHITE, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
