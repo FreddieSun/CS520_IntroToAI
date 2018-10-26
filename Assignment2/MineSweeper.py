@@ -146,6 +146,7 @@ class MineSweeper:
 
         # for each separate region, find the result
         for i in range(len(regionsList)):
+            global solutions
             solutions = []
 
             for p in range(self.grid.height):
@@ -183,6 +184,7 @@ class MineSweeper:
 
                 if allMine:
                     self.grid.getCell(tempI, tempJ).isFlag = True
+                    self.currentNumOfMine -= 1
                 if allClick:
                     # todo success
                     success = True
@@ -294,6 +296,7 @@ class MineSweeper:
                 si = s[0]
                 sj = s[1]
                 tempSolutions.append((curGrid.getCell(si, sj)).isFlag)
+            global solutions
             solutions.append(tempSolutions)
             return
 

@@ -39,9 +39,10 @@ class Grid:
                     cell = Cell(False)
                     self.grid.append(cell)
 
-        self.getCell(2, 1).isMine = True
-        self.getCell(4, 1).isMine = True
-        self.getCell(4, 3).isMine = True
+        self.getCell(0, 2).isMine = True
+        self.getCell(3, 0).isMine = True
+        self.getCell(1, 3).isMine = True
+        self.getCell(4, 0).isMine = True
         self.numOfMine = 3
 
 
