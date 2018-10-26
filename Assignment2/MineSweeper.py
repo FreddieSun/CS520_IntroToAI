@@ -9,6 +9,8 @@ from queue import Queue
 solutions = []
 BF_LIMIT = 8
 borderOptimization = False
+knownMine = []
+knownEmpty = []
 
 
 class MineSweeper:
@@ -146,9 +148,23 @@ class MineSweeper:
         # for each separate region, find the result
         for i in range(len(regionsList)):
             solutions = []
+
+            for p in range(self.grid.height):
+                for q in range(self.grid.width):
+                    tempCell = self.grid.getCell(p, q)
+                    if tempCell.isFlag:
+                        knownMine = True
+                    else:
+                        knownMine = False
+                    if not tempCell.isCovered:
+                        knownEmpty = True
+                    else:
+                        knownEmpty = False
+
             curGrid = copy.deepcopy(self.grid)
 
-            self.recurse(regionsList[i], 0, self.grid)
+            # Key Part
+            self.recurse(regionsList[i], 0, curGrid)
 
             # failed to find a solution
             if len(solutions) == 0:
@@ -234,6 +250,7 @@ class MineSweeper:
 
     def recurse(self, borderTile, k, curGrid):
         flagCount = 0
+
         for i in range(curGrid.height):
             for j in range(curGrid.width):
                 # if konwnMine[i][j]:
@@ -244,23 +261,24 @@ class MineSweeper:
                 if curGrid.getCell(i, j).isFlag:
                     continue
 
-                # num = curGrid.getCell(i, j).numOfMines
-                #
-                # if (i == 0 and j == 0) or (i == curGrid.height - 1 and j == curGrid.width - 1):
-                #     surround = 3
-                # elif i == 0 or j == 0 or i == curGrid.height - 1 or j == curGrid.width - 1:
-                #     surround = 5
-                # else:
-                #     surround = 8
-                # # numFlags = knownMine.numOfFlags(i, j)
-                # numFlags = curGrid.numOfFlags(i, j)
-                # # numFree = knownEmpty.numOfFlags(i, j)
-                # numFree = curGrid.numOfFlags(i, j)
-                # if numFlags > num:
-                #     return
-                # if surround - numFree < num:
-                #     return
-                if not curGrid.isConsistency():
+                num = -1
+                if not self.grid.getCell(i, j).isCovered:
+                    num = self.grid.getCell(i, j).numOfMines
+
+                if (i == 0 and j == 0) or (i == curGrid.height - 1 and j == curGrid.width - 1):
+                    surround = 3
+                elif i == 0 or j == 0 or i == curGrid.height - 1 or j == curGrid.width - 1:
+                    surround = 5
+                else:
+                    surround = 8
+
+                # numFlags = knownMine.numOfFlags(i, j)
+                numFlags = curGrid.numOfFlags(i, j)
+                # numFree = knownEmpty.numOfFlags(i, j)
+                numFree = surround - curGrid.numOfCoveredCell(i, j) - numFlags
+                if numFlags > num:
+                    return
+                if surround - numFree < num:
                     return
 
         if flagCount > self.totalNumOfMine:
