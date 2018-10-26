@@ -15,7 +15,8 @@ class MineSweeper:
 
     def __init__(self):
         self.grid = Grid(5, 5, 0.123)
-        self.grid.generateSpecificGrid()
+        #self.grid.generateSpecificGrid()
+        self.grid.generateGrid()
         self.grid.markMineNumber()
         self.totalNumOfMine = self.grid.numOfMine
         self.currentNumOfMine = self.totalNumOfMine
@@ -108,7 +109,7 @@ class MineSweeper:
         boundaryCells = []
         coveredCellList = []
 
-        boundaryOptimization = False
+        borderOptimization = False
 
         # add all the covered cell into the lise
         # add all the boundary cell into the list
@@ -123,7 +124,7 @@ class MineSweeper:
         # todo
         numOfCellInSquare = len(coveredCellList) - len(boundaryCells)
         if numOfCellInSquare > BF_LIMIT:
-            boundaryOptimization = True
+            borderOptimization = True
         else:
             boundaryCells = coveredCellList
 
@@ -133,7 +134,7 @@ class MineSweeper:
         # get the different regions and solve them one by one
 
         regionsList = []
-        if not boundaryOptimization:
+        if not borderOptimization:
             regionsList.append(boundaryCells)
         else:
             regionsList = self.tankSegregate(boundaryCells, self.grid)
@@ -361,7 +362,7 @@ class MineSweeper:
         for i in range(self.grid.height):
             for j in range(self.grid.width):
                 if abs(ci - i) <= 1 and abs(cj - j) <= 1 and abs(ti - i) <= 1 and abs(
-                        tj - i) <= 1:
+                        tj - j) <= 1:
                     isConnected = True
                     return isConnected
 
