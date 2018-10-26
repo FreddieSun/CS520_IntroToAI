@@ -21,9 +21,9 @@ class Grid:
                     cell.isOutside = True
                     self.grid.append(cell)
                 elif 0 <= rNum < self.mineP:
-                    cell = Cell(True)
-                    self.grid.append(cell)
-                    self.numOfMine += 1
+                        cell = Cell(True)
+                        self.grid.append(cell)
+                        self.numOfMine += 1
                 else:
                     cell = Cell(False)
                     self.grid.append(cell)
@@ -39,11 +39,12 @@ class Grid:
                     cell = Cell(False)
                     self.grid.append(cell)
 
-        self.getCell(0, 2).isMine = True
-        self.getCell(3, 0).isMine = True
-        self.getCell(1, 3).isMine = True
+        self.getCell(0, 3).isMine = True
+        self.getCell(0, 4).isMine = True
+        self.getCell(3, 1).isMine = True
         self.getCell(4, 0).isMine = True
-        self.numOfMine = 3
+        self.getCell(4, 4).isMine = True
+        self.numOfMine = 5
 
 
     def markMineNumber(self):
