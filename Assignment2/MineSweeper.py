@@ -74,6 +74,8 @@ class MineSweeper:
                                     loseI = i + ii
                                     loseJ = j + jj
                                     print('Game Over at :[', loseI, ',', loseJ, ']')
+                                    gridPrinter1 = gridList(mineSweeper.grid)
+                                    drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
                                     sys.exit()
                                     # return [successClick, isLose, loseI, loseJ]
                                 adj.isCovered = False
@@ -226,6 +228,8 @@ class MineSweeper:
         self.grid.getCell(guessI, guessJ).isCovered = False
         if self.grid.getCell(guessI, guessJ).isMine:
             print('Game over')
+            gridPrinter1 = gridList(mineSweeper.grid)
+            drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
             sys.exit()
 
     def isBoundary(self, grid, i, j):
@@ -410,13 +414,14 @@ class MineSweeper:
         # self.drawGrid(self.grid)
 
         print('Win')
+        gridPrinter1 = gridList(mineSweeper.grid)
+        drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
 
 
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
-    # mineSweeper.drawGrid(mineSweeper.grid)
-    gridPrinter = gridList(mineSweeper.grid)
-    drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
+    mineSweeper.drawGrid(mineSweeper.grid)
+    # gridPrinter = gridList(mineSweeper.grid)
+    # drawInitialGrid(gridPrinter, mineSweeper.grid.height, mineSweeper.grid.width)
     mineSweeper.game()
-    gridPrinter1 = gridList(mineSweeper.grid)
-    drawInitialGrid(gridPrinter1, mineSweeper.grid.height, mineSweeper.grid.width)
+
