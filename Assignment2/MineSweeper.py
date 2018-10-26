@@ -7,14 +7,14 @@ import copy
 from queue import Queue
 
 solutions = []
-BF_LIMIT = 0
+BF_LIMIT = 8
 borderOptimization = False
 knownMine = []
 knownEmpty = []
 class MineSweeper:
 
     def __init__(self):
-        self.grid = Grid(19,19, 0.123)
+        self.grid = Grid(9, 9, 0.123)
         # self.grid.generateSpecificGrid()
         self.grid.generateGrid()
         self.grid.markMineNumber()
@@ -70,10 +70,12 @@ class MineSweeper:
                             adj = grid.getCell(i + ii, j + jj)
                             if not adj.isOutside and adj.isCovered and not adj.isFlag:
                                 if adj.isMine:
+                                    print('clickCell画图')
+                                    self.drawUserView(self.grid)
                                     isLose = True
                                     loseI = i + ii
                                     loseJ = j + jj
-                                    print('Game Over at :[', loseI, ',', loseJ, ']')
+                                    print('Game Over at(clickCell method) :[', loseI, ',', loseJ, ']')
                                     sys.exit()
                                     # return [successClick, isLose, loseI, loseJ]
                                 adj.isCovered = False
@@ -101,15 +103,17 @@ class MineSweeper:
         return successFlag
 
     def logicInference(self):
-        print('Enter logic inference')
+        print('开始逻辑推理')
         global BF_LIMIT
+        global solutions
+        global borderOptimization
+
         if not self.grid.isConsistency():
             return
 
         boundaryCells = []
         coveredCellList = []
 
-        global borderOptimization
 
         borderOptimization = False
 
@@ -149,7 +153,6 @@ class MineSweeper:
 
         # for each separate region, find the result
         for i in range(len(regionsList)):
-            global solutions
             solutions = []
 
             for p in range(self.grid.height):
@@ -168,7 +171,6 @@ class MineSweeper:
 
             # Key Part
             self.recurse(regionsList[i], 0, curGrid)
-
             # failed to find a solution
             if len(solutions) == 0:
                 return
@@ -180,7 +182,7 @@ class MineSweeper:
                 for tempList in solutions:
                     if not tempList[j]:
                         allMine = False
-                    if tempList[i]:
+                    if tempList[j]:
                         allClick = False
 
                 [tempI, tempJ] = regionsList[i][j]
@@ -189,13 +191,14 @@ class MineSweeper:
                     self.grid.getCell(tempI, tempJ).isFlag = True
                     self.currentNumOfMine -= 1
                 if allClick:
-                    # todo success
                     success = True
+                    print('我逻辑推理后确定点','[',tempI,',',tempJ,']')
                     self.grid.getCell(tempI, tempJ).isCovered = False
 
             totalCases *= len(solutions)
             if success:
-                continue
+                # todo 我们这里应该跳出logic inference 让他去扩散，而不是在里面继续猜
+                return
             maxEmpty = -10000
             index = -1
             for j in range(len(regionsList[i])):
@@ -214,16 +217,17 @@ class MineSweeper:
                 prob_best_index = index
                 prob_best_s = i
 
-        if BF_LIMIT == 8 and 8 < numOfCellInSquare <= 13:
-            print('Extending brute force horizon')
-            BF_LIMIT = 13
-            self.logicInference()
-            BF_LIMIT = 8
-            return
+        # if BF_LIMIT == 8 and 8 < numOfCellInSquare <= 13:
+        #     print('Extending brute force horizon')
+        #     BF_LIMIT = 13
+        #     self.logicInference()
+        #     BF_LIMIT = 8
+        #     return
 
         print('Start Guess')
         [guessI, guessJ] = regionsList[prob_best_s][prob_best_index]
         self.grid.getCell(guessI, guessJ).isCovered = False
+        print("我猜的是：",'[',guessI,',',guessJ,']')
         if self.grid.getCell(guessI, guessJ).isMine:
             print('Game over')
             sys.exit()
@@ -287,14 +291,14 @@ class MineSweeper:
                 if surround - numFree < num:
                     return
 
-        # if flagCount > self.totalNumOfMine:
-        #     return
+        if flagCount > self.totalNumOfMine:
+            return
 
         if k == len(borderTile):
-            # if not borderOptimization and flagCount < self.totalNumOfMine:
-            #     return
-            if not borderOptimization:
+            if not borderOptimization and flagCount < self.totalNumOfMine:
                 return
+            # if not borderOptimization:
+            #     return
             tempSolutions = []
             for i in range(len(borderTile)):
                 s = borderTile[i]
@@ -389,30 +393,37 @@ class MineSweeper:
                 self.grid.getCell(i, j).isCovered = False
                 print('点开的点是', i, j)
                 firstTrigger = False
+        # self.grid.getCell(6, 8).isCovered = False
 
-        while not self.currentNumOfMine == 0:
-            # while self.flagMines(self.grid):
-            #     pass
-            # for i in range(sys.maxsize):
-            #     successClick, isLose, loseI, loseJ = self.clickCell(self.grid)
-            #     self.drawUserView(self.grid)
-            #     if isLose:
-            #         print('Game Over at ', loseI, loseJ)
-            #         sys.exit()
-            #     if successClick:
-            #         continue
-            #     else:
-            #         break
+        while not self.isFinished():
             while self.flagMines(self.grid):
                 pass
             while self.clickCell(self.grid):
                 pass
             self.drawUserView(self.grid)
 
-        # self.drawGrid(self.grid)
+
+
+
+        for i in range(self.grid.height):
+            for j in range(self.grid.width):
+                curCell = self.grid.getCell(i, j)
+                if curCell.isFlag != curCell.isMine:
+                    print('我们凉凉了',i, j)
+                if curCell.isCovered and not curCell.isFlag:
+                    print('我们凉凉了',i, j)
 
         print('Win')
+    def isFinished(self):
+        for i in range(self.grid.height):
+            for j in range(self.grid.width):
+                curCell = self.grid.getCell(i, j)
+                if curCell.isFlag != curCell.isMine:
+                    return False
+                if curCell.isCovered and not curCell.isFlag:
+                    return False
 
+        return True
 
 if __name__ == '__main__':
     mineSweeper = MineSweeper()
