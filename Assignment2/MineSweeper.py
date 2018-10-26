@@ -14,7 +14,7 @@ knownEmpty = []
 class MineSweeper:
 
     def __init__(self):
-        self.grid = Grid(16, 16, 0.15)
+        self.grid = Grid(9, 9, 0.123)
         # self.grid.generateSpecificGrid()
         self.grid.generateGrid()
         self.grid.markMineNumber()
