@@ -1,8 +1,8 @@
 '''
-flat : terrain = 1
-hilly : terrain = 2
-forested : terrain = 3
-a maze of caves : terrain = 4
+flat   : terrain = 1
+hill   : terrain = 2
+forest : terrain = 3
+cave   : terrain = 4
 '''
 class Cell:
 
