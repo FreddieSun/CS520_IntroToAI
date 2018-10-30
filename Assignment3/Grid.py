@@ -16,9 +16,6 @@ class Grid:
         self.numofCave= 0
         self.generateGrid()
 
-
-
-
     def generateGrid(self):
         for i in range(self.N):
             for j in range(self.N):
