@@ -53,7 +53,7 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
                 if gridlist[i * gridWidth + j] == 1:
                     pygame.draw.rect(surface, WHITE, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
                 elif gridlist[i * gridWidth + j] == 2:
-                    pygame.draw.rect(surface, DARKGREY, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
+                    pygame.draw.rect(surface, GREY, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
                 elif gridlist[i * gridWidth + j] == 3:
                     pygame.draw.rect(surface, GREEN, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
                 elif gridlist[i * gridWidth + j] == 4:
