@@ -9,7 +9,7 @@ GREY = (192, 192, 192)
 DARKGREY = (41,36,33)
 GREEN = (61,145,64)
 
-size = 20
+size = 10
 gap = 2
 
 HEIGHT = 10
