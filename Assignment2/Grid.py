@@ -39,10 +39,22 @@ class Grid:
                     cell = Cell(False)
                     self.grid.append(cell)
 
-        self.getCell(1, 3).isMine = True
-        self.getCell(3, 0).isMine = True
-        self.getCell(3, 4).isMine = True
-        # self.getCell(1, 3).isMine = True
+        self.getCell(2, 0).isMine = True
+        self.getCell(0, 2).isMine = True
+        self.getCell(2, 4).isMine = True
+        self.getCell(4, 2).isMine = True
+        self.getCell(2, 2).numOfmines = 0
+        self.getCell(1, 1).numOfmines = 1
+        self.getCell(1, 2).numOfmines = 1
+        self.getCell(1, 3).numOfmines = 1
+        self.getCell(2, 1).numOfmines = 1
+        self.getCell(2, 3).numOfmines = 1
+        self.getCell(3, 1).numOfmines = 1
+        self.getCell(3, 2).numOfmines = 1
+        self.getCell(3, 3).numOfmines = 1
+
+
+
         # self.getCell(2, 0).isMine = True
         # self.getCell(2, 1).isMine = True
         # self.getCell(2, 5).isMine = True
@@ -60,7 +72,7 @@ class Grid:
 
 
 
-        self.numOfMine = 3
+        #self.numOfMine = 3
 
 
     def markMineNumber(self):
