@@ -10,7 +10,7 @@ DARKGREY = (41,36,33)
 GREEN = (61,145,64)
 
 size = 10
-gap = 2
+gap = 1
 
 HEIGHT = 10
 WIDTH = 20
@@ -36,6 +36,10 @@ def gridList(grid):
             GridList.append(4)
         else:
             GridList.append(smallGrid[i].numOfMines)
+    for i in range(len(smallGrid)):
+        if smallGrid[i].isTarget == True:
+            GridList.append(i)
+
     return GridList
 
 
@@ -58,6 +62,15 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
                     pygame.draw.rect(surface, GREEN, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
                 elif gridlist[i * gridWidth + j] == 4:
                     pygame.draw.rect(surface, DARKGREY, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
+        target=gridlist[len(gridlist)-1]
+        targeti = int (target / gridWidth)
+        targetj = target - (gridWidth * targeti)
+        number = pygame.font.SysFont('宋体', 20)
+        numberSurface = number.render('T', True, RED)
+        numberRect = numberSurface.get_rect()
+        numberRect.center = ((gap + size) * targetj + gap + size / 2, (gap + size) * targeti + gap + size / 2)
+        surface.blit(numberSurface, numberRect)
+
         pygame.display.flip()
         pygame.display.update()
         for event in pygame.event.get():
@@ -66,7 +79,7 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
                 exitflag = False
 
 if __name__ == '__main__':
-    grid = Grid(100)
+    grid = Grid(50)
     GridList = gridList(grid)
     print("flat ", grid.numofFlat)
     print("hill ", grid.numofHill)

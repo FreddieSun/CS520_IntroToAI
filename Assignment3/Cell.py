@@ -8,6 +8,7 @@ class Cell:
 
     def __init__(self, terrain):
         self.terrain = terrain
+        self.isTarget = False
 
 
 

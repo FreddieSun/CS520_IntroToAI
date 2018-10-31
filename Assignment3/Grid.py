@@ -40,5 +40,8 @@ class Grid:
                     cell = Cell(4)
                     self.grid.append(cell)
                     self.numofCave += 1
+        targeti = random.randint(0,49)
+        targetj = random.randint(0,49)
+        self.getCell(targeti,targetj).isTarget = True
     def getCell(self, x, y):
         return self.grid[x * self.N + y]
