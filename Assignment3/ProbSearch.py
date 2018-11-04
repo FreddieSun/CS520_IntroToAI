@@ -102,6 +102,14 @@ class ProbSearch:
 
         print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
 
+    def getDistance(self, i, j, grid):
+        distance = []
+        for ii in range(grid.N):
+            for jj in range(grid.N):
+                dis = abs(ii-i) + abs(jj-j)
+                distance.append(dis)
+        return distance
+
 
 if __name__ == '__main__':
     print('main method')
