@@ -14,6 +14,34 @@ class ProbSearch:
         self.grid.generateGrid()
 
     def findTarget(self, grid, i, j):
+        prob = random.random()
+        if not grid.getCell(i, j).isTarget:
+            return False
+        else:
+            if grid.getCell(i, j).terrain == 1:
+                if 0 <= prob < 0.1:
+                    return False
+                else:
+                    return True
+
+            if grid.getCell(i, j).terrain == 2:
+                if 0 <= prob < 0.3:
+                    return False
+                else:
+                    return True
+
+            if grid.getCell(i, j).terrain == 3:
+                if 0 <= prob < 0.7:
+                    return False
+                else:
+                    return True
+
+            if grid.getCell(i, j).terrain == 4:
+                if 0 <= prob < 0.9:
+                    return False
+                else:
+                    return True
+
         print('findTarget method')
 
     def updateProb(self, grid, i, j):
