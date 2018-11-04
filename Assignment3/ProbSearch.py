@@ -43,10 +43,10 @@ class ProbSearch:
         grid.getCell(i, j).Pr2 = grid.getCell(i, j).Pr1 * (1-Tj)
         for ii in range(grid.N):
             for jj in range(grid.N):
-                otherCell = grid.getCell(ii, jj)
                 if i == ii and j == jj:
                     continue
                 else:
+                    otherCell = grid.getCell(ii, jj)
                     Pi = otherCell.Pr1
                     grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1 - Tj) / (1 - Pj))
                     Ti = grid.getCell(ii,jj).Pf
@@ -92,8 +92,8 @@ class ProbSearch:
 
         while True:
             self.numOfSearches += 1
-            print(self.numOfSearches, 'th search')
-            [i, j] = self.searchCell(self.grid, self.RULE1)
+            print(str(self.numOfSearches)+'th search')
+            [i, j] = self.searchCell(self.grid, self.RULE2)
             if self.findTarget(self.grid, i, j):
                 targetI = i
                 targetJ = j
@@ -101,6 +101,12 @@ class ProbSearch:
             self.updateProb(self.grid, i, j)
 
         print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
+        print('Target cell', self.grid.getCell(targetI, targetJ).terrain)
+
+        if self.grid.getCell(targetI, targetJ).isTarget:
+            print('爽')
+        else:
+            print('我们凉凉了')
 
     def getDistance(self, i, j, grid):
         distance = []
