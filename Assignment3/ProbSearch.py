@@ -102,7 +102,7 @@ class ProbSearch:
                         returnCell = grid.getCell(i, j)
                         returnI = i
                         returnJ = j
-                    elif grid.getCell(i, j).Pr1 / distance[i *50 + j]> returnCell.Pr1 / distance[returnI*50 + returnJ]:
+                    elif grid.getCell(i, j).Pr1 / distance[i *50 + j] == returnCell.Pr1 / distance[returnI*50 + returnJ]:
                         if grid.getCell(i, j).Pr2 / distance[i *50 + j]> returnCell.Pr2 / distance[returnI*50 + returnJ]:
                             returnCell = grid.getCell(i, j)
                             returnI = i
@@ -115,7 +115,7 @@ class ProbSearch:
                         returnCell = grid.getCell(i, j)
                         returnI = i
                         returnJ = j
-                    elif grid.getCell(i, j).Pr2 / distance[i *50 + j]> returnCell.Pr2 / distance[returnI*50 + returnJ]:
+                    elif grid.getCell(i, j).Pr2 / distance[i *50 + j] == returnCell.Pr2 / distance[returnI*50 + returnJ]:
                         if grid.getCell(i, j).Pr1 / distance[i *50 + j]> returnCell.Pr1 / distance[returnI*50 + returnJ]:
                             returnCell = grid.getCell(i, j)
                             returnI = i
