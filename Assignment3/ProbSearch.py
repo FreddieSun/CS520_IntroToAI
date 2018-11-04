@@ -21,8 +21,8 @@ class ProbSearch:
         Pj = searchedCell.Pr1
         Tj = 1-searchedCell.Pf
         grid.getCell(i, j).Pr1 = Pj * Tj
-        for ii in grid.N:
-            for jj in grid.N:
+        for ii in range(grid.N):
+            for jj in range(grid.N):
                 otherCell = grid.getCell(ii,jj)
                 if i == ii and j == jj:
                     continue
