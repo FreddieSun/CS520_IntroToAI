@@ -79,12 +79,8 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
                 exitflag = False
 
 if __name__ == '__main__':
-    grid = Grid(50)
+    grid = Grid()
     GridList = gridList(grid)
-    print("flat ", grid.numofFlat)
-    print("hill ", grid.numofHill)
-    print("forest ", grid.numofForest)
-    print("cave", grid.numofCave)
     drawInitialGrid(GridList,grid.N,grid.N)
 
 
