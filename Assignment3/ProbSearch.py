@@ -157,13 +157,14 @@ class ProbSearch:
         return distance
 
     def probCostSearch(self):
-        [a, b] = self.searchCell(self.grid, self.RULE1)
+        [a, b] = self.searchCell(self.grid, self.RULE2)
         while True:
+            self.numOfSearches += 1
             if self.findTarget(self.grid, a, b):
                 targetI = a
                 targetJ = b
                 break
-            [i, j] = self.searchCostCell(self.grid, self.RULE3, a, b)
+            [i, j] = self.searchCostCell(self.grid, self.RULE4, a, b)
             self.updateProb(self.grid, a, b)
             print('Next:', i, ',', j)
             [a, b] = [i, j]
