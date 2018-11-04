@@ -9,9 +9,9 @@ class Cell:
     def __init__(self, terrain):
         self.terrain = terrain
         self.isTarget = False
-        self.P = None
-
-
+        self.Pf = None
+        self.Pr1 = None
+        self.Pr2 = self.Pr1 * self.Pf
 
 
 
