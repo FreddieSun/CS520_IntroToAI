@@ -29,7 +29,6 @@ class ProbSearch:
                 else:
                     Pi = OtherCell.Pr1
                     grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1-Tj) / (1-Pj))
-        return grid
         print('updateProb method')
 
     def searchCell(self, grid, type):
