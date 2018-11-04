@@ -32,9 +32,10 @@ class Grid:
                 else:
                     cell = Cell(4, 0.1)
                     self.grid.append(cell)
-        targeti = random.randint(0, 49)
-        targetj = random.randint(0, 49)
-        self.getCell(targeti, targetj).isTarget = True
+        targetI = random.randint(0, 49)
+        targetJ = random.randint(0, 49)
+        print('Target is in: ', '[', targetI, ',', targetJ, ']')
+        self.getCell(targetI, targetJ).isTarget = True
 
     def getCell(self, x, y):
         return self.grid[x * self.N + y]
