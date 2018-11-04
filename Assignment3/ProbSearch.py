@@ -23,11 +23,11 @@ class ProbSearch:
         grid.getCell(i, j).Pr1 = Pj * Tj
         for ii in grid.N:
             for jj in grid.N:
-                OtherCell = grid.getCell(ii,jj)
+                otherCell = grid.getCell(ii,jj)
                 if i == ii and j == jj:
                     continue
                 else:
-                    Pi = OtherCell.Pr1
+                    Pi = otherCell.Pr1
                     grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1-Tj) / (1-Pj))
         print('updateProb method')
 
