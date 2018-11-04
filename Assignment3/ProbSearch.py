@@ -13,10 +13,10 @@ class ProbSearch:
         self.numOfSearches = 0
         grid.generateGrid()
 
-    def findTarget(self, i, j):
+    def findTarget(self, grid, i, j):
         print('findTarget method')
 
-    def updateProb(self, i, j):
+    def updateProb(self, grid, i, j):
         print('updateProb method')
 
     def searchCell(self, grid, type):
@@ -32,11 +32,11 @@ class ProbSearch:
             self.numOfSearches += 1
             print(self.numOfSearches, 'th search')
             [i, j] = self.searchCell(self.grid, self.RULE1)
-            if self.findTarget(i, j):
+            if self.findTarget(self.grid, i, j):
                 targetI = i
                 targetJ = j
                 break
-            self.updateProb(i, j)
+            self.updateProb(self.grid, i, j)
 
         print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
 
