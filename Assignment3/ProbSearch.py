@@ -19,80 +19,68 @@ class ProbSearch:
             return False
         else:
             if grid.getCell(i, j).terrain == 1:
-                if 0 <= prob < 0.1:
-                    return False
-                else:
+                if prob >= 0.1:
                     return True
 
             if grid.getCell(i, j).terrain == 2:
-                if 0 <= prob < 0.3:
-                    return False
-                else:
+                if prob >= 0.3:
                     return True
 
             if grid.getCell(i, j).terrain == 3:
-                if 0 <= prob < 0.7:
-                    return False
-                else:
+                if prob >= 0.7:
                     return True
 
             if grid.getCell(i, j).terrain == 4:
-                if 0 <= prob < 0.9:
-                    return False
-                else:
+                if prob > 0.9:
                     return True
-
-        print('findTarget method')
+        return False
 
     def updateProb(self, grid, i, j):
-        searchedCell = grid.getCell(i,j)
+        searchedCell = grid.getCell(i, j)
         Pj = searchedCell.Pr1
-        Tj = 1-searchedCell.Pf
+        Tj = 1 - searchedCell.Pf
         grid.getCell(i, j).Pr1 = Pj * Tj
         for ii in range(grid.N):
             for jj in range(grid.N):
-                otherCell = grid.getCell(ii,jj)
+                otherCell = grid.getCell(ii, jj)
                 if i == ii and j == jj:
                     continue
                 else:
                     Pi = otherCell.Pr1
-                    grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1-Tj) / (1-Pj))
+                    grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1 - Tj) / (1 - Pj))
         print('updateProb method')
 
     def searchCell(self, grid, type):
-        returnCell = grid.getCell(0,0)
-        returni = 0
-        returnj = 0
-        if type == 'rule1':
+        returnCell = grid.getCell(0, 0)
+        returnI = 0
+        returnJ = 0
+        if type == self.RULE1:
             for i in range(50):
                 for j in range(50):
-                    if grid.getCell(i,j).Pr1 > returnCell.Pr1:
-                        returnCell = grid.getCell(i,j)
-                        returni = i
-                        returnj = j
-                    elif grid.getCell(i,j).Pr1 == returnCell.Pr1:
-                        if grid.getCell(i,j).Pr2 > returnCell.Pr2:
-                            returnCell = grid.getCell(i,j)
-                            returni = i
-                            returnj = j
-        if type == 'rule2' :
+                    if grid.getCell(i, j).Pr1 > returnCell.Pr1:
+                        returnCell = grid.getCell(i, j)
+                        returnI = i
+                        returnJ = j
+                    elif grid.getCell(i, j).Pr1 == returnCell.Pr1:
+                        if grid.getCell(i, j).Pr2 > returnCell.Pr2:
+                            returnCell = grid.getCell(i, j)
+                            returnI = i
+                            returnJ = j
+
+        if type == self.RULE2:
             for i in range(50):
                 for j in range(50):
                     if grid.getCell(i, j).Pr2 > returnCell.Pr2:
                         returnCell = grid.getCell(i, j)
-                        returni = i
-                        returnj = j
+                        returnI = i
+                        returnJ = j
                     elif grid.getCell(i, j).Pr2 == returnCell.Pr2:
                         if grid.getCell(i, j).Pr1 > returnCell.Pr1:
                             returnCell = grid.getCell(i, j)
-                            returni = i
-                            returnj = j
+                            returnI = i
+                            returnJ = j
 
-        return [returni , returnj]
-
-
-        print('searchCell method')
-        return [1, 2]
+        return [returnI, returnJ]
 
     def probSearch(self):
         print('probSearch method')
