@@ -40,6 +40,7 @@ class ProbSearch:
         Pj = searchedCell.Pr1
         Tj = 1 - searchedCell.Pf
         grid.getCell(i, j).Pr1 = Pj * Tj
+        grid.getCell(i, j).Pr2 = grid.getCell(i, j).Pr1 * (1-Tj)
         for ii in range(grid.N):
             for jj in range(grid.N):
                 otherCell = grid.getCell(ii, jj)
@@ -48,6 +49,8 @@ class ProbSearch:
                 else:
                     Pi = otherCell.Pr1
                     grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1 - Tj) / (1 - Pj))
+                    Ti = grid.getCell(ii,jj).Pf
+                    grid.getCell(ii, jj).Pr2 = grid.getCell(ii, jj).Pr1 * Ti
         print('updateProb method')
 
     def searchCell(self, grid, type):
