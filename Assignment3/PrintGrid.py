@@ -82,6 +82,3 @@ if __name__ == '__main__':
     grid = Grid()
     GridList = gridList(grid)
     drawInitialGrid(GridList,grid.N,grid.N)
-
-
-

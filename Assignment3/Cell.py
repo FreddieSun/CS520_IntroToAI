@@ -14,4 +14,3 @@ class Cell:
         self.Pf = Pf
         self.Pr1 = 1 / 2500
         self.Pr2 = self.Pr1 * self.Pf
-

@@ -181,5 +181,5 @@ class ProbSearch:
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
-    probSearch.probCostSearch()
-
+    #probSearch.probCostSearch()
+    probSearch.probSearch()
