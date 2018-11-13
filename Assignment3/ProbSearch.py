@@ -39,7 +39,7 @@ class ProbSearch:
                     return True
         return False
 
-    def updateProb(self, grid, i, j):
+    def updateProbStable(self, grid, i, j):
         searchedCell = grid.getCell(i, j)
         Pj = searchedCell.Pr1
         Tj = 1 - searchedCell.Pf
@@ -56,6 +56,15 @@ class ProbSearch:
                     Ti = grid.getCell(ii,jj).Pf
                     grid.getCell(ii, jj).Pr2 = grid.getCell(ii, jj).Pr1 * Ti
         print('updateProb method')
+    def updateProbMoving(self,grid,T1,T2,NT1,NT2):
+        for ii in range(grid.N):
+            for jj in range(grid.N):
+                cell = grid.getCell(ii, jj)
+                if (cell.terrain == T1 or cell.terrain == T2):
+                    cell.Pr1 = 0
+                    cell.Pr2 = 0
+
+
 
     def searchCell(self, grid, type):
         returnCell = grid.getCell(0, 0)
@@ -138,7 +147,7 @@ class ProbSearch:
                 targetI = i
                 targetJ = j
                 break
-            self.updateProb(self.grid, i, j)
+            self.updateProbStable(self.grid, i, j)
 
         print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
         print('Target cell', self.grid.getCell(targetI, targetJ).terrain)
@@ -165,7 +174,7 @@ class ProbSearch:
                 targetJ = b
                 break
             [i, j] = self.searchCostCell(self.grid, self.RULE4, a, b)
-            self.updateProb(self.grid, a, b)
+            self.updateProbStable(self.grid, a, b)
             print('Next:', i, ',', j)
             [a, b] = [i, j]
 
@@ -181,5 +190,5 @@ class ProbSearch:
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
-    #probSearch.probCostSearch()
-    probSearch.probSearch()
+    probSearch.probCostSearch()
+    #probSearch.probSearch()
