@@ -296,11 +296,12 @@ class ProbSearch:
         terrain2 = grid.getCell(i, j).terrain
         return [terrain1, terrain2]
 
-    def getNumberOfEachTerrainType(self, grid):
+    def getListOfEachTerrainType(self, grid):
         listT1 = []
         listT2 = []
         listT3 = []
         listT4 = []
+        listT = []
         for i in range(grid.N):
             for j in range(grid.N):
                 curCell = grid.getCell(i, j)
@@ -312,8 +313,12 @@ class ProbSearch:
                     listT3.append(curCell)
                 else:
                     listT4.append(curCell)
+        listT.append(listT1)
+        listT.append(listT2)
+        listT.append(listT3)
+        listT.append(listT4)
 
-        return [listT1, listT2, listT3, listT4]
+        return listT
 
 
 if __name__ == '__main__':
