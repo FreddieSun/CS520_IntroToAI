@@ -231,9 +231,11 @@ class ProbSearch:
                 targetJ = j
                 break
             [type1, type2] = self.moveTarget(self.grid)
-            terrainList = [1, 2, 3, 4]
-            terrainList.remove(type1)
-            terrainList.remove(type2)
+            allList = self.getListOfEachTerrainType(self.grid)
+            if type1 == type2:
+                terrainList = allList[type1]
+            else:
+                terrainList = [allList[type1], allList[type2]]
             self.updateProbMoving(self.grid, terrainList,[type1, type2])
 
         print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
