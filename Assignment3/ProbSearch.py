@@ -2,8 +2,8 @@ import random
 from Assignment3.Grid import *
 from Assignment3.PrintGrid import *
 
-
 action = 0
+
 
 class ProbSearch:
 
@@ -56,15 +56,14 @@ class ProbSearch:
                     Ti = grid.getCell(ii, jj).Pf
                     grid.getCell(ii, jj).Pr2 = grid.getCell(ii, jj).Pr1 * Ti
         print('updateProb method')
-    def updateProbMoving(self,grid,T1,T2,NT1,NT2):
+
+    def updateProbMoving(self, grid, T1, T2, NT1, NT2):
         for ii in range(grid.N):
             for jj in range(grid.N):
                 cell = grid.getCell(ii, jj)
                 if (cell.terrain == T1 or cell.terrain == T2):
                     cell.Pr1 = 0
                     cell.Pr2 = 0
-
-
 
     def searchCell(self, grid, type):
         returnCell = grid.getCell(0, 0)
@@ -192,107 +191,81 @@ class ProbSearch:
             print('我们凉凉了')
         print('Total action is:', action)
 
-    def probMoveSearch(self):
-        print('probMoveSearch method')
-        targetI = 0
-        targetJ = 0
-
-        while True:
-            self.numOfSearches += 1
-            print(str(self.numOfSearches) + 'th search')
-            [i, j] = self.searchCell(self.grid, self.RULE1)
-            if self.findTarget(self.grid, i, j):
-                targetI = i
-                targetJ = j
-                break
-            [type1, type2] = self.moveTarget(self.grid)
-
-            self.updateProbMoving(self.grid, type1, type2, 1, 1)
-
-        print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
-        print('Target cell', self.grid.getCell(targetI, targetJ).terrain)
-
-        if self.grid.getCell(targetI, targetJ).isTarget:
-            print('爽')
-        else:
-            print('我们凉凉了')
-
-
     def moveTarget(self, grid):
         i = grid.targetI
         j = grid.targetJ
-        terrain1 = grid.getCell(i,j).terrain
+        terrain1 = grid.getCell(i, j).terrain
 
-        if i != 0 and i != 49 and j != 0 and j != 49: #not bound
-            moveto = random.randint(0,3)
-            if moveto == 0 :  #left
+        if i != 0 and i != 49 and j != 0 and j != 49:
+            moveto = random.randint(0, 3)
+            if moveto == 0:
                 j -= 1
-            elif moveto == 1 : #up
+            elif moveto == 1:
                 i -= 1
-            elif moveto == 2 : #right
+            elif moveto == 2:
                 j += 1
-            else :
+            else:
                 i += 1
-        elif i == 0 :
-            if j == 0 :
-                moveto = random.randint(0,1)
-                if moveto == 0 : #right
-                    j += 1
-                else :  #down
-                    i += 1
-            elif j == 49 :
-                moveto = random.randint(0,1)
-                if moveto == 0: #left
-                    j -= 1
-                else : #down
-                    i += 1
-            else :
-                moveto = random.randint(0,2)
-                if moveto == 0: #left
-                    j -= 1
-                elif moveto == 1 : #right
-                    j += 1
-                else : #down
-                    i += 1
-        elif i == 49 :
-            if j == 0 :
-                moveto = random.randint(0,1)
-                if moveto == 0 : #right
-                    j += 1
-                else :  #up
-                    i -= 1
-            elif j == 49 :
-                moveto = random.randint(0,1)
-                if moveto == 0: #left
-                    j -= 1
-                else : #up
-                    i -= 1
-            else :
-                moveto = random.randint(0,2)
-                if moveto == 0: #left
-                    j -= 1
-                elif moveto == 1 : #right
-                    j += 1
-                else : #up
-                    i -= 1
-        elif j == 0:
-            if i == 0:
+        elif i == 0:
+            if j == 0:
                 moveto = random.randint(0, 1)
-                if moveto == 0:  # right
+                if moveto == 0:
                     j += 1
-                else:  # down
+                else:
                     i += 1
-            elif i == 49:
+            elif j == 49:
                 moveto = random.randint(0, 1)
-                if moveto == 0:  # right
+                if moveto == 0:
+                    j -= 1
+                else:
+                    i += 1
+            else:
+                moveto = random.randint(0, 2)
+                if moveto == 0:
+                    j -= 1
+                elif moveto == 1:
                     j += 1
+                else:
+                    i += 1
+        elif i == 49:
+            if j == 0:
+                moveto = random.randint(0, 1)
+                if moveto == 0:
+                    j += 1
+                else:
+                    i -= 1
+            elif j == 49:
+                moveto = random.randint(0, 1)
+                if moveto == 0:
+                    j -= 1
                 else:  # up
                     i -= 1
             else:
                 moveto = random.randint(0, 2)
-                if moveto == 0:  # down
+                if moveto == 0:
+                    j -= 1
+                elif moveto == 1:
+                    j += 1
+                else:  # up
+                    i -= 1
+        elif j == 0:
+            if i == 0:
+                moveto = random.randint(0, 1)
+                if moveto == 0:
+                    j += 1
+                else:
                     i += 1
-                elif moveto == 1:  # right
+            elif i == 49:
+                moveto = random.randint(0, 1)
+                if moveto == 0:
+                    j += 1
+                else:
+                    i -= 1
+            else:
+                moveto = random.randint(0, 2)
+                if moveto == 0:
+                    i += 1
+                elif moveto == 1:
                     j += 1
                 else:  # up
                     i -= 1
@@ -300,31 +273,49 @@ class ProbSearch:
         elif j == 49:
             if i == 0:
                 moveto = random.randint(0, 1)
-                if moveto == 0:  # left
+                if moveto == 0:
                     j -= 1
-                else:  # down
+                else:
                     i += 1
             elif i == 49:
                 moveto = random.randint(0, 1)
-                if moveto == 0:  # left
+                if moveto == 0:
                     j -= 1
-                else:  # up
+                else:
                     i -= 1
             else:
                 moveto = random.randint(0, 2)
-                if moveto == 0:  # down
+                if moveto == 0:
                     i += 1
-                elif moveto == 1:  # left
+                elif moveto == 1:
                     j -= 1
-                else:  # up
+                else:
                     i -= 1
         grid.targetI = i
         grid.targetJ = j
-        terrain2 = grid.getCell(i,j).terrain
-        return [terrain1 , terrain2]
+        terrain2 = grid.getCell(i, j).terrain
+        return [terrain1, terrain2]
+
+    def getNumberOfEachTerrainType(self, grid):
+        listT1 = []
+        listT2 = []
+        listT3 = []
+        listT4 = []
+        for i in range(grid.N):
+            for j in range(grid.N):
+                curCell = grid.getCell(i, j)
+                if curCell.terrain == 1:
+                    listT1.append(curCell)
+                elif curCell.terrain == 2:
+                    listT2.append(curCell)
+                elif curCell.terrain == 3:
+                    listT3.append(curCell)
+                else:
+                    listT4.append(curCell)
+
+        return [listT1, listT2, listT3, listT4]
 
 
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
-    probSearch.probCostSearch()
