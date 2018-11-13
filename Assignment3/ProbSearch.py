@@ -193,15 +193,113 @@ class ProbSearch:
         print('Total action is:', action)
 
     def moveTarget(self, grid):
-        targetI = self.grid.targetI
-        targetJ = self.grid.targetJ
+        i = grid.targetI
+        j = grid.targetJ
+        terrain1 = grid.getCell(i,j).terrain
 
+        if i != 0 and i != 49 and j != 0 and j != 49: #not bound
+            moveto = random.randint(0,3)
+            if moveto == 0 :  #left
+                j -= 1
+            elif moveto == 1 : #up
+                i -= 1
+            elif moveto == 2 : #right
+                j += 1
+            else :
+                i += 1
+        elif i == 0 :
+            if j == 0 :
+                moveto = random.randint(0,1)
+                if moveto == 0 : #right
+                    j += 1
+                else :  #down
+                    i += 1
+            elif j == 49 :
+                moveto = random.randint(0,1)
+                if moveto == 0: #left
+                    j -= 1
+                else : #down
+                    i += 1
+            else :
+                moveto = random.randint(0,2)
+                if moveto == 0: #left
+                    j -= 1
+                elif moveto == 1 : #right
+                    j += 1
+                else : #down
+                    i += 1
+        elif i == 49 :
+            if j == 0 :
+                moveto = random.randint(0,1)
+                if moveto == 0 : #right
+                    j += 1
+                else :  #up
+                    i -= 1
+            elif j == 49 :
+                moveto = random.randint(0,1)
+                if moveto == 0: #left
+                    j -= 1
+                else : #up
+                    i -= 1
+            else :
+                moveto = random.randint(0,2)
+                if moveto == 0: #left
+                    j -= 1
+                elif moveto == 1 : #right
+                    j += 1
+                else : #up
+                    i -= 1
+        elif j == 0:
+            if i == 0:
+                moveto = random.randint(0, 1)
+                if moveto == 0:  # right
+                    j += 1
+                else:  # down
+                    i += 1
+            elif i == 49:
+                moveto = random.randint(0, 1)
+                if moveto == 0:  # right
+                    j += 1
+                else:  # up
+                    i -= 1
+            else:
+                moveto = random.randint(0, 2)
+                if moveto == 0:  # down
+                    i += 1
+                elif moveto == 1:  # right
+                    j += 1
+                else:  # up
+                    i -= 1
 
-
-
+        elif j == 49:
+            if i == 0:
+                moveto = random.randint(0, 1)
+                if moveto == 0:  # left
+                    j -= 1
+                else:  # down
+                    i += 1
+            elif i == 49:
+                moveto = random.randint(0, 1)
+                if moveto == 0:  # left
+                    j -= 1
+                else:  # up
+                    i -= 1
+            else:
+                moveto = random.randint(0, 2)
+                if moveto == 0:  # down
+                    i += 1
+                elif moveto == 1:  # left
+                    j -= 1
+                else:  # up
+                    i -= 1
+        grid.targetI = i
+        grid.targetJ = j
+        terrain2 = grid.getCell(i,j).terrain
+        return [terrain1 , terrain2]
 
 
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
-    probSearch.probCostSearch()
+
+
