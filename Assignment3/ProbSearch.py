@@ -55,41 +55,40 @@ class ProbSearch:
                     grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1 - Tj) / (1 - Pj))
                     Ti = grid.getCell(ii, jj).Pf
                     grid.getCell(ii, jj).Pr2 = grid.getCell(ii, jj).Pr1 * Ti
-        print('updateProb method')
-    def updateProbMoving(self,grid,terrianList,moveRegion):
+        print('updateProbStable method')
 
-
-        if (moveRegion[0] == moveRegion[1]):
-            T4 =0
-            for cell in terrianList[moveRegion[0]-1]:
-                T4 += cell.Pr1
-            NT1 = len(terrianList[])
-            NT2 = len(terrianList[])
-            NT3 = len(terrianList[])
+    def updateProbMoving(self, grid, terrianList, moveRegion):
+        if len(terrianList) == 1:
+            T1 = 0
+            for cell in terrianList[0]:
+                T1 += cell.Pr1
             for ii in range(grid.N):
                 for jj in range(grid.N):
-                    if (cell.terrain == T1 or cell.terrain == T2 or cell.terrain == T3):
-                        cell.Pr1 += function
+                    cell = grid.getCell(ii, jj)
+                    if cell.terrain == moveRegion[0]:
+                        cell.Pr1 = cell.Pr1 / T1
+                        cell.Pr2 = cell.Pr1 * cell.Pf
                     else:
                         cell.Pr1 = 0
+                        cell.Pr2 = 0
         else:
-            T3 = 0
-            T4 = 0
-            for cell in terrianList[moveRegion[0] - 1]:
-                T3 += cell.Pr1
-            for cell in terrianList[moveRegion[1] - 1]:
-                T4 += cell.Pr1
-            NT1 = len(terrianList[])
-            NT2 = len(terrianList[])
+            T1 = 0
+            T2 = 0
+            for cell in terrianList[0]:
+                T1 += cell.Pr1
+            for cell in terrianList[1]:
+                T2 += cell.Pr1
+            N = len(terrianList[0]) + len(terrianList[1])
             for ii in range(grid.N):
                 for jj in range(grid.N):
-                    if (cell.terrain == T1 or cell.terrain == T2):
-                        cell.Pr1 += function
+                    cell = grid.getCell(ii, jj)
+                    if cell.terrain == moveRegion[0] or cell.terrain == moveRegion[1]:
+                        cell.Pr1 += (1 - T1 - T2) / N
+                        cell.Pr2 = cell.Pr1 * cell.Pf
                     else:
                         cell.Pr1 = 0
-
-
-
+                        cell.Pr2 = 0
+        print('updateProbMoving method')
 
     def searchCell(self, grid, type):
         returnCell = grid.getCell(0, 0)
