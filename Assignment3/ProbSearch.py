@@ -217,6 +217,41 @@ class ProbSearch:
             print('我们凉凉了')
         print('Total action is:', action)
 
+    def probMoveSearch(self):
+        print('probMoveSearch method')
+        targetI = 0
+        targetJ = 0
+
+        while True:
+            self.numOfSearches += 1
+            print(str(self.numOfSearches) + 'th search')
+            [i, j] = self.searchCell(self.grid, self.RULE1)
+            if self.findTarget(self.grid, i, j):
+                targetI = i
+                targetJ = j
+                break
+            [type1, type2] = self.moveTarget(self.grid)
+            terrainList = [1, 2, 3, 4]
+            terrainList.remove(type1)
+            terrainList.remove(type2)
+            self.updateProbMoving(self.grid, terrainList,[type1, type2])
+
+        print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
+        print('Target cell', self.grid.getCell(targetI, targetJ).terrain)
+
+        if self.grid.getCell(targetI, targetJ).isTarget:
+            print('爽')
+        else:
+            print('我们凉凉了')
+
+    def getDistance(self, i, j, grid):
+        distance = []
+        for ii in range(grid.N):
+            for jj in range(grid.N):
+                dis = abs(ii - i) + abs(jj - j) + 1
+                distance.append(dis)
+        return distance
+
     def moveTarget(self, grid):
         i = grid.targetI
         j = grid.targetJ
@@ -295,7 +330,6 @@ class ProbSearch:
                     j += 1
                 else:  # up
                     i -= 1
-
         elif j == 49:
             if i == 0:
                 moveto = random.randint(0, 1)
