@@ -56,14 +56,40 @@ class ProbSearch:
                     Ti = grid.getCell(ii, jj).Pf
                     grid.getCell(ii, jj).Pr2 = grid.getCell(ii, jj).Pr1 * Ti
         print('updateProb method')
+    def updateProbMoving(self,grid,terrianList,moveRegion):
 
-    def updateProbMoving(self, grid, T1, T2, NT1, NT2):
-        for ii in range(grid.N):
-            for jj in range(grid.N):
-                cell = grid.getCell(ii, jj)
-                if (cell.terrain == T1 or cell.terrain == T2):
-                    cell.Pr1 = 0
-                    cell.Pr2 = 0
+
+        if (moveRegion[0] == moveRegion[1]):
+            T4 =0
+            for cell in terrianList[moveRegion[0]-1]:
+                T4 += cell.Pr1
+            NT1 = len(terrianList[])
+            NT2 = len(terrianList[])
+            NT3 = len(terrianList[])
+            for ii in range(grid.N):
+                for jj in range(grid.N):
+                    if (cell.terrain == T1 or cell.terrain == T2 or cell.terrain == T3):
+                        cell.Pr1 += function
+                    else:
+                        cell.Pr1 = 0
+        else:
+            T3 = 0
+            T4 = 0
+            for cell in terrianList[moveRegion[0] - 1]:
+                T3 += cell.Pr1
+            for cell in terrianList[moveRegion[1] - 1]:
+                T4 += cell.Pr1
+            NT1 = len(terrianList[])
+            NT2 = len(terrianList[])
+            for ii in range(grid.N):
+                for jj in range(grid.N):
+                    if (cell.terrain == T1 or cell.terrain == T2):
+                        cell.Pr1 += function
+                    else:
+                        cell.Pr1 = 0
+
+
+
 
     def searchCell(self, grid, type):
         returnCell = grid.getCell(0, 0)
@@ -296,11 +322,12 @@ class ProbSearch:
         terrain2 = grid.getCell(i, j).terrain
         return [terrain1, terrain2]
 
-    def getNumberOfEachTerrainType(self, grid):
+    def getListOfEachTerrainType(self, grid):
         listT1 = []
         listT2 = []
         listT3 = []
         listT4 = []
+        listT = []
         for i in range(grid.N):
             for j in range(grid.N):
                 curCell = grid.getCell(i, j)
@@ -312,10 +339,15 @@ class ProbSearch:
                     listT3.append(curCell)
                 else:
                     listT4.append(curCell)
+        listT.append(listT1)
+        listT.append(listT2)
+        listT.append(listT3)
+        listT.append(listT4)
 
-        return [listT1, listT2, listT3, listT4]
+        return listT
 
 
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
+    probSearch.probCostSearch()
