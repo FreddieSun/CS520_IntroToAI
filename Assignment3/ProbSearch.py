@@ -2,8 +2,8 @@ import random
 from Assignment3.Grid import *
 from Assignment3.PrintGrid import *
 
-
 action = 0
+
 
 class ProbSearch:
 
@@ -44,7 +44,7 @@ class ProbSearch:
         Pj = searchedCell.Pr1
         Tj = 1 - searchedCell.Pf
         grid.getCell(i, j).Pr1 = Pj * Tj
-        grid.getCell(i, j).Pr2 = grid.getCell(i, j).Pr1 * (1-Tj)
+        grid.getCell(i, j).Pr2 = grid.getCell(i, j).Pr1 * (1 - Tj)
         for ii in range(grid.N):
             for jj in range(grid.N):
                 if i == ii and j == jj:
@@ -53,7 +53,7 @@ class ProbSearch:
                     otherCell = grid.getCell(ii, jj)
                     Pi = otherCell.Pr1
                     grid.getCell(ii, jj).Pr1 = Pi * (1 + Pj * (1 - Tj) / (1 - Pj))
-                    Ti = grid.getCell(ii,jj).Pf
+                    Ti = grid.getCell(ii, jj).Pf
                     grid.getCell(ii, jj).Pr2 = grid.getCell(ii, jj).Pr1 * Ti
         print('updateProb method')
 
@@ -89,21 +89,24 @@ class ProbSearch:
 
         return [returnI, returnJ]
 
-    def searchCostCell(self,grid,type,i,j):
+    def searchCostCell(self, grid, type, i, j):
         global action
-        distance = self.getDistance(i,j,self.grid)
+        distance = self.getDistance(i, j, self.grid)
         returnCell = grid.getCell(0, 0)
         returnI = 0
         returnJ = 0
         if type == self.RULE3:
             for i in range(50):
                 for j in range(50):
-                    if grid.getCell(i, j).Pr1 / distance[i *50 + j]> returnCell.Pr1 / distance[returnI*50 + returnJ]:
+                    if grid.getCell(i, j).Pr1 / distance[i * 50 + j] > \
+                            returnCell.Pr1 / distance[returnI * 50 + returnJ]:
                         returnCell = grid.getCell(i, j)
                         returnI = i
                         returnJ = j
-                    elif grid.getCell(i, j).Pr1 / distance[i *50 + j] == returnCell.Pr1 / distance[returnI*50 + returnJ]:
-                        if grid.getCell(i, j).Pr2 / distance[i *50 + j]> returnCell.Pr2 / distance[returnI*50 + returnJ]:
+                    elif grid.getCell(i, j).Pr1 / distance[i * 50 + j] == \
+                            returnCell.Pr1 / distance[returnI * 50 + returnJ]:
+                        if grid.getCell(i, j).Pr2 / distance[i * 50 + j] > \
+                                returnCell.Pr2 / distance[returnI * 50 + returnJ]:
                             returnCell = grid.getCell(i, j)
                             returnI = i
                             returnJ = j
@@ -111,19 +114,21 @@ class ProbSearch:
         if type == self.RULE4:
             for i in range(50):
                 for j in range(50):
-                    if grid.getCell(i, j).Pr2 / distance[i *50 + j]> returnCell.Pr2 / distance[returnI*50 + returnJ]:
+                    if grid.getCell(i, j).Pr2 / distance[i * 50 + j] > \
+                            returnCell.Pr2 / distance[returnI * 50 + returnJ]:
                         returnCell = grid.getCell(i, j)
                         returnI = i
                         returnJ = j
-                    elif grid.getCell(i, j).Pr2 / distance[i *50 + j] == returnCell.Pr2 / distance[returnI*50 + returnJ]:
-                        if grid.getCell(i, j).Pr1 / distance[i *50 + j]> returnCell.Pr1 / distance[returnI*50 + returnJ]:
+                    elif grid.getCell(i, j).Pr2 / distance[i * 50 + j] == \
+                            returnCell.Pr2 / distance[
+                        returnI * 50 + returnJ]:
+                        if grid.getCell(i, j).Pr1 / distance[i * 50 + j] > \
+                                returnCell.Pr1 / distance[returnI * 50 + returnJ]:
                             returnCell = grid.getCell(i, j)
                             returnI = i
                             returnJ = j
-        action += distance[returnI *50 + returnJ]
+        action += distance[returnI * 50 + returnJ]
         return [returnI, returnJ]
-
-
 
     def probSearch(self):
         print('probSearch method')
@@ -132,7 +137,7 @@ class ProbSearch:
 
         while True:
             self.numOfSearches += 1
-            print(str(self.numOfSearches)+'th search')
+            print(str(self.numOfSearches) + 'th search')
             [i, j] = self.searchCell(self.grid, self.RULE2)
             if self.findTarget(self.grid, i, j):
                 targetI = i
@@ -152,7 +157,7 @@ class ProbSearch:
         distance = []
         for ii in range(grid.N):
             for jj in range(grid.N):
-                dis = abs(ii-i) + abs(jj-j) +1
+                dis = abs(ii - i) + abs(jj - j) + 1
                 distance.append(dis)
         return distance
 
@@ -176,10 +181,18 @@ class ProbSearch:
             print('爽')
         else:
             print('我们凉凉了')
-        print('Total action is:' , action)
+        print('Total action is:', action)
+
+    def moveTarget(self, grid):
+        targetI = self.grid.targetI
+        targetJ = self.grid.targetJ
+
+
+
+
+
 
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
     probSearch.probCostSearch()
-
