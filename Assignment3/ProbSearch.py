@@ -65,7 +65,7 @@ class ProbSearch:
                 T1 += terrianList[0][i].Pr1
             #for cell in terrianList[0]:
             #    T1 += cell.Pr1
-            N = terrianList[0]
+            N = len(terrianList[0])
             for ii in range(grid.N):
                 for jj in range(grid.N):
                     cell = grid.getCell(ii, jj)
