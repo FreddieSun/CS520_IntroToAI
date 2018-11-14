@@ -228,6 +228,7 @@ class ProbSearch:
         targetJ = 0
 
         while True:
+            print('当前目标在' ,'[', self.grid.targetI, ',', self.grid.targetJ, ']')
             self.numOfSearches += 1
             print(str(self.numOfSearches) + 'th search')
             [i, j] = self.searchCell(self.grid, self.RULE1)
@@ -363,6 +364,7 @@ class ProbSearch:
         grid.targetI = i
         grid.targetJ = j
         terrain2 = grid.getCell(i, j).terrain
+        print()
         return [terrain1, terrain2]
 
     def getListOfEachTerrainType(self, grid):
