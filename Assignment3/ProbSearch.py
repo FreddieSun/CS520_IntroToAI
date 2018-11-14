@@ -65,11 +65,12 @@ class ProbSearch:
                 T1 += terrianList[0][i].Pr1
             #for cell in terrianList[0]:
             #    T1 += cell.Pr1
+            N = terrianList[0]
             for ii in range(grid.N):
                 for jj in range(grid.N):
                     cell = grid.getCell(ii, jj)
                     if cell.terrain == moveRegion[0]:
-                        cell.Pr1 = cell.Pr1 / T1
+                        cell.Pr1 += (1 - T1) / N
                         cell.Pr2 = cell.Pr1 * cell.Pf
                     else:
                         cell.Pr1 = 0
