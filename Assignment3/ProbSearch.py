@@ -60,8 +60,10 @@ class ProbSearch:
     def updateProbMoving(self, grid, terrianList, moveRegion):
         if len(terrianList) == 1:
             T1 = 0
-            for cell in terrianList[0]:
-                T1 += cell.Pr1
+            for i in range(len(terrianList[0])):
+                T1 += terrianList[0][i].Pr1
+            #for cell in terrianList[0]:
+            #    T1 += cell.Pr1
             for ii in range(grid.N):
                 for jj in range(grid.N):
                     cell = grid.getCell(ii, jj)
@@ -74,10 +76,14 @@ class ProbSearch:
         else:
             T1 = 0
             T2 = 0
-            for cell in terrianList[0]:
-                T1 += cell.Pr1
-            for cell in terrianList[1]:
-                T2 += cell.Pr1
+            #for cell in terrianList[0]:
+            #    T1 += cell.Pr1
+            #for cell in terrianList[1]:
+            #    T2 += cell.Pr1
+            for i in range(len(terrianList[0])):
+                T1 += terrianList[0][i].Pr1
+            for j in range(len(terrianList[1])):
+                T2 += terrianList[1][j].Pr1
             N = len(terrianList[0]) + len(terrianList[1])
             for ii in range(grid.N):
                 for jj in range(grid.N):
@@ -385,4 +391,5 @@ class ProbSearch:
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
-    probSearch.probCostSearch()
+    #probSearch.probCostSearch()
+    probSearch.probMoveSearch()
