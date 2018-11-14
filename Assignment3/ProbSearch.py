@@ -58,6 +58,7 @@ class ProbSearch:
         print('updateProbStable method')
 
     def updateProbMoving(self, grid, terrianList, moveRegion):
+        print(moveRegion)
         if len(terrianList) == 1:
             T1 = 0
             for i in range(len(terrianList[0])):
@@ -229,6 +230,7 @@ class ProbSearch:
 
         while True:
             print('当前目标在' ,'[', self.grid.targetI, ',', self.grid.targetJ, ']')
+
             self.numOfSearches += 1
             print(str(self.numOfSearches) + 'th search')
             [i, j] = self.searchCell(self.grid, self.RULE1)
@@ -244,6 +246,7 @@ class ProbSearch:
             else:
                 terrainList.append(allList[type1 - 1])
                 terrainList.append(allList[type2 - 1])
+
             self.updateProbMoving(self.grid, terrainList,[type1, type2])
 
         print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
@@ -266,6 +269,7 @@ class ProbSearch:
         i = grid.targetI
         j = grid.targetJ
         terrain1 = grid.getCell(i, j).terrain
+        grid.getCell(i,j).isTarget = False
 
         if i != 0 and i != 49 and j != 0 and j != 49:
             moveto = random.randint(0, 3)
@@ -364,7 +368,7 @@ class ProbSearch:
         grid.targetI = i
         grid.targetJ = j
         terrain2 = grid.getCell(i, j).terrain
-        print()
+        grid.getCell(i,j).isTarget = True
         return [terrain1, terrain2]
 
     def getListOfEachTerrainType(self, grid):
