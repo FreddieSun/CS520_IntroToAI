@@ -11,6 +11,8 @@ class Grid:
         self.forestP = 0.3
         self.caveP = 0.2
         self.generateGrid()
+        self.targetI = 0
+        self.targetJ = 0
 
     def generateGrid(self):
         for i in range(self.N):
@@ -43,7 +45,9 @@ class Grid:
                 success = False
 
         #print('Target is in: ', '[', targetI, ',', targetJ, ']')
-        #self.getCell(targetI, targetJ).isTarget = True
+        self.getCell(targetI, targetJ).isTarget = True
+        self.targetI = targetI
+        self.targetJ = targetJ
 
     def getCell(self, x, y):
         return self.grid[x * self.N + y]
