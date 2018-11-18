@@ -11,9 +11,6 @@ class Grid:
         self.forestP = 0.3
         self.caveP = 0.2
         self.generateGrid()
-        self.targetI = 0
-        self.targetJ = 0
-
 
     def generateGrid(self):
         for i in range(self.N):
@@ -35,11 +32,18 @@ class Grid:
                 else:
                     cell = Cell(4, 0.1)
                     self.grid.append(cell)
-        self.targetI = random.randint(0, 49)
-        self.targetJ = random.randint(0, 49)
-        print('Target is in: ', '[', self.targetI, ',', self.targetJ, ']')
-        self.getCell(self.targetI, self.targetJ).isTarget = True
+
+        success = True
+        while success:
+            targetI = random.randint(0, 49)
+            targetJ = random.randint(0, 49)
+            if self.getCell(targetI, targetJ).terrain == 3:
+                self.getCell(targetI, targetJ).isTarget = True
+                # print('Target is in: ', '[', targetI, ',', targetJ, ']')
+                success = False
+
+        #print('Target is in: ', '[', targetI, ',', targetJ, ']')
+        #self.getCell(targetI, targetJ).isTarget = True
 
     def getCell(self, x, y):
         return self.grid[x * self.N + y]
-
