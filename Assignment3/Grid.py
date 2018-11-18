@@ -37,7 +37,7 @@ class Grid:
         while success:
             targetI = random.randint(0, 49)
             targetJ = random.randint(0, 49)
-            if self.getCell(targetI, targetJ).terrain == 3:
+            if self.getCell(targetI, targetJ).terrain == 1:
                 self.getCell(targetI, targetJ).isTarget = True
                 # print('Target is in: ', '[', targetI, ',', targetJ, ']')
                 success = False
