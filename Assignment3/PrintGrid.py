@@ -6,8 +6,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREY = (192, 192, 192)
-DARKGREY = (41,36,33)
-GREEN = (61,145,64)
+DARKGREY = (41, 36, 33)
+GREEN = (61, 145, 64)
 
 size = 10
 gap = 1
@@ -15,7 +15,6 @@ gap = 1
 HEIGHT = 10
 WIDTH = 20
 minP = 0.2
-
 
 
 def gridList(grid):
@@ -62,8 +61,8 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
                     pygame.draw.rect(surface, GREEN, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
                 elif gridlist[i * gridWidth + j] == 4:
                     pygame.draw.rect(surface, DARKGREY, [(gap + size) * j + gap, (gap + size) * i + gap, size, size])
-        target=gridlist[len(gridlist)-1]
-        targeti = int (target / gridWidth)
+        target = gridlist[len(gridlist) - 1]
+        targeti = int(target / gridWidth)
         targetj = target - (gridWidth * targeti)
         number = pygame.font.SysFont('宋体', 20)
         numberSurface = number.render('T', True, RED)
@@ -78,7 +77,8 @@ def drawInitialGrid(gridlist, gridHeight, gridWidth):
                 pygame.quit()
                 exitflag = False
 
+
 if __name__ == '__main__':
     grid = Grid()
     GridList = gridList(grid)
-    drawInitialGrid(GridList,grid.N,grid.N)
+    drawInitialGrid(GridList, grid.N, grid.N)
