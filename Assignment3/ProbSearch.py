@@ -105,7 +105,7 @@ class ProbSearch:
             for i in range(50):
                 for j in range(50):
                     if grid.getCell(i, j).Pr1 / cost[i * 50 + j] > \
-                            returnCell.Pr1 / distance[returnI * 50 + returnJ]:
+                            returnCell.Pr1 / cost[returnI * 50 + returnJ]:
                         returnCell = grid.getCell(i, j)
                         returnI = i
                         returnJ = j
@@ -168,13 +168,13 @@ class ProbSearch:
         return distance
 
     def probCostSearch(self):
-        [a, b] = self.searchCell(self.grid, self.RULE2)
+        [a, b] = self.searchCell(self.grid, self.RULE1)
         while True:
             if self.findTarget(self.grid, a, b):
                 targetI = a
                 targetJ = b
                 break
-            [i, j] = self.searchCostCell(self.grid, self.RULE4, a, b)
+            [i, j] = self.searchCostCell(self.grid, self.RULE3, a, b)
             self.updateProb(self.grid, a, b)
             # print('Next:', i, ',', j)
             [a, b] = [i, j]
