@@ -224,6 +224,40 @@ class ProbSearch:
             print('我们凉凉了')
         print('Total action is:', action)
 
+    def probMoveCostSearch(self):
+        [a, b] = self.searchCell(self.grid, self.RULE1)
+
+        while True:
+            self.numOfSearches += 1
+            if self.findTarget(self.grid, a, b):
+                targetI = a
+                targetJ = b
+                break
+            [i, j] = self.searchCostCell(self.grid, self.RULE3, a, b)
+            self.updateProbStable(self.grid, a, b)
+            print('Next:', i, ',', j)
+
+            [type1, type2] = self.moveTarget(self.grid)
+            allList = self.getListOfEachTerrainType(self.grid)
+            terrainList = []
+            if type1 == type2:
+                terrainList.append(allList[type1 - 1])
+            else:
+                terrainList.append(allList[type1 - 1])
+                terrainList.append(allList[type2 - 1])
+
+            self.updateProbMoving(self.grid, terrainList, [type1, type2])
+            [a, b] = [i, j]
+
+        print('Target is founded at ', '[', targetI, ',', targetJ, '], with ', self.numOfSearches, 'searches')
+        print('Target cell', self.grid.getCell(targetI, targetJ).terrain)
+
+        if self.grid.getCell(targetI, targetJ).isTarget:
+            print('爽')
+        else:
+            print('我们凉凉了')
+        print('Total action is:', action)
+
     def probMoveSearch(self):
         print('probMoveSearch method')
         targetI = 0
@@ -400,5 +434,4 @@ class ProbSearch:
 if __name__ == '__main__':
     print('main method')
     probSearch = ProbSearch()
-    #probSearch.probCostSearch()
-    probSearch.probMoveSearch()
+    probSearch.probMoveCostSearch()
