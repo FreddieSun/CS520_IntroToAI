@@ -90,18 +90,18 @@ class ProbSearch:
         return [returnI, returnJ]
 
     def distanceToCostDown(self,i):
-        j = 0 - math.sqrt(9801 - i * i) +99
+        j = 0 - math.sqrt(22500 - i * i) +150
         return j
 
     def distanceToCostUp(self,i):
-        j = math.sqrt(198 * i - i * i)
+        j = math.sqrt(300 * i - i * i)
         return j
 
     def searchCostCell(self, grid, type, ii, jj):
         distance = self.getDistance(ii, jj, self.grid)
         cost = []
         for i in distance:
-            cost.append(self.distanceToCostUp(i))
+            cost.append(self.distanceToCostDown(i))
         returnCell = grid.getCell(0, 0)
         returnI = 0
         returnJ = 0
