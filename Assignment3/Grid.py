@@ -10,7 +10,12 @@ class Grid:
         self.hillP = 0.3
         self.forestP = 0.3
         self.caveP = 0.2
-        self.generateGrid()
+        self.targetI = 0
+        self.targetJ = 0
+
+
+    def getCell(self, x, y):
+        return self.grid[x * self.N + y]
 
     def generateGrid(self):
         for i in range(self.N):
@@ -33,17 +38,20 @@ class Grid:
                     cell = Cell(4, 0.1)
                     self.grid.append(cell)
 
-        success = True
-        while success:
-            targetI = random.randint(0, 49)
-            targetJ = random.randint(0, 49)
-            if self.getCell(targetI, targetJ).terrain == 1:
-                self.getCell(targetI, targetJ).isTarget = True
-                # print('Target is in: ', '[', targetI, ',', targetJ, ']')
-                success = False
+        targetI = random.randint(0, 49)
+        targetJ = random.randint(0, 49)
+        self.getCell(targetI, targetJ).isTarget = True
+        self.targetI = targetI
+        self.targetJ = targetJ
+        targetTerrian = ''
+        if self.getCell(targetI, targetJ).terrain == 1:
+            targetTerrian = 'flat'
+        elif self.getCell(targetI, targetJ).terrain == 2:
+            targetTerrian = 'hill'
+        elif self.getCell(targetI, targetJ).terrain == 3:
+            targetTerrian = 'forest'
+        elif self.getCell(targetI, targetJ).terrain == 4:
+            targetTerrian = 'cave'
+        print('Targets is in: ', '[', targetI, ',', targetJ, ']','terrian type[',targetTerrian,']')
 
-        #print('Target is in: ', '[', targetI, ',', targetJ, ']')
-        #self.getCell(targetI, targetJ).isTarget = True
 
-    def getCell(self, x, y):
-        return self.grid[x * self.N + y]
