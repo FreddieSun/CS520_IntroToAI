@@ -4,7 +4,8 @@
 * hill     : terrain = 2  P = 0.3  GREY
 * forest   : terrain = 3  P = 0.3  GREEN
 * cave     : terrain = 4  P = 0.2  DARKGREY
-
+## Environment
+* Python 3.7(no extra library) 
 ##### How to run our program?
 1. Run *ProbSearch.py*  
     * You should input 1 or 2 to decide which question to run.
