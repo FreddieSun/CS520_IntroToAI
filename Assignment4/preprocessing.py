@@ -9,7 +9,16 @@ def convert(read_path, save_path):
     image_file = Image.open(read_path)  # open colour image
     image_file = image_file.convert('L')  # convert image to black and white
     image_file.save(save_path)
-
+def reshape():
+    path = '/Users/xinyu/Desktop/1/'
+    save_path = '/Users/xinyu/Desktop/2/'
+    list = get_path(path)
+    for name in list:
+        if name == '15.jpg':
+            continue
+        im = Image.open(path + name)
+        out = im.resize((256, 256))
+        out.save(save_path + name)
 def concat():
     UNIT_SIZE = 256
     TARGET_WIDTH = 2 * UNIT_SIZE
