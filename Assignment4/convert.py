@@ -10,8 +10,8 @@ def convert(read_path, save_path):
     image_file = image_file.convert('L')  # convert image to black and white
     image_file.save(save_path)
 def reshape():
-    path = '/Users/xinyu/Desktop/1/'
-    save_path = '/Users/xinyu/Desktop/2/'
+    path = "/Users/xinyu/Keras-GAN/pix2pix/orig/"
+    save_path = "/Users/xinyu/Keras-GAN/pix2pix/images1/"
     list = get_path(path)
     for name in list:
         if name == '15.jpg':
@@ -22,7 +22,7 @@ def reshape():
 def concat():
     UNIT_SIZE = 256
     TARGET_WIDTH = 2 * UNIT_SIZE
-    color_path = "/Users/xinyu/Keras-GAN/pix2pix/images"
+    color_path = "/Users/xinyu/Keras-GAN/pix2pix/images1"
     color = get_path(color_path)
     BW_path = "/Users/xinyu/Keras-GAN/pix2pix/convert"
     save_path = "/Users/xinyu/Keras-GAN/pix2pix/merge"
@@ -46,7 +46,8 @@ def concat():
             target.save(save_path + '/' + str(i) + '.jpg', quality=quality_value)
 
 if __name__ == '__main__':
-    read_path = "/Users/xinyu/Keras-GAN/pix2pix/images/"
+    reshape()
+    read_path = "/Users/xinyu/Keras-GAN/pix2pix/images1/"
     save_path = "/Users/xinyu/Keras-GAN/pix2pix/convert/"
     nameList = get_path(read_path)
     for name in nameList:
