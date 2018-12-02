@@ -146,17 +146,14 @@ class Pix2Pix():
                 print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f, G_acc: %3d%%]" % (epoch+1, epochs,batch_i+1,self.data_loader.n_batches,d_loss[0],100 * d_loss[1],g_loss[0],100*g_loss[1]))#generate acc ?
 
                 if batch_i == sample_interval:
-                    acc = self.sample_images(epoch, acc, valid, fake, batch_size)
+                    acc = self.sample_images(epoch, acc, valid, batch_size)
 
-    def sample_images(self, epoch, acc, valid, fake, batch_size):
+    def sample_images(self, epoch, acc, valid, batch_size):
 
         for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_test_batch(batch_size)):
             os.makedirs('images/%s/%d' % (self.dataset_name, epoch), exist_ok=True)
             fake_A = self.generator.predict(imgs_B)
 
-            #d_loss_real = self.discriminator.test_on_batch([imgs_A, imgs_B], valid)
-            #d_loss_fake = self.discriminator.test_on_batch([fake_A, imgs_B], fake)
-            #d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
             g_loss = self.combined.test_on_batch([imgs_A, imgs_B], [valid, imgs_A])
             if 100 * g_loss[1] >= acc:
                 self.generator.save_weights(save_path + 'generator_weights.h5')
