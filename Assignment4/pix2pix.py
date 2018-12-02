@@ -204,6 +204,6 @@ class Pix2Pix():
 
 if __name__ == '__main__':
     gan = Pix2Pix()
-    gan.train(epochs=10, batch_size=1, sample_interval=4) #-1
+    gan.train(epochs=25, batch_size=1, sample_interval=97) #-1
     test = Pix2Pix()
     test.test_model()
