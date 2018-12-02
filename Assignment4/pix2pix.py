@@ -143,7 +143,7 @@ class Pix2Pix():
                 # Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
                 g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid, imgs_A]) # 训练目的 G->fake_A  D->validity   [validity,fake_A]->[valid,imgs_A]  contradictory:increase fake_A->validity
                 # 模型的结合在于 validity由D产出 fake_A由G产出 -> valid imgs_A
-                print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f, G_acc: %3d%%]" % (epoch, epochs,batch_i+1,self.data_loader.n_batches,d_loss[0],100 * d_loss[1],g_loss[0],100*g_loss[1]))#generate acc ?
+                print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f, G_acc: %3d%%]" % (epoch+1, epochs,batch_i+1,self.data_loader.n_batches,d_loss[0],100 * d_loss[1],g_loss[0],100*g_loss[1]))#generate acc ?
 
                 if batch_i == sample_interval:
                     acc = self.sample_images(epoch, acc, valid, fake, batch_size)
