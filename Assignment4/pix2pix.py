@@ -10,7 +10,10 @@ import matplotlib.pyplot as plt
 from data_loader import DataLoader
 import numpy as np
 import os
+import scipy.misc
 
+
+import scipy
 # save_path =r'C:\\Users\\Han\\Desktop\\Keras-GAN\\pix2pix\\saved_model\\'
 save_path = '/Users/xinyu/Keras-GAN/pix2pix/saved_model/'
 
@@ -148,6 +151,7 @@ class Pix2Pix():
 
                 if batch_i == sample_interval:
                     acc = self.sample_images(epoch, acc, valid, batch_size)
+                    self.generator.save_weights(save_path + 'generator_weights.h5')
 
     def sample_images(self, epoch, acc, valid, batch_size):
 
@@ -155,18 +159,12 @@ class Pix2Pix():
             os.makedirs('images/%s/%d' % (self.dataset_name, epoch), exist_ok=True)
             fake_A = self.generator.predict(imgs_B)
 
-            #g_loss = self.combined.test_on_batch([imgs_A, imgs_B], [valid, imgs_A])
-            #if 100 * g_loss[1] >= acc:
-            #    self.generator.save_weights(save_path + 'generator_weights.h5')
-            #    acc = 100 * g_loss[1]
-            #else:
-            #    acc = acc
-
             gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
             # Rescale images 0 - 1
             gen_imgs = 0.5 * gen_imgs + 0.5
 
             titles = ['BW', 'Generated', 'Original']
+
             r, c = 3, 1
             fig, axs = plt.subplots(r, c)
             cnt = 0
@@ -176,6 +174,9 @@ class Pix2Pix():
                 axs[i].axis('off')
                 cnt += 1
             fig.savefig("images/%s/%d/%d.png" % (self.dataset_name, epoch, batch_i))
+            os.makedirs('images/fake/%d' % epoch, exist_ok=True)
+            scipy.misc.imsave("images/fake/%d/%d.jpg" % (epoch, batch_i), gen_imgs[1])
+
         plt.close()
         return acc
 
@@ -205,6 +206,6 @@ class Pix2Pix():
 
 if __name__ == '__main__':
     gan = Pix2Pix()
-    gan.train(epochs=25, batch_size=1, sample_interval=97) #-1
+    gan.train(epochs=5, batch_size=1, sample_interval=4) #-1
     test = Pix2Pix()
     test.test_model()
