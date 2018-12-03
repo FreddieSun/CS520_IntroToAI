@@ -35,6 +35,7 @@ class Pix2Pix():
 
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='mse',
+                                   loss_weights=[1],
                                    optimizer=Adam(0.0002, 0.5),
                                    metrics=['accuracy'])
 
@@ -138,12 +139,12 @@ class Pix2Pix():
                 fake_A = self.generator.predict(imgs_B)
                 # Model([img_A, img_B], validity) 后面的那个是output的target
                 d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid) # 训练目的 imgs_A->validity->valid
-                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B], fake)  # 训练目的 fake_A->validity->fake     contradictory: reduce fake_A->validity
+                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B], fake)  # 训练目的 fake_A->validity->fake     contradictory: reduce fake_A->validity  #G(z)尽可能小
                 d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
                 # Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
                 g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid, imgs_A]) # 训练目的 G->fake_A  D->validity   [validity,fake_A]->[valid,imgs_A]  contradictory:increase fake_A->validity
-                # 模型的结合在于 validity由D产出 fake_A由G产出 -> valid imgs_A
-                print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f, G_acc: %3d%%]" % (epoch+1, epochs,batch_i+1,self.data_loader.n_batches,d_loss[0],100 * d_loss[1],g_loss[0],100*g_loss[1]))#generate acc ?
+                # 模型的结合在于 validity由D产出 fake_A由G产出 -> valid imgs_A  # G(z)尽可能大
+                print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f]" % (epoch+1, epochs,batch_i+1,self.data_loader.n_batches,d_loss[0],100 * d_loss[1],g_loss[0]))#generate acc ?
 
                 if batch_i == sample_interval:
                     acc = self.sample_images(epoch, acc, valid, batch_size)
@@ -154,12 +155,12 @@ class Pix2Pix():
             os.makedirs('images/%s/%d' % (self.dataset_name, epoch), exist_ok=True)
             fake_A = self.generator.predict(imgs_B)
 
-            g_loss = self.combined.test_on_batch([imgs_A, imgs_B], [valid, imgs_A])
-            if 100 * g_loss[1] >= acc:
-                self.generator.save_weights(save_path + 'generator_weights.h5')
-                acc = 100 * g_loss[1]
-            else:
-                acc = acc
+            #g_loss = self.combined.test_on_batch([imgs_A, imgs_B], [valid, imgs_A])
+            #if 100 * g_loss[1] >= acc:
+            #    self.generator.save_weights(save_path + 'generator_weights.h5')
+            #    acc = 100 * g_loss[1]
+            #else:
+            #    acc = acc
 
             gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
             # Rescale images 0 - 1
