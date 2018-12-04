@@ -30,6 +30,9 @@ class Pix2Pix():
                                       img_res=(self.img_rows, self.img_cols))
 
         # Calculate output shape of D (PatchGAN)
+        # patch means the program divides the img into 16 16*16 patches
+        # Check the number of layers in discriminators, it downsampling 4 times
+        # then the final size for discriminator is 16*16, so it's same with the patches here
         patch = int(self.img_rows / 2 ** 4)
         self.disc_patch = (patch, patch, 1)
 
