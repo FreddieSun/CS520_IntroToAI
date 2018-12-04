@@ -4,6 +4,9 @@
 
 ## 模型测试部分
 * images 训练每一个epoch后的测试结果 文件夹数字代表epoch数
+  1. myset 对比图
+  2. fake 生成图
+  3. concat 拼接图
 * test 自测试的测试集
 * result 自测试结果
 
