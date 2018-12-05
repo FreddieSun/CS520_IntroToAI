@@ -9,13 +9,15 @@ def convert(read_path, save_path):
     image_file = Image.open(read_path)  # open colour image
     image_file = image_file.convert('L')  # convert image to black and white
     image_file.save(save_path)
-def reshape():
-    path = "/Users/xinyu/Keras-GAN/pix2pix/orig/"
-    save_path = "/Users/xinyu/Keras-GAN/pix2pix/images1/"
+
+
+def reshape(path,save_path):
+    #path = "/Users/xinyu/Keras-GAN/pix2pix/orig/"
+    #save_path = "/Users/xinyu/Keras-GAN/pix2pix/images1/"
     list = get_path(path)
     for name in list:
-        if name == '15.jpg':
-            continue
+        #if name == '15.jpg':
+            #continue
         im = Image.open(path + name)
         out = im.resize((256, 256))
         out.save(save_path + name)
@@ -54,6 +56,16 @@ def concat1():
     save_path ='/Users/xinyu/Keras-GAN/pix2pix/images/concat/'
     path = '/Users/xinyu/Keras-GAN/pix2pix/images/fake/'
     dir1 = getfilename(path)#'0,1,2'
+    dir_int = [int(i) for i in dir1]
+    dir_int.sort()
+    dir1 = [str(i) for i in dir_int]
+    '''
+    for di in dir1:
+        dir_int.append(int(di))
+    dir_int.sort()
+    for di_i in dir_int:
+    '''
+
     fake = get_path(path+dir1[0])#0.png 1.png
     UNIT_SIZE = 256
     TARGET_WIDTH = len(dir1) * UNIT_SIZE
@@ -64,6 +76,7 @@ def concat1():
             for picture_name in picture_name_list:
                 if picture_name == fake[i]:
                     image.append(Image.open(path+dirs+'/'+picture_name))
+                    break
         target = Image.new('RGB', (TARGET_WIDTH, UNIT_SIZE))
         left = 0
         right = UNIT_SIZE
@@ -73,7 +86,7 @@ def concat1():
             right += UNIT_SIZE
             quality_value = 100
             target.save(save_path + str(i) + '.png', quality=quality_value)
-
+        print(str(i) + 'finish')
 
 if __name__ == '__main__':
     #reshape()

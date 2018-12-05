@@ -93,8 +93,7 @@ class DataLoader():
             yield imgs_A, imgs_B
 
     def load_test_batch_2(self, batch_size):
-        data_type = "test1"
-        path = glob('./%s/*' % (data_type))
+        path = glob('./self_test/*')
 
         self.n_batches = int(len(path) / batch_size)
 
@@ -104,19 +103,21 @@ class DataLoader():
             for img in batch:
                 img = self.imread(img)
                 h, w, _ = img.shape
-                # half_w = int(w / 2)
+                #half_w = int(w / 2)
                 img_A = img[:, :w, :]
-                # img_B = img[:, half_w:, :]
+                #img_B = img[:, half_w:, :]
 
                 img_A = scipy.misc.imresize(img_A, self.img_res)
-                # img_B = scipy.misc.imresize(img_B, self.img_res)
+                #img_B = scipy.misc.imresize(img_B, self.img_res)
 
                 imgs_A.append(img_A)
-                # imgs_B.append(img_B)
+                #imgs_B.append(img_B)
 
             imgs_A = np.array(imgs_A) / 127.5 - 1.
-            # imgs_B = np.array(imgs_B) / 127.5 - 1.
+            #imgs_B = np.array(imgs_B) / 127.5 - 1.
 
-            yield imgs_A  # , imgs_B
+            yield imgs_A#, imgs_B
+
     def imread(self, path):
         return scipy.misc.imread(path, mode='RGB').astype(np.float)
+
