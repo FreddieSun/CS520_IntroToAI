@@ -10,7 +10,7 @@
 * test 自测试的测试集（要用saved_model下已经训练好的model进行测试，前提是已经裁剪好尺寸并完成图片拼接）
 * result 自测试结果（用saved_model下已经训练好的model进行测试的结果）
 
-* test1 TA自测图 前提：灰度图（无尺寸要求）
+* test1 TA自测图 前提：灰度图/彩图（无尺寸要求）
 * result1 TA测试结果 只有生成图
 ## 图片预处理部分
 * orig 原彩图（未经裁剪的图片，google批量下载的）
