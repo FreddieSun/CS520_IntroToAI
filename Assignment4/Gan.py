@@ -150,7 +150,7 @@ class Pix2Pix():
 
                 if batch_i == sample_interval-1:
                     acc = self.sample_images(epoch, acc, batch_size)
-                    #self.generator.save_weights(model_save_path + 'generator_weights.h5')
+                    self.generator.save_weights(model_save_path + 'generator_weights.h5')
 
     def sample_images(self, epoch, acc, batch_size):
         for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_test_batch(batch_size)):
@@ -185,7 +185,7 @@ class Pix2Pix():
             gen_imgs = np.concatenate([fake_A])
             # Rescale images 0 - 1
             gen_imgs = 0.5 * gen_imgs + 0.5
-            scipy.misc.imsave(save_path + '/%d.jpg' % batch_i, gen_imgs[0])
+            scipy.misc.imsave(save_path + '%d.jpg' % batch_i, gen_imgs[0])
 
 
 if __name__ == '__main__':
