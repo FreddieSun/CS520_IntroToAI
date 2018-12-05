@@ -1,5 +1,5 @@
 from __future__ import print_function, division
-
+from convert import reshape,convert
 from keras.layers import Input, Dropout, Concatenate
 from keras.layers import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
@@ -212,9 +212,24 @@ class Pix2Pix():
             k += 1
         plt.close()
 
+    def self_test(self):
+            path ='/Users/xinyu/Keras-GAN/pix2pix/test1/'
+            save_path1 ='/Users/xinyu/Keras-GAN/pix2pix/test1/'
+            #convert(path+'0.jpg',save_path1+'0.jpg')
+            reshape(path,save_path1)
+            for batch_i, (imgs_A) in enumerate(self.data_loader.load_test_batch_2(1)):
+                self.generator.load_weights(save_path + 'generator_weights.h5')
+                fake_A = self.generator.predict(imgs_A)
+                gen_imgs = np.concatenate([fake_A])
+                # Rescale images 0 - 1
+                gen_imgs = 0.5 * gen_imgs + 0.5
+                scipy.misc.imsave("result1/%d.jpg" % batch_i, gen_imgs[0])
+            plt.close()
 
 if __name__ == '__main__':
-    gan = Pix2Pix()
-    gan.train(epochs=5, batch_size=1, sample_interval=4)  # -1
+    # gan = Pix2Pix()
+    # gan.train(epochs=50, batch_size=1, sample_interval=4) #-1
+    # test = Pix2Pix()
+    # test.test_model()
     test = Pix2Pix()
-    test.test_model()
+    test.self_test()

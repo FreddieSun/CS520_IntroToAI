@@ -92,70 +92,31 @@ class DataLoader():
 
             yield imgs_A, imgs_B
 
-    def imread(self, path):
-        return scipy.misc.imread(path, mode='RGB').astype(np.float)
+    def load_test_batch_2(self, batch_size):
+        data_type = "test1"
+        path = glob('./%s/*' % (data_type))
 
-    '''
-        def load_data(self, batch_size=1, is_testing=False):
-            data_type = "train" if not is_testing else "test"
-            path = glob('./datasets/%s/%s/*' % (self.dataset_name, data_type))
+        self.n_batches = int(len(path) / batch_size)
 
-            batch_images = np.random.choice(path, size=batch_size)
-
-            imgs_A = []
-            imgs_B = []
-            for img_path in batch_images:
-                img = self.imread(img_path)
-
+        for i in range(self.n_batches):
+            batch = path[i * batch_size:(i + 1) * batch_size]
+            imgs_A, imgs_B = [], []
+            for img in batch:
+                img = self.imread(img)
                 h, w, _ = img.shape
-                _w = int(w/2)
-                img_A, img_B = img[:, :_w, :], img[:, _w:, :]
+                # half_w = int(w / 2)
+                img_A = img[:, :w, :]
+                # img_B = img[:, half_w:, :]
 
                 img_A = scipy.misc.imresize(img_A, self.img_res)
-                img_B = scipy.misc.imresize(img_B, self.img_res)
-
-                # If training => do random flip
-                if not is_testing and np.random.random() < 0.5:
-                    img_A = np.fliplr(img_A)
-                    img_B = np.fliplr(img_B)
+                # img_B = scipy.misc.imresize(img_B, self.img_res)
 
                 imgs_A.append(img_A)
-                imgs_B.append(img_B)
+                # imgs_B.append(img_B)
 
-            imgs_A = np.array(imgs_A)/127.5 - 1.
-            imgs_B = np.array(imgs_B)/127.5 - 1.
+            imgs_A = np.array(imgs_A) / 127.5 - 1.
+            # imgs_B = np.array(imgs_B) / 127.5 - 1.
 
-            return imgs_A, imgs_B
-    '''
-'''
-    def load_test_data(self, batch_size=1, is_testing=False):
-        data_type = "test"
-        path = glob('./datasets/%s/%s/*' % (self.dataset_name, data_type))
-
-        batch_images = np.random.choice(path, size=batch_size)
-
-        imgs_A = []
-        imgs_B = []
-        for img_path in batch_images:
-            img = self.imread(img_path)
-
-            h, w, _ = img.shape
-            _w = int(w/2)
-            img_A, img_B = img[:, :_w, :], img[:, _w:, :]
-
-            img_A = scipy.misc.imresize(img_A, self.img_res)
-            img_B = scipy.misc.imresize(img_B, self.img_res)
-
-            # If training => do random flip
-            if not is_testing and np.random.random() < 0.5:
-                img_A = np.fliplr(img_A)
-                img_B = np.fliplr(img_B)
-
-            imgs_A.append(img_A)
-            imgs_B.append(img_B)
-
-        imgs_A = np.array(imgs_A)/127.5 - 1.
-        imgs_B = np.array(imgs_B)/127.5 - 1.
-
-        return imgs_A, imgs_B
-'''
+            yield imgs_A  # , imgs_B
+    def imread(self, path):
+        return scipy.misc.imread(path, mode='RGB').astype(np.float)
