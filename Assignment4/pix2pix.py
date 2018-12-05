@@ -1,6 +1,6 @@
 from __future__ import print_function, division
-from convert import reshape,convert,get_path
-from keras.layers import Input,Dropout, Concatenate
+from convert import reshape, convert, get_path
+from keras.layers import Input, Dropout, Concatenate
 from keras.layers import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
@@ -12,10 +12,10 @@ import numpy as np
 import os
 import scipy.misc
 
-
 import scipy
+
 # save_path =r'C:\\Users\\Han\\Desktop\\Keras-GAN\\pix2pix\\saved_model\\'
-save_path = '/Users/xinyu/Keras-GAN/pix2pix/saved_model/'
+model_save_path = '/Users/xinyu/Keras-GAN/pix2pix/saved_model/'
 
 
 class Pix2Pix():
@@ -25,11 +25,8 @@ class Pix2Pix():
         self.channels = 3
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
 
-        self.dataset_name = 'myset'
-        self.data_loader = DataLoader(dataset_name=self.dataset_name,
-                                      img_res=(self.img_rows, self.img_cols))
+        self.data_loader = DataLoader(img_res=(self.img_rows, self.img_cols))
 
-        # Calculate output shape of D (PatchGAN)
         patch = int(self.img_rows / 2 ** 4)
         self.disc_patch = (patch, patch, 1)
 
@@ -57,8 +54,6 @@ class Pix2Pix():
         self.combined.compile(loss=['mse', 'mae'],
                               loss_weights=[1, 100],
                               optimizer=Adam(0.0002, 0.5))
-
-
 
     def build_generator(self):
         """U-Net Generator"""
@@ -120,7 +115,7 @@ class Pix2Pix():
         img_B = Input(shape=self.img_shape)
 
         # Concatenate image and conditioning image by channels to produce input
-        combined_imgs = Concatenate(axis=-1)([img_A, img_B])    # trick 减缓D的收敛过程  因为判断为0或1就行 所以只需要输入一个图片 输出valid即可
+        combined_imgs = Concatenate(axis=-1)([img_A, img_B])  # trick 减缓D的收敛过程  因为判断为0或1就行 所以只需要输入一个图片 输出valid即可
 
         d1 = d_layer(combined_imgs, self.df, bn=False)
         d2 = d_layer(d1, self.df * 2)
@@ -137,34 +132,34 @@ class Pix2Pix():
         fake = np.zeros((batch_size,) + self.disc_patch)
 
         for epoch in range(epochs):
-            for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_batch(batch_size)):
+            for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_train_batch(batch_size)):
 
                 fake_A = self.generator.predict(imgs_B)
                 # Model([img_A, img_B], validity) 后面的那个是output的target
-                d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid) # 训练目的 imgs_A->validity->valid
-                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B], fake)  # 训练目的 fake_A->validity->fake     contradictory: reduce fake_A->validity  #G(z)尽可能小
+                d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid)  # 训练目的 imgs_A->validity->valid
+                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B],
+                                                                fake)  # 训练目的 fake_A->validity->fake     contradictory: reduce fake_A->validity  #G(z)尽可能小
                 d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
                 # Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
-                g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid, imgs_A]) # 训练目的 G->fake_A  D->validity   [validity,fake_A]->[valid,imgs_A]  contradictory:increase fake_A->validity
+                g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid,
+                                                                         imgs_A])  # 训练目的 G->fake_A  D->validity   [validity,fake_A]->[valid,imgs_A]  contradictory:increase fake_A->validity
                 # 模型的结合在于 validity由D产出 fake_A由G产出 -> valid imgs_A  # G(z)尽可能大
-                print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f]" % (epoch+1, epochs,batch_i+1,self.data_loader.n_batches,d_loss[0],100 * d_loss[1],g_loss[0]))#generate acc ?
+                print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f]" % (
+                epoch + 1, epochs, batch_i + 1, self.data_loader.n_batches, d_loss[0], 100 * d_loss[1],
+                g_loss[0]))  # generate acc ?
 
-                if batch_i == sample_interval:
-                    acc = self.sample_images(epoch, acc, valid, batch_size)
-                    self.generator.save_weights(save_path + 'generator_weights.h5')
+                if batch_i == sample_interval-1:
+                    acc = self.sample_images(epoch, acc, batch_size)
+                    #self.generator.save_weights(model_save_path + 'generator_weights.h5')
 
-    def sample_images(self, epoch, acc, valid, batch_size):
-
+    def sample_images(self, epoch, acc, batch_size):
         for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_test_batch(batch_size)):
-            os.makedirs('images/%s/%d' % (self.dataset_name, epoch), exist_ok=True)
+            os.makedirs('test_result/contrast/%d' % epoch, exist_ok=True)
             fake_A = self.generator.predict(imgs_B)
-
             gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
             # Rescale images 0 - 1
             gen_imgs = 0.5 * gen_imgs + 0.5
-
-            titles = ['BW', 'Generated', 'Original']
-
+            titles = ['BW', 'Fake', 'Origin']
             r, c = 3, 1
             fig, axs = plt.subplots(r, c)
             cnt = 0
@@ -173,56 +168,28 @@ class Pix2Pix():
                 axs[i].set_title(titles[i])
                 axs[i].axis('off')
                 cnt += 1
-            fig.savefig("images/%s/%d/%d.png" % (self.dataset_name, epoch, batch_i))
-            os.makedirs('images/fake/%d' % epoch, exist_ok=True)
-            scipy.misc.imsave("images/fake/%d/%d.jpg" % (epoch, batch_i), gen_imgs[1])
-
+            fig.savefig("test_result/contrast/%d/%d.png" % (epoch, batch_i))
+            os.makedirs('test_result/fake/%d' % epoch, exist_ok=True)
+            scipy.misc.imsave("test_result/fake/%d/%d.jpg" % (epoch, batch_i), gen_imgs[1])
         plt.close()
         return acc
 
-    def test_model(self):
-        k = 0
-        for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_test_batch_1(1)):
-            os.makedirs('result/', exist_ok=True)
-            self.generator.load_weights(save_path + 'generator_weights.h5')
-            fake_A = self.generator.predict(imgs_B)
-
-            gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
-            # Rescale images 0 - 1
-            gen_imgs = 0.5 * gen_imgs + 0.5
-
-            titles = ['BW', 'Generated', 'Original']
-            r, c = 3, 1
-            fig, axs = plt.subplots(r, c)
-            cnt = 0
-            for i in range(r):
-                axs[i].imshow(gen_imgs[cnt])
-                axs[i].set_title(titles[i])
-                axs[i].axis('off')
-                cnt += 1
-            fig.savefig("result/%d.png" % k)
-            k += 1
-        plt.close()
-
     def self_test(self):
-        path ='/Users/xinyu/Keras-GAN/pix2pix/self_test/'
-        save_path1 ='/Users/xinyu/Keras-GAN/pix2pix/self_test/'
-        list = get_path(path)
-        for p in list:
-            convert(path+p,save_path1+p)
-            reshape(path,save_path1)
-        for batch_i, (imgs_A) in enumerate(self.data_loader.load_test_batch_2(1)):
-            self.generator.load_weights(save_path + 'generator_weights.h5')
+        path = '/Users/xinyu/Keras-GAN/pix2pix/self_test/'
+        save_path = '/Users/xinyu/Keras-GAN/pix2pix/self_result/'
+        convert(path, path)
+        reshape(path, path)
+        for batch_i, imgs_A in enumerate(self.data_loader.load_self_test_batch(1)):
+            self.generator.load_weights(model_save_path + 'generator_weights.h5')
             fake_A = self.generator.predict(imgs_A)
             gen_imgs = np.concatenate([fake_A])
             # Rescale images 0 - 1
             gen_imgs = 0.5 * gen_imgs + 0.5
-            scipy.misc.imsave("/Users/xinyu/Keras-GAN/pix2pix/self_result/%d.jpg" % batch_i, gen_imgs[0])
+            scipy.misc.imsave(save_path + '/%d.jpg' % batch_i, gen_imgs[0])
+
 
 if __name__ == '__main__':
-    #gan = Pix2Pix()
-    #gan.train(epochs=50, batch_size=1, sample_interval=4) #-1
-    #test = Pix2Pix()
-    #test.test_model()
-    test = Pix2Pix()
-    test.self_test()
+    #train = Pix2Pix()
+    #train.train(epochs=50, batch_size=1, sample_interval=98) #-1
+    self_test = Pix2Pix()
+    self_test.self_test()
