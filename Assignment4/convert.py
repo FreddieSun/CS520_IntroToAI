@@ -1,18 +1,24 @@
 from PIL import Image
 import os
 
-
+'''
+return jpg name
+'''
 def get_path(path):
     return [f for f in os.listdir(path) if f.endswith('.jpg')]
 
-
+'''
+return dir name 
+'''
 def get_dir(filename):
     for root, dirs, files in os.walk(filename):
         array = dirs
         if array:
             return array
 
-
+'''
+convert color jpg to gray jpg
+'''
 def convert(path, save_path):
     list = get_path(path)
     for name in list:
@@ -20,7 +26,9 @@ def convert(path, save_path):
         image_file = image_file.convert('L')
         image_file.save(save_path + name)
 
-
+'''
+reshape color jpg to 256*256
+'''
 def reshape(path, save_path):
     list = get_path(path)
     for name in list:
@@ -28,7 +36,9 @@ def reshape(path, save_path):
         image_file = image_file.resize((256, 256))
         image_file.save(save_path + name)
 
-
+'''
+concat color jpg and gray jpg
+'''
 def concat(color_path, BW_path, save_path):
     UNIT_SIZE = 256
     TARGET_WIDTH = 2 * UNIT_SIZE
@@ -46,7 +56,9 @@ def concat(color_path, BW_path, save_path):
             quality_value = 100
             target.save(save_path + str(i) + '.jpg', quality=quality_value)
 
-
+'''
+concat jpg in test_result/fake/
+'''
 def concat_n(path, save_path):
     dir1 = get_dir(path)
     dir_int = [int(i) for i in dir1]
