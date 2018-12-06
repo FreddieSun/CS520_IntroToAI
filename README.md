@@ -2,7 +2,7 @@
 
 ## Member
 
-* Xinyu Lv
+* Xinyu Lyu
 * Weijia Sun
 * Yi Wu
 * Xun Tang
