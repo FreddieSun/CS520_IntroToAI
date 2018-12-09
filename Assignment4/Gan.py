@@ -1,4 +1,7 @@
 from __future__ import print_function, division
+
+from glob import glob
+
 from convert import reshape, convert, get_path
 from keras.layers import Input, Dropout, Concatenate
 from keras.layers import BatchNormalization
@@ -15,8 +18,8 @@ import scipy.misc
 import scipy
 
 # save_path =r'C:\\Users\\Han\\Desktop\\Keras-GAN\\pix2pix\\saved_model\\'
-model_save_path = '/Users/xinyu/Keras-GAN/pix2pix/saved_model/'
-
+# model_save_path = '/Users/xinyu/Keras-GAN/pix2pix/saved_model/'
+model_save_path = './saved_model/'
 
 class Pix2Pix():
     def __init__(self):
@@ -126,7 +129,7 @@ class Pix2Pix():
 
         return Model([img_A, img_B], validity)
 
-    def train(self, epochs, batch_size, sample_interval):
+    def train(self, epochs,  batch_size, sample_interval):
         acc = 0
         valid = np.ones((batch_size,) + self.disc_patch)
         fake = np.zeros((batch_size,) + self.disc_patch)
@@ -137,12 +140,10 @@ class Pix2Pix():
                 fake_A = self.generator.predict(imgs_B)
                 # Model([img_A, img_B], validity) 后面的那个是output的target
                 d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid)  # 训练目的 imgs_A->validity->valid
-                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B],
-                                                                fake)  # 训练目的 fake_A->validity->fake     contradictory: reduce fake_A->validity  #G(z)尽可能小
+                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B],fake)  # 训练目的 fake_A->validity->fake     contradictory: reduce fake_A->validity  #G(z)尽可能小
                 d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
                 # Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
-                g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid,
-                                                                         imgs_A])  # 训练目的 G->fake_A  D->validity   [validity,fake_A]->[valid,imgs_A]  contradictory:increase fake_A->validity
+                g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid,imgs_A])  # 训练目的 G->fake_A  D->validity   [validity,fake_A]->[valid,imgs_A]  contradictory:increase fake_A->validity
                 # 模型的结合在于 validity由D产出 fake_A由G产出 -> valid imgs_A  # G(z)尽可能大
                 print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f]" % (
                 epoch + 1, epochs, batch_i + 1, self.data_loader.n_batches, d_loss[0], 100 * d_loss[1],
@@ -150,7 +151,7 @@ class Pix2Pix():
 
                 if batch_i == sample_interval-1:
                     acc = self.sample_images(epoch, acc, batch_size)
-                    self.generator.save_weights(model_save_path + 'generator_weights.h5')
+                    #self.generator.save_weights(model_save_path + 'generator_weights.h5')
 
     def sample_images(self, epoch, acc, batch_size):
         for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_test_batch(batch_size)):
@@ -175,21 +176,30 @@ class Pix2Pix():
         return acc
 
     def self_test(self):
-        path = '/Users/xinyu/Keras-GAN/pix2pix/self_test/'
-        save_path = '/Users/xinyu/Keras-GAN/pix2pix/self_result/'
-        convert(path, path)
+        path = './self_test/'
+        save_path = './self_result/'
+        #path = '/Users/xinyu/Keras-GAN/pix2pix/self_test/'
+        #save_path = '/Users/xinyu/Keras-GAN/pix2pix/self_result/'
         reshape(path, path)
+        #convert(path, path)
         for batch_i, imgs_A in enumerate(self.data_loader.load_self_test_batch(1)):
             self.generator.load_weights(model_save_path + 'generator_weights.h5')
             fake_A = self.generator.predict(imgs_A)
             gen_imgs = np.concatenate([fake_A])
             # Rescale images 0 - 1
             gen_imgs = 0.5 * gen_imgs + 0.5
-            scipy.misc.imsave(save_path + '%d.jpg' % batch_i, gen_imgs[0])
-
+            scipy.misc.imsave(save_path + '/%d.jpg' % batch_i, gen_imgs[0])
 
 if __name__ == '__main__':
-    #train = Pix2Pix()
-    #train.train(epochs=50, batch_size=1, sample_interval=98) #-1
-    self_test = Pix2Pix()
-    self_test.self_test()
+    choice = input('Input test to test the model')
+    if choice =='test':
+        choice2 = input('Has already put the grayscale image with JPG format in self_test folder? (Y/N)')
+        if choice2 == 'Y':
+            print("You'd better make sure the test image should be 256*256 to get best colorization result!")
+            print('Start test.')
+            self_test = Pix2Pix()
+            self_test.self_test()
+            print('Fininsh test and you will get the test result in the self_test folder.')
+        if choice2  =='N':
+            print('Put the grayscale image with JPG format in self_test folder, then try test again.')
+            print('There are many test image we provided in ./dataset_preprocessing/original folder and you can use them or find your own text images.')
