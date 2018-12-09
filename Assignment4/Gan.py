@@ -1,11 +1,10 @@
 from __future__ import print_function, division
 from convert import reshape, convert, get_path
-from keras.layers import Input, Dropout, Concatenate
+from keras.layers import Input, Concatenate
 from keras.layers import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.models import Model
-from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 from data_loader import DataLoader
 import numpy as np
@@ -36,7 +35,7 @@ class Pix2Pix():
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(loss='mse',
                                    loss_weights=[1],
-                                   optimizer=Adam(0.0002, 0.5),
+                                   optimizer='sgd',
                                    metrics=['accuracy'])
 
         self.generator = self.build_generator()
@@ -53,7 +52,7 @@ class Pix2Pix():
         self.combined = Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
         self.combined.compile(loss=['mse', 'mae'],
                               loss_weights=[1, 100],
-                              optimizer=Adam(0.0002, 0.5))
+                              optimizer='sgd')
 
     def build_generator(self):
         """U-Net Generator"""
@@ -66,12 +65,10 @@ class Pix2Pix():
                 d = BatchNormalization(momentum=0.8)(d)
             return d
 
-        def deconv2d(layer_input, skip_input, filters, f_size=4, dropout_rate=0):
+        def deconv2d(layer_input, skip_input, filters, f_size=4):
             """Layers used during upsampling"""
             u = UpSampling2D(size=2)(layer_input)
             u = Conv2D(filters, kernel_size=f_size, strides=1, padding='same', activation='relu')(u)
-            if dropout_rate:
-                u = Dropout(dropout_rate)(u)
             u = BatchNormalization(momentum=0.8)(u)
             u = Concatenate()([u, skip_input])
             return u
