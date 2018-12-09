@@ -229,7 +229,7 @@ class ProbSearch:
             targetTerrian ='cave'
 
         print('Target is founded at ', '[', targetI, ',', targetJ, '], type [',targetTerrian,'],','with' ,self.numOfSearches, 'searches')
-
+''
     def probMoveSearch(self,rule):#Q2 R1，R2
         if rule =='1':
             rule = self.RULE1
