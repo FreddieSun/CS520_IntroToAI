@@ -33,4 +33,4 @@ What does each folder include in our project?
     1. fake : Images in each folder stand for the images colorized from the test dataset in each training epoch. 
     2. contrast : We concat the grayscale(BW), generated, original image together from the test at the end of each training epoch.
     3. concat_fake : We concatenate the test result from 50 epochs to see the gradual process of model tranining.
-5. Final_test_result
+5. Final_test_result: Show some colorization results against the real colorful images.
