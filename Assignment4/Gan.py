@@ -1,8 +1,5 @@
 from __future__ import print_function, division
-
-from glob import glob
-
-from convert import reshape, convert, get_path
+from convert import reshape
 from keras.layers import Input, Concatenate
 from keras.layers import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
@@ -16,8 +13,6 @@ import scipy.misc
 
 import scipy
 
-# save_path =r'C:\\Users\\Han\\Desktop\\Keras-GAN\\pix2pix\\saved_model\\'
-# model_save_path = '/Users/xinyu/Keras-GAN/pix2pix/saved_model/'
 model_save_path = './saved_model/'
 
 class Pix2Pix():
@@ -58,10 +53,8 @@ class Pix2Pix():
                               optimizer='sgd')
 
     def build_generator(self):
-        """U-Net Generator"""
 
         def conv2d(layer_input, filters, f_size=4, bn=True):
-            """Layers used during downsampling"""
             d = Conv2D(filters, kernel_size=f_size, strides=2, padding='same')(layer_input)
             d = LeakyReLU(alpha=0.2)(d)
             if bn:
@@ -69,17 +62,14 @@ class Pix2Pix():
             return d
 
         def deconv2d(layer_input, skip_input, filters, f_size=4):
-            """Layers used during upsampling"""
             u = UpSampling2D(size=2)(layer_input)
             u = Conv2D(filters, kernel_size=f_size, strides=1, padding='same', activation='relu')(u)
             u = BatchNormalization(momentum=0.8)(u)
             u = Concatenate()([u, skip_input])
             return u
 
-        # Image input
         d0 = Input(shape=self.img_shape)
 
-        # Downsampling
         d1 = conv2d(d0, self.gf, bn=False)
         d2 = conv2d(d1, self.gf * 2)
         d3 = conv2d(d2, self.gf * 4)
@@ -88,7 +78,6 @@ class Pix2Pix():
         d6 = conv2d(d5, self.gf * 8)
         d7 = conv2d(d6, self.gf * 8)
 
-        # Upsampling
         u1 = deconv2d(d7, d6, self.gf * 8)
         u2 = deconv2d(u1, d5, self.gf * 8)
         u3 = deconv2d(u2, d4, self.gf * 8)
@@ -104,7 +93,6 @@ class Pix2Pix():
     def build_discriminator(self):
 
         def d_layer(layer_input, filters, f_size=4, bn=True):
-            """Discriminator layer"""
             d = Conv2D(filters, kernel_size=f_size, strides=2, padding='same')(layer_input)
             d = LeakyReLU(alpha=0.2)(d)
             if bn:
@@ -114,8 +102,7 @@ class Pix2Pix():
         img_A = Input(shape=self.img_shape)
         img_B = Input(shape=self.img_shape)
 
-        # Concatenate image and conditioning image by channels to produce input
-        combined_imgs = Concatenate(axis=-1)([img_A, img_B])  # trick 减缓D的收敛过程  因为判断为0或1就行 所以只需要输入一个图片 输出valid即可
+        combined_imgs = Concatenate(axis=-1)([img_A, img_B])
 
         d1 = d_layer(combined_imgs, self.df, bn=False)
         d2 = d_layer(d1, self.df * 2)
@@ -135,16 +122,12 @@ class Pix2Pix():
             for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_train_batch(batch_size)):
 
                 fake_A = self.generator.predict(imgs_B)
-                # Model([img_A, img_B], validity) 后面的那个是output的target
-                d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid)  # 训练目的 imgs_A->validity->valid
-                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B],fake)  # 训练目的 fake_A->validity->fake     contradictory: reduce fake_A->validity  #G(z)尽可能小
+                d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid)
+                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B],fake)
                 d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
-                # Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
-                g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid,imgs_A])  # 训练目的 G->fake_A  D->validity   [validity,fake_A]->[valid,imgs_A]  contradictory:increase fake_A->validity
-                # 模型的结合在于 validity由D产出 fake_A由G产出 -> valid imgs_A  # G(z)尽可能大
+                g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid,imgs_A])
                 print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f]" % (
-                epoch + 1, epochs, batch_i + 1, self.data_loader.n_batches, d_loss[0], 100 * d_loss[1],
-                g_loss[0]))  # generate acc ?
+                epoch + 1, epochs, batch_i + 1, self.data_loader.n_batches, d_loss[0], 100 * d_loss[1],g_loss[0]))
 
                 if batch_i == sample_interval-1:
                     acc = self.sample_images(epoch, acc, batch_size)
@@ -155,7 +138,6 @@ class Pix2Pix():
             os.makedirs('test_result/contrast/%d' % epoch, exist_ok=True)
             fake_A = self.generator.predict(imgs_B)
             gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
-            # Rescale images 0 - 1
             gen_imgs = 0.5 * gen_imgs + 0.5
             titles = ['BW', 'Fake', 'Origin']
             r, c = 3, 1
@@ -175,15 +157,11 @@ class Pix2Pix():
     def self_test(self):
         path = './self_test/'
         save_path = './self_result/'
-        #path = '/Users/xinyu/Keras-GAN/pix2pix/self_test/'
-        #save_path = '/Users/xinyu/Keras-GAN/pix2pix/self_result/'
         reshape(path, path)
-        #convert(path, path)
         for batch_i, imgs_A in enumerate(self.data_loader.load_self_test_batch(1)):
             self.generator.load_weights(model_save_path + 'generator_weights.h5')
             fake_A = self.generator.predict(imgs_A)
             gen_imgs = np.concatenate([fake_A])
-            # Rescale images 0 - 1
             gen_imgs = 0.5 * gen_imgs + 0.5
             scipy.misc.imsave(save_path + '/%d.jpg' % batch_i, gen_imgs[0])
 

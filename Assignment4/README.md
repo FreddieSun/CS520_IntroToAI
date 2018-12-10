@@ -1,29 +1,35 @@
-## codes
-1. convet.py 数据集预处理，以及测试结果整理
-2. data_loader.py 训练测试模型load数据
-3. Gan.py 训练测试
+## CS 520 Final Project
+#### By Weijia Sun, Yi Wu , Xun Tang, Xinyu Lyu 
 
-## 模型训练部分
-1. datasets 
-   1. test 测试集
-   2. train 训练集
-2. saved_model 训练后保存的模型
+###Environment :  
+Python 3.6  
+Extra Library : 
+1. Keras 2.2.4
+2. Tensorflow 1.11.0
+3. Pillow 5.2.0
 
-## 模型测试部分
-1. test_result 训练每一个epoch后的测试结果 文件夹数字代表epoch数
-   1. contrast 对比图 （用原彩图+生成图+灰度图 进行对比）
-   2. fake 生成图  （单独把测试过程中生成给的图片拿出来，为concat做准备）
-   3. concat_fake 拼接图（将训练每一个epoch后的同一个测试图片拼接起来，显示训练过程过程）
-2. selt_test TA自测图 灰度图/彩图（无尺寸要求）
-3. self_result TA测试结果 只有生成图
+###How to test the colorization?
+1. First you need to install all the extra libraries. 
+2. Before run the Gan.py to test the result, you need to put the grayscale images with JPG format in ./self_test folder.
+3. You can use the grayscale image provided by ourselves in ./dataset_preprocessing/original folder, or you can use your own test dataset.
+4. Then run the Gan.py following the instructions on the console.
+5. Finally, you can get the test results in the in the ./self_test folder.
 
-## 图片预处理部分
-1. data_preprocessing
-   1. orig 原彩图（未经裁剪的图片，google批量下载的）
-   2. images1 裁剪尺寸后的彩图（256 X 256) 
-   3. convert 裁剪好的彩图转化为的灰度图 
-   4. merge 裁剪好的彩图和灰度图的拼接图(彩图+灰度图)
-
-## 其他
-1. resources 两篇pdf
-
+###What is the role od each codes file?
+1. Gan.py : Include the model training part and the testing part.
+2. data_loader.py : Provide data for model training and testing.
+3. convert.py : Some prepossessing operations for the dataset.
+What does each folder include in our project?
+1. dataset_preproccessing :
+    1. original : original colourful image with JPG format without prepossessing.
+    2. grayscale : grayscale image converted from the colourful image in original folder.
+    3. cropped : crop grayscale images from grayscale folder into 256*256 size.
+    4. concat : 512*256 image concatenated by 256*256 colorful image together its corresponding 256*256 grayscale image
+2. datasets: divide the images in concat folder into train and test with the scale as 4:1.
+    1. test : test dataset used in cross validation. 
+    2. train : train dataset used in model training.
+3. saved_model: the saved colorization model by 50 epoch training on the training datset. If you want to test our model by yourself, this is the model you are using to test. 
+4. test_result : we test the model with the test dataset in the end of each epoch. And we output the test result in such three kinds which is intuitive to show the test result.
+    1. fake : Images in each folder stand for the images colorized from the test dataset in each training epoch. 
+    2. contrast : We concat the grayscale(BW), generated, original image together from the test at the end of each training epoch.
+    3. concat_fake : We concatenate the test result from 50 epochs to see the gradual process of model tranining.
