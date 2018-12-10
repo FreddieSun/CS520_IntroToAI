@@ -123,7 +123,7 @@ class Pix2Pix():
 
                 fake_A = self.generator.predict(imgs_B)
                 d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid)
-                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B],fake)
+                d_loss_fake = self.discriminator.train_on_batch([fake_A, ifake)
                 d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
                 g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid,imgs_A])
                 print("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, D_acc: %3d%%] [G loss: %f]" % (
@@ -154,6 +154,7 @@ class Pix2Pix():
         plt.close()
         return acc
 
+
     def self_test(self):
         path = './self_test/'
         save_path = './self_result/'
@@ -166,7 +167,7 @@ class Pix2Pix():
             scipy.misc.imsave(save_path + '/%d.jpg' % batch_i, gen_imgs[0])
 
 if __name__ == '__main__':
-    choice = input('Input test to test the model')
+    choice = input('Input test to test the model by youself, or input check to directly find some test result')
     if choice =='test':
         choice2 = input('Has already put the grayscale image with JPG format in self_test folder? (Y/N)')
         if choice2 == 'Y':
@@ -178,3 +179,5 @@ if __name__ == '__main__':
         if choice2  =='N':
             print('Put the grayscale image with JPG format in self_test folder, then try test again.')
             print('There are many test image we provided in ./dataset_preprocessing/original folder and you can use them or find your own text images.')
+    if choice == 'check':
+        print('Find the test result in ./test_result/Final_test_result folder.')
