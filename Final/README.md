@@ -17,3 +17,17 @@
 
 ### d.2
 思想类似扫雷算法里的。 算出所有的可能的solution， 然后利用这些solution来算概率。
+
+## Question 2 Markov Decision Processes
+
+为什么会有discount factor？而不是所有原先的数值直接乘以0.9倍 : fixed
+
+思路： 
+1. PageRank
+2. Value Iteration
+
+* [Value Iteration](https://github.com/aimacode/aima-java)  
+* [text book](http://aima.cs.berkeley.edu/)  
+* [PageRank详解](https://blog.csdn.net/hguisu/article/details/7996185)  
+
+
