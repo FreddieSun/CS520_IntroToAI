@@ -65,6 +65,7 @@ class Pix2Pix():
             u = UpSampling2D(size=2)(layer_input)
             u = Conv2D(filters, kernel_size=f_size, strides=1, padding='same', activation='relu')(u)
             u = BatchNormalization(momentum=0.8)(u)
+            u = Concatenate()([u, skip_input])
             return u
 
         d0 = Input(shape=self.img_shape)
@@ -166,17 +167,17 @@ class Pix2Pix():
             scipy.misc.imsave(save_path + '/%d.jpg' % batch_i, gen_imgs[0])
 
 if __name__ == '__main__':
-    choice = input('Input test to test the model by youself, or input check to directly find some test result: ')
-    if choice == 'test':
+    choice = input('Input test to test the model by youself, or input check to directly find some test result')
+    if choice =='test':
         choice2 = input('Has already put the grayscale image with JPG format in self_test folder? (Y/N)')
-        if choice2 == 'Y' or choice2 == 'y':
+        if choice2 == 'Y':
             print("You'd better make sure the test image should be 256*256 to get best colorization result!")
             print('Start test.')
             self_test = Pix2Pix()
             self_test.self_test()
-            print('Fininsh test and you will get the test result in the self_test folder.')
-        if choice2  =='N' or choice2 == 'n':
-            print('Put the grayscale image with JPG format in self_test folder, then try test again.')
+            print('Fininsh test and you will get the test result in the self_result folder.')
+        if choice2  =='N':
+            print('Put the grayscale image with JPG format in self_result folder, then try test again.')
             print('There are many test image we provided in ./dataset_preprocessing/original folder and you can use them or find your own text images.')
     if choice == 'check':
         print('Find the test result in ./test_result/Final_test_result folder.')

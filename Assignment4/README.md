@@ -13,7 +13,7 @@ Extra Library :
 2. Before run the Gan.py to test the result, you need to put the grayscale images with JPG format in ./self_test folder.
 3. You can use the grayscale image provided by ourselves in ./dataset_preprocessing/original folder, or you can use your own test dataset.
 4. Then run the Gan.py following the instructions on the console.
-5. Finally, you can get the test results in the in the ./self_test folder.
+5. Finally, you can get the test results in the in the ./self_result folder.
 
 ### What is the role od each codes file?
 1. Gan.py : Include the model training part and the testing part.
