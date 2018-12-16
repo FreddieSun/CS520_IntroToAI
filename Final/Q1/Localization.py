@@ -29,12 +29,12 @@ def getblocksaround(x,y,maze):
 find the cell with 5 blocks around
 '''
 def get_5blocks_cell(maze):
-    cell = []
+    cells = []
     for x in range(len(maze)):
         for y in range(len(maze[0])):
             if getblocksaround(x, y, maze) ==5:
-                cell.append([x,y])
-    return cell
+                cells.append([x,y])
+    return cells
 '''
 move the cells 
 actions =['U','D','L','R']
