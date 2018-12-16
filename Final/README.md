@@ -25,7 +25,8 @@
 思路： 
 1. PageRank
 2. Value Iteration
-
+3. trade-off between buying USED1/2 or NEW
+4.  
 * [Value Iteration](https://github.com/aimacode/aima-java)  
 * [text book](http://aima.cs.berkeley.edu/)  
 * [PageRank详解](https://blog.csdn.net/hguisu/article/details/7996185)  
