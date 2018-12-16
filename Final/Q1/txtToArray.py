@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-data=pd.read_table("Maze.txt",header=None)
+data = pd.read_table("Maze.txt",header=None)
 
 
 maze=[]

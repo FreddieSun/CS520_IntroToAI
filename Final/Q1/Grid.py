@@ -53,6 +53,28 @@ class Grid:
         self.getCell(3, 2).numOfmines = 1
         self.getCell(3, 3).numOfmines = 1
 
+
+
+        # self.getCell(2, 0).isMine = True
+        # self.getCell(2, 1).isMine = True
+        # self.getCell(2, 5).isMine = True
+        # self.getCell(2, 7).isMine = True
+        # self.getCell(4, 5).isMine = True
+        # self.getCell(4, 8).isMine = True
+        # self.getCell(6, 0).isMine = True
+        # self.getCell(6, 1).isMine = True
+        # self.getCell(7, 2).isMine = True
+        # self.getCell(7, 6).isMine = True
+        # self.getCell(8, 0).isMine = True
+        # self.getCell(8, 4).isMine = True
+        # self.getCell(8, 6).isMine = True
+        # self.getCell(8, 7).isMine = True
+
+
+
+        #self.numOfMine = 3
+
+
     def markMineNumber(self):
         for i in range(self.height):
             for j in range(self.width):
