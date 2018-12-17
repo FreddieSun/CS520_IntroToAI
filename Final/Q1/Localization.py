@@ -100,4 +100,5 @@ if __name__ == '__main__':
     while n < len(actions) :
         cells = update(maze,cells,actions[n],observations[n+1])
         n += 1
+    print(cells)
     print(findMostProbability(cells))
