@@ -29,8 +29,8 @@ while (True):
     epochs += 1
     # update utility of new and used states
     for i in range(9):
-        v = [reward[i] + beta * (probs_stay[i] * utility[i] + probs_trans[i] * utility[i + 1]),
-             -cost_replace + probs_replace[i] * beta * utility[0]]
+        v = [(probs_stay[i] * (reward[i] + beta * utility[i]) + probs_trans[i] * (reward[i] + beta * utility[i + 1])),
+             probs_replace[i] * (-cost_replace + beta * utility[0])]
         u_update = max(v)
         actions.append(v.index(u_update))
         # pdb.set_trace()
