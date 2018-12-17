@@ -73,12 +73,10 @@ def findMostProbability(cells):
     while end < len(cells) :
         if cells[start] != cells[end] and cells[start] == cells[start + 1] :
             start = end - 1
-
         elif cells[start] != cells[end] and cells[start] != cells[start + 1] :
             start += 1
             end += 1
         elif cells[start] == cells[end]:
-
             if end - start + 1 > maxtime:
                 maxtime = end - start + 1
             end += 1
@@ -89,9 +87,6 @@ def findMostProbability(cells):
     probability = maxtime / totalnumber
     print(probability)
     return finalresult
-
-
-
 
 if __name__ == '__main__':
     data = pd.read_table("Maze.txt", header=None)
