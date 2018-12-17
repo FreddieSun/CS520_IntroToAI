@@ -26,9 +26,7 @@ def getBlocksAround(x,y,maze):
             if temp == 1:
                 number += 1
     return number
-'''
-find the cell with 5 blocks around
-'''
+
 def get_blocks_cell(maze,observation):
     cells = []
     for x in range(len(maze)):
@@ -67,16 +65,30 @@ def update(maze,cells,action,obervation):
             returncell.append(cell)
     return returncell
 
-# def findMostProbability(cells):
-#     maxtime = 1
-#     finalresult = []
-#     for i in range(len(cells)):
-#         while True:
-#             if cells[i] == cells[i+1]:
-#
-#
-#
-#     return
+def findMostProbability(cells):
+    start = 0
+    end = 1
+    maxtime = 1
+    finalresult = []
+    while end < len(cells) :
+        if cells[start] != cells[end] and cells[start] == cells[start + 1] :
+            start = end - 1
+
+        elif cells[start] != cells[end] and cells[start] != cells[start + 1] :
+            start += 1
+            end += 1
+        elif cells[start] == cells[end]:
+
+            if end - start + 1 > maxtime:
+                maxtime = end - start + 1
+            end += 1
+    for i in range(len(cells) - maxtime):
+        if cells[i] == cells[i + maxtime - 1]:
+            finalresult.append(cells[i])
+    totalnumber = len(cells)
+    probability = maxtime / totalnumber
+    print(probability)
+    return finalresult
 
 
 
@@ -92,3 +104,4 @@ if __name__ == '__main__':
         cells = update(maze,cells,actions[n],observations[n+1])
         n += 1
     print(cells)
+    print(findMostProbability(cells))
