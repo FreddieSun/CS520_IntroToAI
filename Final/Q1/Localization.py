@@ -67,18 +67,27 @@ def update(maze,cells,action,obervation):
             returncell.append(cell)
     return returncell
 
-# def findMostProbability(cells):
-#     maxtime = 1
-#     finalresult = []
-#     for i in range(len(cells)):
-#         while True:
-#             if cells[i] == cells[i+1]:
-#
-#
-#
-#     return
+def findMostProbability(cells):
+    info = {}
+    info = dict()
+    for i in range(len(cells)):
+        (x, y) = cells[i]
+        key = (x, y)
+        if key not in info:
+            info[key] = 1
+        else:
+            info[key] = info.get(key) + 1
 
+    maxValue = 0
+    for key, value in info.items():
+        if value >= maxValue:
+            maxValue = value
 
+    result = []
+    for key, value in info.items():
+        if value == maxValue:
+            result.append(key)
+    return [result, maxValue]
 
 
 if __name__ == '__main__':
@@ -91,4 +100,4 @@ if __name__ == '__main__':
     while n < len(actions) :
         cells = update(maze,cells,actions[n],observations[n+1])
         n += 1
-    print(cells)
+    print(findMostProbability(cells))
