@@ -20,6 +20,8 @@ def getBlocksAround(x,y,maze):
     number = 0
     if x == 0 or y == 0 or x == 42 or y == 56:
         return 0
+    if maze[x][y] == 1:
+        return None
     for i in range(-1,2):
         for j in range(-1,2):
             if i == 0 and j == 0:
@@ -72,22 +74,25 @@ def findMostProbability(cells):
     end = 1
     maxtime = 1
     finalresult = []
+    anotherresult = []
     while end < len(cells) :
         if cells[start] != cells[end] and cells[start] == cells[start + 1] :
             start = end - 1
         elif cells[start] != cells[end] and cells[start] != cells[start + 1] :
             start += 1
             end += 1
+            anotherresult.append(cells[start])
         elif cells[start] == cells[end]:
             if end - start + 1 > maxtime:
                 maxtime = end - start + 1
             end += 1
-    for i in range(len(cells) - maxtime):
+    for i in range(len(cells) - maxtime + 1):
         if cells[i] == cells[i + maxtime - 1]:
             finalresult.append(cells[i])
     totalnumber = len(cells)
     probability = maxtime / totalnumber
     print(probability)
+    print(1/len(cells))
     return finalresult
 
 def printMaze(maze , cells,mostcells):
@@ -120,4 +125,5 @@ if __name__ == '__main__':
     print(cells)
     mostcells = findMostProbability(cells)
     print(mostcells)
+
     printMaze(maze,cells,mostcells)
