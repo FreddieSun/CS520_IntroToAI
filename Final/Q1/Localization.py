@@ -104,9 +104,9 @@ def printMaze(maze , cells,mostcells):
             else:
                 mazeX[j, i] = (0, 0, 0)
     for i in cells:
-        mazeX[i[1],i[0]] = (0,255,0)
+        mazeX[i[1], i[0]] = (0, 153, 51)
     for i in mostcells:
-        mazeX[i[1], i[0]] = (255, 0, 0)
+        mazeX[i[1], i[0]] = (204, 0, 153)
     mazeDrown.show()
 
 
