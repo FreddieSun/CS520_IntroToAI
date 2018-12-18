@@ -1,4 +1,6 @@
 import pandas as pd
+import  numpy as np
+from PIL import  Image
 
 def generateMaze(data):
     maze=[]
@@ -18,6 +20,8 @@ def getBlocksAround(x,y,maze):
     number = 0
     if x == 0 or y == 0 or x == 42 or y == 56:
         return 0
+    if maze[x][y] == 1:
+        return None
     for i in range(-1,2):
         for j in range(-1,2):
             if i == 0 and j == 0:
@@ -90,6 +94,23 @@ def findMostProbability(cells):
     return [result, maxValue]
 
 
+def printMaze(maze , cells,mostcells):
+    mazeDrown = Image.new('RGB', (len(maze[0]), len(maze)))
+    mazeX = mazeDrown.load()
+    for i in range(len(maze)):
+        for j in range(len(maze[0])):
+            if maze[i][j] == 0:
+                mazeX[j, i] = (255, 255, 255)
+            else:
+                mazeX[j, i] = (0, 0, 0)
+    for i in cells:
+        mazeX[i[1],i[0]] = (0,255,0)
+    for i in mostcells:
+        mazeX[i[1], i[0]] = (255, 0, 0)
+    mazeDrown.show()
+
+
+
 if __name__ == '__main__':
     data = pd.read_table("Maze.txt", header=None)
     maze = generateMaze(data)
@@ -101,4 +122,7 @@ if __name__ == '__main__':
         cells = update(maze,cells,actions[n],observations[n+1])
         n += 1
     print(cells)
-    print(findMostProbability(cells))
+    mostcells = findMostProbability(cells)
+    print(mostcells)
+
+    printMaze(maze,cells,mostcells)
