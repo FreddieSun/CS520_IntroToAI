@@ -66,12 +66,12 @@ def move(maze, cells, action):
 
 
 def update(maze, cells, action, obervation):
-    nextcells = move(maze, cells, action)
-    returncell = []
-    for cell in nextcells:
+    next_cells = move(maze, cells, action)
+    return_cell = []
+    for cell in next_cells:
         if num_of_blocks_around(cell[0], cell[1], maze) == obervation:
-            returncell.append(cell)
-    return returncell
+            return_cell.append(cell)
+    return return_cell
 
 
 def find_highest_prob(cells):
@@ -109,23 +109,26 @@ def printMaze(maze, cells, mostcells):
             else:
                 mazeX[j, i] = (0, 0, 0)
     for i in cells:
-        mazeX[i[1], i[0]] = (0, 255, 0)
+        mazeX[i[1], i[0]] = (255, 255, 0)
     for i in mostcells:
-        mazeX[i[1], i[0]] = (255, 0, 0)
+        mazeX[i[1], i[0]] = (82, 198, 223)
     mazeDrown.show()
 
 
 if __name__ == '__main__':
     data = pd.read_table("Maze.txt", header=None)
     maze = maze_generator(data)
-    observations = [5, 5, 5,3]
-    actions = ['L', 'L','D']
+    observations = [3,5, 4, 5]
+    actions = ['R', 'D', 'D']
     cells = get_blocks_cell(maze, observations[0])
+    most_cells = []
+    printMaze(maze, cells, most_cells)
+
     n = 0
     while n < len(actions):
         cells = update(maze, cells, actions[n], observations[n + 1])
         n += 1
     print(cells)
-    mostcells = find_highest_prob(cells)
-    print(mostcells)
-    printMaze(maze, cells, mostcells)
+    most_cells = find_highest_prob(cells)
+    print(most_cells)
+    printMaze(maze, cells, most_cells)
