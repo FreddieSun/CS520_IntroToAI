@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split, validation_curve, learning
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import LabelBinarizer, StandardScaler
 import numpy as np
-import sklearn.linear_model.Perceptron
+from sklearn.linear_model import Perceptron
 import matplotlib.pyplot as plt
 from get_data import getData
 
