@@ -1,8 +1,12 @@
 import pandas as pd
 from PIL import Image
 
+'''
+transfer the data in the txt file into array
+'''
 
-def generateMaze(data):
+
+def read_file_data(data):
     maze = []
     for i in range(43):
         temp = []
@@ -17,12 +21,17 @@ def generateMaze(data):
     return maze
 
 
-def getBlocksAround(x, y, maze):
+'''
+get the number of surrounded cells of your current position
+'''
+
+
+def get_surrounded_block_cell_number(x, y, maze):
     number = 0
     if x == 0 or y == 0 or x == 42 or y == 56:
         return 0
     if maze[x][y] == 1:
-        return None
+        return 0
     for i in range(-1, 2):
         for j in range(-1, 2):
             if i == 0 and j == 0:
@@ -34,15 +43,15 @@ def getBlocksAround(x, y, maze):
 
 
 '''
-find the cell with 5 blocks around
+find the cells with 5 blocks around
 '''
 
 
-def get_blocks_cell(maze, observation):
+def get_cells(maze, observation):
     cells = []
     for x in range(len(maze)):
         for y in range(len(maze[0])):
-            if getBlocksAround(x, y, maze) == observation:
+            if get_surrounded_block_cell_number(x, y, maze) == observation:
                 cells.append([x, y])
     return cells
 
@@ -53,7 +62,7 @@ actions =['U','D','L','R']
 '''
 
 
-def move(maze, cells, action):
+def move_cells(maze, cells, action):
     if action == 'U':
         for cell in cells:
             if maze[cell[0] - 1][cell[1]] == 0:
@@ -73,17 +82,26 @@ def move(maze, cells, action):
     return cells
 
 
-def update(maze, cells, action, obervation):
-    nextcells = move(maze, cells, action)
+'''
+update cells array
+'''
+
+
+def update_cells(maze, cells, action, obervation):
+    nextcells = move_cells(maze, cells, action)
     returncell = []
     for cell in nextcells:
-        if getBlocksAround(cell[0], cell[1], maze) == obervation:
+        if get_surrounded_block_cell_number(cell[0], cell[1], maze) == obervation:
             returncell.append(cell)
     return returncell
 
 
-def findMostProbability(cells):
-    info = {}
+'''
+use dict to find the cells with highest probabilities
+'''
+
+
+def find_highest_probability(cells):
     info = dict()
     for i in range(len(cells)):
         (x, y) = cells[i]
@@ -108,7 +126,7 @@ def findMostProbability(cells):
     return [result, result1, maxValue]
 
 
-def printMaze(maze, cells, mostcells):
+def draw_maze(maze, cells, most_cells):
     mazeDrown = Image.new('RGB', (len(maze[0]), len(maze)))
     mazeX = mazeDrown.load()
     for i in range(len(maze)):
@@ -119,35 +137,35 @@ def printMaze(maze, cells, mostcells):
                 mazeX[j, i] = (0, 0, 0)
     for i in cells:
         mazeX[i[1], i[0]] = (0, 153, 51)
-    for i in mostcells:
+    for i in most_cells:
         mazeX[i[1], i[0]] = (204, 0, 153)
     mazeDrown.show()
 
 
 if __name__ == '__main__':
-    data = pd.read_table("Maze.txt", header=None)
-    maze = generateMaze(data)
-    observations = [3, 5, 5, 3]
-    actions = ['R', 'U', 'L']
-    cells = get_blocks_cell(maze, observations[0])
-    print(cells)
-    print(len(cells))
+    file_data = pd.read_table("Maze.txt", header=None)
+    Maze = read_file_data(file_data)
+    observations_sequence = [5, 5, 5]
+    actions_sequence = ['L', 'L']
+    Cells = get_cells(Maze, observations_sequence[0])
+    print(Cells)
+    print(len(Cells))
     n = 0
-    while n < len(actions):
-        cells = update(maze, cells, actions[n], observations[n + 1])
+    while n < len(actions_sequence):
+        Cells = update_cells(Maze, Cells, actions_sequence[n], observations_sequence[n + 1])
         n += 1
-    print(cells)
-    print(len(cells))
-    mostcells = findMostProbability(cells)
-    print(mostcells[0])
-    print(mostcells[2])
+    print(Cells)
+    print(len(Cells))
+    mostCells = find_highest_probability(Cells)
+    print(mostCells[0])
+    print(mostCells[2])
 
     # count the number of white cells in the maze
     # count = 0
-    # for i in range(len(maze)):
-    #     for j in range(len(maze[0])):
-    #         if maze[i][j] == 0:
+    # for i in range(len(Maze)):
+    #     for j in range(len(Maze[0])):
+    #         if Maze[i][j] == 0:
     #             count += 1
     # print(count)
 
-    # printMaze(maze, cells, mostcells[0])
+    draw_maze(Maze, Cells, mostCells[0])
