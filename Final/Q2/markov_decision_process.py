@@ -85,4 +85,4 @@ if __name__ == '__main__':
     optimal_policy = [action_choice[i] for i in optimal_policy]
     print(utility)
     print(optimal_policy)
-    print('epochs = ', epochs)
+    print('epochs =', epochs)
