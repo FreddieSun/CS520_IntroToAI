@@ -3,6 +3,10 @@ from sklearn.linear_model import Perceptron
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.neural_network import MLPClassifier
 
+'''
+Convert the labeled data into 25-dimensional vector and assign them into an array
+'''
+
 
 def convert_labeled_data():
     Class_A1 = [1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1]
@@ -73,6 +77,11 @@ def convert_labeled_data():
     return [X, y]
 
 
+'''
+Convert mystery images
+'''
+
+
 def mystery_data():
     M1 = [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1]
     M2 = [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1]
@@ -82,6 +91,11 @@ def mystery_data():
 
     mystery = [M1, M2, M3, M4, M5]
     return mystery
+
+
+'''
+Perceptron model
+'''
 
 
 def perceptron_model():
@@ -107,6 +121,11 @@ def perceptron_model():
     result = perceptron.predict(mystery_standard)
 
     return result
+
+
+'''
+MLP model
+'''
 
 
 def mlp_model():
