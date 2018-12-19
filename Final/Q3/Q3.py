@@ -91,7 +91,7 @@ for i in result1:
         result11.append('ClassB')
     elif i == 0:
         result11.append('ClassA')
-print('predict results of MLPClassifier: ',result11,' cross validation scores: ',cross_val_score(model1, X_test, y_test, scoring='mean_squared_error',cv=5))
+print('predict results of MLPClassifier: ',result11,' cross validation scores: ',cross_val_score(model1, X_test, y_test, scoring='accuracy',cv=5))
 
 
 
