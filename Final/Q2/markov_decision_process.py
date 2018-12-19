@@ -33,13 +33,13 @@ reward[-1] = 0
 '''cost of replacing to new'''
 cost_replace = 250
 
-'''discount factor'''
+'''
+discount factor β
+the maximum error allowed in the utility of any state ε
+iteration times t
+'''
 beta = 0.9
-
-'''the maximum error allowed in the utility of any state'''
 epsilon = 0.001
-
-'''iteration times'''
 epochs = 0
 
 '''optimal policy and two actions'''
@@ -61,19 +61,19 @@ if __name__ == '__main__':
             value = [(stay_probability[i] * (reward[i] + beta * utility[i]) + transfer_probability[i] * (
                     reward[i] + beta * utility[i + 1])), replace_probability[i] * (-cost_replace + beta * utility[0])]
 
-            u_update = max(value)
-            actions.append(value.index(u_update))
-            utility_update.append(u_update)
-            if abs(u_update - utility[i]) > delta:
-                delta = abs(u_update - utility[i])
+            temp_update = max(value)
+            actions.append(value.index(temp_update))
+            utility_update.append(temp_update)
+            if abs(temp_update - utility[i]) > delta:
+                delta = abs(temp_update - utility[i])
 
         '''update utility of dead state'''
-        u_update = -cost_replace + beta * utility[0]
-        utility_update.append(u_update)
+        temp_update = -cost_replace + beta * utility[0]
+        utility_update.append(temp_update)
         actions.append(1)
 
-        if abs(u_update - utility[-1]) > delta:
-            delta = abs(u_update - utility[-1])
+        if abs(temp_update - utility[-1]) > delta:
+            delta = abs(temp_update - utility[-1])
 
         utility = utility_update
         optimal_policy = actions
