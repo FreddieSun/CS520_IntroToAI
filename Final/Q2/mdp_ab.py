@@ -1,6 +1,3 @@
-import math
-import pdb
-
 
 
 cost_replace = 250
@@ -48,33 +45,31 @@ for i in range(10):
 reward[-1] = 0
 
 
-
-# value iterate
 while (True):
-    utility_update = []
+    new_utility = []
     actions = []
     delta = 0
     epochs += 1
-    # update utility_list of new and used states
-    for i in range(9):
-        v = [(remain_probability[i] * (reward[i] + beta * utility_list[i]) + trans_probability[i] * (reward[i] + beta * utility_list[i + 1])),
-             replace_probability[i] * (-cost_replace + beta * utility_list[0])]
-        u_update = max(v)
-        actions.append(v.index(u_update))
-        # pdb.set_trace()
-        utility_update.append(u_update)
-        if abs(u_update - utility_list[i]) > delta:
-            delta = abs(u_update - utility_list[i])
-    # update utility_list of dead state
-    u_update = -cost_replace + beta * utility_list[0]
-    utility_update.append(u_update)
-    actions.append(1)
-    if abs(u_update - utility_list[-1]) > delta:
-        delta = abs(u_update - utility_list[-1])
 
-    utility_list = utility_update
+    for i in range(9):
+        temp_value = [(remain_probability[i] * (reward[i] + beta * utility_list[i]) +
+                       trans_probability[i] * (reward[i] + beta * utility_list[i + 1])),
+                      replace_probability[i] * (-cost_replace + beta * utility_list[0])]
+        utility_updated = max(temp_value)
+        actions.append(temp_value.index(utility_updated))
+        new_utility.append(utility_updated)
+        if abs(utility_updated - utility_list[i]) > delta:
+            delta = abs(utility_updated - utility_list[i])
+
+    utility_updated = -cost_replace + beta * utility_list[0]
+    new_utility.append(utility_updated)
+    actions.append(1)
+    if abs(utility_updated - utility_list[-1]) > delta:
+        delta = abs(utility_updated - utility_list[-1])
+
+    utility_list = new_utility
     optimal_policy_list = actions
-    # terminate?
+
     if delta < epsilon * (1 - beta) / beta:
         break
 
