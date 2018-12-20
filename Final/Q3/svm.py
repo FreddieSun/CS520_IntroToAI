@@ -1,10 +1,12 @@
-from sklearn import svm, tree
-from sklearn.svm import LinearSVC, SVC
-from sklearn.model_selection import train_test_split, validation_curve, learning_curve
-from sklearn.preprocessing import LabelBinarizer, StandardScaler
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import svm
+from sklearn.model_selection import validation_curve
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+
 from get_data import getData
+from get_mystery import get_mystery
 
 [X, y] = getData()
 
@@ -12,24 +14,13 @@ scaler = StandardScaler()
 
 scaler.fit(X)
 x_train_std = scaler.transform(X)
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, shuffle=True)
 
-M1 = [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1]
-M2 = [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1]
-M3 = [0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1]
-M4 = [1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0]
-M5 = [0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1]
-Mystery = [M1, M2, M3, M4, M5]
-'''
-model = svm.SVC(C=0.1, cache_size=200, class_weight=None, coef0=0.0,
- decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
- max_iter=-1, probability=False, random_state=None, shrinking=True,
- tol=0.001, verbose=False)  # class[1,1,1,1,1]
-'''
 
 model = svm.SVC(gamma=0.004)
-# model = RandomForestClassifier(n_estimators=30)#[1,0,0,0,0]
+
 model.fit(x_train_std, y)
+
+Mystery = get_mystery()
 
 # scaler.fit_transform(Mystery)
 Mystery_std = scaler.transform(Mystery)
@@ -37,7 +28,7 @@ Mystery_std = scaler.transform(Mystery)
 result = model.predict(Mystery_std)
 print(result)
 
-# validation curve 参数不同的取值下模型的性能
+# validation curve using the validation curve to modify the model
 '''
 param_range = [5,10,15,20,25,30,35,40,45,50,55,60,65,70]
 train_score, test_score = validation_curve(RandomForestClassifier(),
