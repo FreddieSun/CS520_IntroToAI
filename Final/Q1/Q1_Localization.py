@@ -143,13 +143,20 @@ def draw_maze(maze, cells, most_cells):
 
 
 if __name__ == '__main__':
+    '''read txt file into an array'''
     file_data = pd.read_table("Maze.txt", header=None)
     Maze = read_file_data(file_data)
+
+    '''define the sequence of observations and cations'''
     observations_sequence = [5, 5, 5]
     actions_sequence = ['L', 'L']
+
+    '''the cells satisfy the first observation'''
     Cells = get_cells(Maze, observations_sequence[0])
     print(Cells)
     print(len(Cells))
+
+    '''a loop to get the cells with highest probability'''
     n = 0
     while n < len(actions_sequence):
         Cells = update_cells(Maze, Cells, actions_sequence[n], observations_sequence[n + 1])
@@ -168,4 +175,5 @@ if __name__ == '__main__':
     #             count += 1
     # print(count)
 
+    '''draw the maze'''
     draw_maze(Maze, Cells, mostCells[0])
