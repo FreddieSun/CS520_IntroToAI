@@ -1,8 +1,9 @@
 import pandas as pd
-import numpy as np
-from PIL import Image
+from printMaze import *
 
-def maze_generator(data):
+
+def maze_generator():
+    data = pd.read_table("Maze.txt", header=None)
     maze = []
     for i in range(43):
         temp = []
@@ -17,57 +18,53 @@ def maze_generator(data):
     return maze
 
 
-def num_of_blocks_around(x, y, maze):
-    number = 0
-    if x == 0 or y == 0 or x == 42 or y == 56:
-        return 0
-    if maze[x][y] == 1:
-        return 0
-    for i in range(-1, 2):
-        for j in range(-1, 2):
-            if i == 0 and j == 0:
-                continue
-            temp = maze[x + i][y + j]
-            if temp == 1:
-                number += 1
-    return number
-
-
-def get_blocks_cell(maze, observation):
-    cells = []
-    for x in range(len(maze)):
-        for y in range(len(maze[0])):
-            if num_of_blocks_around(x, y, maze) == observation:
-                cells.append([x, y])
-    return cells
-
-
-'''
-move the cells 
-actions =['U','D','L','R']
-'''
-
 def move(maze, cells, action):
-    if action == 'U':
-        for cell in cells:
+    for cell in cells:
+        if action == 'U':
             if maze[cell[0] - 1][cell[1]] == 0:
                 cell[0] -= 1
-    elif action == 'D':
-        for cell in cells:
-            if maze[cell[0] + 1][cell[1]] == 0:
-                cell[0] += 1
-    elif action == 'L':
-        for cell in cells:
+        elif action == 'D':
+            if maze[cell[0] - 1][cell[1]] == 0:
+                cell[0] -= 1
+        elif action == 'L':
             if maze[cell[0]][cell[1] - 1] == 0:
                 cell[1] -= 1
-    elif action == 'R':
-        for cell in cells:
+        elif action == 'R':
             if maze[cell[0]][cell[1] + 1] == 0:
                 cell[1] += 1
     return cells
 
 
-def update(maze, cells, action, obervation):
+def num_of_blocks_around(x, y, maze):
+    result = 0
+    # if the current cell is obstacle, ignore it.
+    if maze[x][y] == 1:
+        return result
+
+    # the border doesn't has 8 neighbors.
+    if x == 0 or y == 0 or x == 42 or y == 56:
+        return 0
+
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            if i == 0 and j == 0:
+                continue
+
+            if maze[x + i][y + j] == 1:
+                result += 1
+    return result
+
+
+def get_blocks_cell(maze, observation):
+    cells_meet_requirement = []
+    for x in range(len(maze)):
+        for y in range(len(maze[0])):
+            if num_of_blocks_around(x, y, maze) == observation:
+                cells_meet_requirement.append([x, y])
+    return cells_meet_requirement
+
+
+def update_current_cell_list(maze, cells, action, obervation):
     next_cells = move(maze, cells, action)
     return_cell = []
     for cell in next_cells:
@@ -93,7 +90,7 @@ def find_highest_prob(cells):
         if value > max_value:
             max_key = key
             max_value = value
-    
+
     result = []
     for key, value in info.items():
         if value == max_value:
@@ -101,42 +98,31 @@ def find_highest_prob(cells):
 
     for key, value in info.items():
         # info[key] = info.get(key)/len(cells)
-        print("key: ", key, "value: ", info.get(key)/len(cells))
+        print("key: ", key, "value: ", info.get(key) / len(cells))
     return result
-
-def printMaze(maze, cells, mostcells):
-    mazeDrown = Image.new('RGB', (len(maze[0]), len(maze)))
-    mazeX = mazeDrown.load()
-    for i in range(len(maze)):
-        for j in range(len(maze[0])):
-            if maze[i][j] == 0:
-                mazeX[j, i] = (255, 255, 255)
-            else:
-                mazeX[j, i] = (0, 0, 0)
-    for i in cells:
-        mazeX[i[1], i[0]] = (255, 255, 0)
-    for i in mostcells:
-        mazeX[i[1], i[0]] = (82, 198, 223)
-    mazeDrown.show()
 
 
 if __name__ == '__main__':
-    data = pd.read_table("Maze.txt", header=None)
-    maze = maze_generator(data)
-    observations = [5, 5, 5]
-    actions = ['L', 'L']
-    cells = get_blocks_cell(maze, observations[0])
-    most_cells = []
+    # Here is the observation and actions for this program
+    observations = [5, 5, 5, 3]
+    actions = ['L', 'L', 'U']
 
-    n = 0
-    while n < len(actions):
-        cells = update(maze, cells, actions[n], observations[n + 1])
-        n += 1
+    # load the data from the txt file and load it into a list
+    maze = maze_generator()
+
+    first_observation = observations[0]
+
+    cells = get_blocks_cell(maze, first_observation)
+
+    for i in range(len(actions)):
+        cells = update_current_cell_list(maze, cells, actions[i], observations[i + 1])
+
+
     print("The possible cells are:")
     print(cells)
     print("The number of solutions is: ", len(cells))
-    most_cells = find_highest_prob(cells)
+    high_prob_cells = find_highest_prob(cells)
     print("The most possible cells are: ")
-    print(most_cells)
-    print("The number of most possible solutions is: ", len(most_cells))
-    printMaze(maze, cells, most_cells)
+    print(high_prob_cells)
+    print("The number of most possible solutions is: ", len(high_prob_cells))
+    printMaze(maze, cells, high_prob_cells)
