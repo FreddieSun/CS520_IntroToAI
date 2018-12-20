@@ -21,6 +21,8 @@ def num_of_blocks_around(x, y, maze):
     number = 0
     if x == 0 or y == 0 or x == 42 or y == 56:
         return 0
+    if maze[x][y] == 1:
+        return 0
     for i in range(-1, 2):
         for j in range(-1, 2):
             if i == 0 and j == 0:
@@ -97,6 +99,9 @@ def find_highest_prob(cells):
         if value == max_value:
             result.append(key)
 
+    for key, value in info.items():
+        # info[key] = info.get(key)/len(cells)
+        print("key: ", key, "value: ", info.get(key)/len(cells))
     return result
 
 def printMaze(maze, cells, mostcells):
@@ -118,17 +123,20 @@ def printMaze(maze, cells, mostcells):
 if __name__ == '__main__':
     data = pd.read_table("Maze.txt", header=None)
     maze = maze_generator(data)
-    observations = [3,5, 4, 5]
-    actions = ['R', 'D', 'D']
+    observations = [5, 5, 5]
+    actions = ['L', 'L']
     cells = get_blocks_cell(maze, observations[0])
     most_cells = []
-    printMaze(maze, cells, most_cells)
 
     n = 0
     while n < len(actions):
         cells = update(maze, cells, actions[n], observations[n + 1])
         n += 1
+    print("The possible cells are:")
     print(cells)
+    print("The number of solutions is: ", len(cells))
     most_cells = find_highest_prob(cells)
+    print("The most possible cells are: ")
     print(most_cells)
+    print("The number of most possible solutions is: ", len(most_cells))
     printMaze(maze, cells, most_cells)
